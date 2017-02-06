@@ -15,6 +15,13 @@ module.exports = {
 
 		//you can make a query by calling your callback, which you write in the controller.
 		doQuery("select * from users", callback);
+	},
+
+	registration: function(req, res, callback){
+		console.log("model function for registration");
+
+		var doQ = (`INSERT INTO users (first_name, last_name, email, phone, password, created_at, updated_at) VALUES("${req.body.first_name}", "${req.body.last_name}", "${req.body.email}", "${req.body.phone}", "${req.body.password}", NOW(), NOW())`);
+		doQuery(doQ, callback);
+		console.log(doQ);
 	}
 }
-

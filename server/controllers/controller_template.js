@@ -29,6 +29,13 @@ module.exports = {
 	ajax_test: function(req, res){
 		// models.model_template.test(req, res, function(){
 			res.json({ajax_test1 : "ajax_test1", ajax_test2 : "ajax_test2"});
+			console.log("ajax testing");
 		// });
-	}
+	},
+	registration: function(req, res){
+		models.model_template.registration(req, res, function(){
+			console.log(req.body, "res.data from registration");
+		});
+	},
+
 	}

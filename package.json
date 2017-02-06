@@ -1,5 +1,5 @@
 {
-  "name": "node_skeleton",
+  "name": "secret_app_server",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/qho-queenie/node_skeleton"
+    "url": "git+https://github.com/qho-queenie/secret_app_server"
   },
-  "author": "Queenie Ho & Chris Rollins",
+  "author": "Queenie Ho & Chris Rollins & Harmann Bajwa",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/qho-queenie/node_skeleton/issues"
+    "url": "https://github.com/qho-queenie/secret_app_server#issues"
   },
-  "homepage": "https://github.com/qho-queenie/node_skeleton#readme",
+  "homepage": "https://github.com/qho-queenie/secret_app_server#readme",
   "dependencies": {
     "body-parser": "latest",
     "mongoose": "latest",
