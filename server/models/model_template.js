@@ -19,9 +19,20 @@ module.exports = {
 
 	registration: function(req, res, callback){
 		console.log("model function for registration");
-
 		var doQ = (`INSERT INTO users (first_name, last_name, email, phone, password, created_at, updated_at) VALUES("${req.body.first_name}", "${req.body.last_name}", "${req.body.email}", "${req.body.phone}", "${req.body.password}", NOW(), NOW())`);
 		doQuery(doQ, callback);
 		console.log(doQ);
+	},
+
+	login: function(req, res, callback){
+		console.log("model function for login");
+		var doQ1 = (`SELECT id FROM users WHERE email = "${req.body.email}" AND password = "${req.body.password}" LIMIT 1`);
+		doQuery(doQ1, callback);
+		console.log(doQ1);
+	},
+
+	display_events: function(req, res, callback){
+		console.log("model function for display_events");
+		doQuery("SELECT * FROM events where user_id = 3", callback);
 	}
 }

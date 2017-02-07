@@ -21,6 +21,8 @@ module.exports = function(app){
   app.get('/', controllers.controller_template.index);
   app.get('/ajax_test', controllers.controller_template.ajax_test);
 	app.get('/test', controllers.controller_template.test);
+  app.get('/display_events', controllers.controller_template.display_events);
 
   app.post('/registration', controllers.controller_template.registration);
+  app.post('/login', controllers.controller_template.login);
 }

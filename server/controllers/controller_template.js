@@ -11,10 +11,7 @@ var models = requireFolder("models");
 
 module.exports = {
 	test: function(req, res){
-		console.log("controller function called successfully");
-
-		//response inside callback
-		// models.model_template.test(req, res, function(){
+		console.log(req.sessionID, "controller function called successfully");
 			res.send("successfully made it through route->controller->model->response");
 		// });
 	},
@@ -38,4 +35,24 @@ module.exports = {
 		});
 	},
 
+	login: function(req, res){
+		models.model_template.login(req, res, function(err, rows, fields){
+			console.log(req.body, "res.data from login");
+			console.log(rows, "rows from controller login")
+			console.log(req.sessionID, "sessionID");
+			req.session.data = {};
+			if (rows.length > 0){
+				req.session.data.id = rows[0].id;
+				console.log(req.session, "session");
+			}
+			res.json(rows);
+		});
+	},
+
+	display_events: function(req, res){
+		models.model_template.display_events(req, res, function(err, rows, fields){
+			console.log(req.body, "res.body from display events controller");
+			res.json(rows);
+		});
+	}
 	}
