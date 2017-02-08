@@ -12,17 +12,37 @@ fs.readdirSync(controllerPath).forEach(function(file) {
   }
 });
 
+routeFunctions = {
+  get:{
+    '/' : controllers.controller_template.index,
+    '/ajax_test' : controllers.controller_template.ajax_test,
+    '/display_events' : controllers.controller_template.display_events
+  },
+  post:
+  {
+    '/registration' : controllers.controller_template.registration,
+    '/login' : controllers.controller_template.login
+  }
+};
+
+function doForEveryRoute(req, res, callback)
+{
+  console.log("-----------------------------");
+  console.log(`Route: ${req.path}`);
+  console.log(`Session ID: ${req.sessionID}`);
+  console.log("-----------------------------");
+  console.log(callback);
+  callback(req, res);
+}
+
 module.exports = function(app){
-	app.post('/dummies/:test', function(req, res){
-		console.log(req.body);
-		console.log(req.params.test);
-	});
-
-  app.get('/', controllers.controller_template.index);
-  app.get('/ajax_test', controllers.controller_template.ajax_test);
-	app.get('/test', controllers.controller_template.test);
-  app.get('/display_events', controllers.controller_template.display_events);
-
-  app.post('/registration', controllers.controller_template.registration);
-  app.post('/login', controllers.controller_template.login);
+  app.get('*', function(req, res){
+    //stuff for only get
+    doForEveryRoute(req, res, routeFunctions.get[req.path]);
+  });
+  
+  app.post('*', function(req, res){
+    //stuff for only post
+    doForEveryRoute(req, res, routeFunctions.post[req.path]);
+  });
 }
