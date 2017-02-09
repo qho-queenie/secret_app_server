@@ -56,7 +56,13 @@ module.exports = {
 		models.model_template.display_events(req, res, function(err, rows, fields){
 			// console.log(req.body, "res.body from display events controller");
 
-			res.json(rows);
+			res.json({data:rows});
 		});
+	},
+
+	delete_event: function(req, res){
+		models.model_template.delete_event(req, res, function(err, rows, fields){
+			res.json(rows);
+		})
 	}
 	}

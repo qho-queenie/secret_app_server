@@ -16,7 +16,8 @@ routeFunctions = {
   get:{
     '/' : controllers.controller_template.index,
     '/ajax_test' : controllers.controller_template.ajax_test,
-    '/display_events' : controllers.controller_template.display_events
+    '/display_events' : controllers.controller_template.display_events,
+    '/delete_event' : controllers.controller_template.delete_event
   },
   post:
   {
@@ -40,7 +41,7 @@ module.exports = function(app){
     //stuff for only get
     doForEveryRoute(req, res, routeFunctions.get[req.path]);
   });
-  
+
   app.post('*', function(req, res){
     //stuff for only post
     doForEveryRoute(req, res, routeFunctions.post[req.path]);
