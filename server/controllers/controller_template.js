@@ -43,14 +43,12 @@ module.exports = {
 		models.model_template.login(req, res, function(err, rows, fields){
 			// console.log(req.body, "res.data from login");
 			// console.log(rows, "rows from controller login")
-			// req.session.data = {};
-			// if (rows.length > 0){
-			// 	req.session.data.id = rows[0].id;
-			// 	console.log(req.session, "session");
-			// }
-			var uk = crypto.randomBytes(48).toString("hex");
-			console.log("unique_key:", uk);
-			res.json({id: rows[0].id, unique_key: uk});
+			req.session.data = {};
+			if (rows.length > 0){
+				req.session.data.id = rows[0].id;
+				console.log(req.session, "session");
+			}
+			res.json({validation_errors: []});
 		});
 	},
 
@@ -58,7 +56,6 @@ module.exports = {
 		models.model_template.display_events(req, res, function(err, rows, fields){
 			// console.log(req.body, "res.body from display events controller");
 
-			console.log("unique_key:", req.query);
 			res.json(rows);
 		});
 	}
