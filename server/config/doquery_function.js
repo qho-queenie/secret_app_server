@@ -6,7 +6,6 @@ module.exports = function doQuery(query, callback)
     {
         connection.query(query, function(err, rows, fields){
             callback(err, rows, fields);
-            //console.log(err, rows, fields, "rows from doquery function");
         });
     }
     catch (e)
