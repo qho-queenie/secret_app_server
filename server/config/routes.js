@@ -22,7 +22,8 @@ routeFunctions = {
   post:
   {
     '/registration' : controllers.controller_template.registration,
-    '/login' : controllers.controller_template.login
+    '/login' : controllers.controller_template.login,
+    '/add_new_event' : controllers.controller_template.add_new_event
   }
 };
 

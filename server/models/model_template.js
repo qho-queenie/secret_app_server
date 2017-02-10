@@ -39,5 +39,13 @@ module.exports = {
 	delete_event: function(req, res, callback){
 		console.log("model function for delete_event");
 		doQuery(`DELETE FROM events WHERE id = ${req.query.id}`, callback);
+	},
+
+	add_new_event: function(req, res, callback){
+		console.log("model function for add_new_event");
+		console.log(req.body);
+		console.log(req.session.data.id);
+		console.log(req.session.data);
+		doQuery(`INSERT INTO events (event_name, event_note, created_at, updated_at, user_id) VALUES ("${req.body.event_name}", "${req.body.event_note}", NOW(), NOW(), "${req.session.data.id}")`, callback);
 	}
 }

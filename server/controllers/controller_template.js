@@ -52,6 +52,13 @@ module.exports = {
 		});
 	},
 
+	add_new_event: function(req, res){
+		models.model_template.add_new_event(req, res, function(err, rows, fields){
+		console.log(rows, "add_new_event from controllers")
+		res.json(rows);
+		})
+	},
+
 	display_events: function(req, res){
 		models.model_template.display_events(req, res, function(err, rows, fields){
 			// console.log(req.body, "res.body from display events controller");
