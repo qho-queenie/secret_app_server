@@ -36,16 +36,32 @@ module.exports = {
 		doQuery(`SELECT * FROM events where user_id = ${req.session.data.id}`, callback);
 	},
 
-	delete_event: function(req, res, callback){
-		console.log("model function for delete_event");
-		doQuery(`DELETE FROM events WHERE id = ${req.query.id}`, callback);
+	display_contacts: function(req, res, callback){
+		console.log("model function for display_events");
+		doQuery(`SELECT * FROM contacts where users_id = ${req.session.data.id}`, callback);
 	},
 
+	delete_event: function(req, res, callback){
+		console.log("model function for delete_event");
+		var doq = `DELETE FROM events WHERE id = ${req.query.id}`;
+		doQuery(doq, callback);
+		console.log(doq);
+	},
 	add_new_event: function(req, res, callback){
 		console.log("model function for add_new_event");
 		console.log(req.body);
 		console.log(req.session.data.id);
 		console.log(req.session.data);
 		doQuery(`INSERT INTO events (event_name, event_note, created_at, updated_at, user_id) VALUES ("${req.body.event_name}", "${req.body.event_note}", NOW(), NOW(), "${req.session.data.id}")`, callback);
+	},
+
+	add_new_contact: function(req, res, callback){
+		console.log("model function for add_new_contact");
+		console.log(req.body);
+		console.log(req.session.data.id);
+		console.log(req.session.data);
+		var doq = `INSERT INTO contacts (contact_first_name, contact_last_name, contact_email, contact_phone, contact_relationship, contact_status, created_at, updated_at, users_id) VALUES ("${req.body.contact_first_name}", "${req.body.contact_last_name}", "${req.body.contact_email}", "${req.body.contact_phone}", "${req.body.contact_relationship}", 1, NOW(), NOW(), ${req.session.data.id})`;
+		doQuery(doq, callback);
+		console.log(doq);
 	}
 }

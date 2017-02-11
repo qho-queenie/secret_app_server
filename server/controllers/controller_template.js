@@ -58,10 +58,21 @@ module.exports = {
 		res.json(rows);
 		})
 	},
-
+	add_new_contact: function(req, res){
+		models.model_template.add_new_contact(req, res, function(err, rows, fields){
+		console.log(rows, "add_new_contact from controllers")
+		res.json(rows);
+		})
+	},
 	display_events: function(req, res){
 		models.model_template.display_events(req, res, function(err, rows, fields){
 			console.log(rows)
+			res.json({data:rows});
+		});
+	},
+	display_contacts: function(req, res){
+		models.model_template.display_contacts(req, res, function(err, rows, fields){
+			console.log(rows, "rows from display_contacts in controller")
 			res.json({data:rows});
 		});
 	},
