@@ -81,5 +81,10 @@ module.exports = {
 		models.model_template.delete_event(req, res, function(err, rows, fields){
 			res.json(rows);
 		})
+	},
+	delete_contact: function(req, res){
+		models.model_template.delete_contact(req, res, function(err, rows, fields){
+			res.json(rows);
+		})
 	}
 	}

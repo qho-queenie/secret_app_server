@@ -18,7 +18,8 @@ routeFunctions = {
     '/ajax_test' : controllers.controller_template.ajax_test,
     '/display_events' : controllers.controller_template.display_events,
     '/delete_event' : controllers.controller_template.delete_event,
-    '/display_contacts' : controllers.controller_template.display_contacts
+    '/display_contacts' : controllers.controller_template.display_contacts,
+    '/delete_contact' : controllers.controller_template.delete_contact
   },
   post:
   {

@@ -40,10 +40,15 @@ module.exports = {
 		console.log("model function for display_events");
 		doQuery(`SELECT * FROM contacts where users_id = ${req.session.data.id}`, callback);
 	},
-
 	delete_event: function(req, res, callback){
 		console.log("model function for delete_event");
 		var doq = `DELETE FROM events WHERE id = ${req.query.id}`;
+		doQuery(doq, callback);
+		console.log(doq);
+	},
+	delete_contact: function(req, res, callback){
+		console.log("model function for delete_contact");
+		var doq = `DELETE FROM contacts WHERE id = ${req.query.id}`;
 		doQuery(doq, callback);
 		console.log(doq);
 	},
@@ -54,7 +59,6 @@ module.exports = {
 		console.log(req.session.data);
 		doQuery(`INSERT INTO events (event_name, event_note, created_at, updated_at, user_id) VALUES ("${req.body.event_name}", "${req.body.event_note}", NOW(), NOW(), "${req.session.data.id}")`, callback);
 	},
-
 	add_new_contact: function(req, res, callback){
 		console.log("model function for add_new_contact");
 		console.log(req.body);
