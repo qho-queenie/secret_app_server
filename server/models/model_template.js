@@ -14,7 +14,7 @@ module.exports = {
 		console.log("model function called successfully");
 
 		//you can make a query by calling your callback, which you write in the controller.
-		doQuery("select * from users", callback);
+		doQuery("SELECT * FROM users", callback);
 	},
 
 	registration: function(req, res, callback){
@@ -36,8 +36,13 @@ module.exports = {
 		doQuery(`SELECT * FROM events where user_id = ${req.session.data.id}`, callback);
 	},
 
+	display_user: function(req, res, callback){
+		doQuery(`SELECT * FROM users where id = ${req.session.data.id}`, callback);
+	},
+
 	display_contacts: function(req, res, callback){
 		console.log("model function for display_events");
+		console.log(req.session.data);
 		doQuery(`SELECT * FROM contacts where users_id = ${req.session.data.id}`, callback);
 	},
 	delete_event: function(req, res, callback){

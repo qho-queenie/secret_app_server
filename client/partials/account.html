@@ -1,6 +1,26 @@
 <div ng-controller='mainController'>
 <h1>Account</h1>
-  <form ng-submit= "addContact()">
+<hr>
+  <h2>Your Contacts</h2>
+  <table>
+    <tr>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Email</th>
+      <th>Phone</th>
+      <th>Relationship</th>
+      <th>Status</th>
+    </tr>
+    <tr ng-repeat="contact in contacts track by $index">
+      <td>{{ contact.contact_first_name }}</td>
+      <td>{{ contact.contact_last_name }}</td>
+      <td>{{ contact.contact_email }}</td>
+      <td>{{ contact.contact_phone }}</td>
+      <td>{{ contact.contact_relationship }}</td>
+      <td>{{ contact.contact_status}}</td>
+    </tr>
+  </table>
+   <form ng-submit= "addContact()">
     <th>First Name:<input type="text" name="contact_first_name" ng-model="newContact.contact_first_name"></th>
     <th>Last Name:<input type="text" name="contact_last_name" ng-model="newContact.contact_last_name"></th>
     <th>Email:<input type="text" name="contact_email" ng-model="newContact.contact_email"></th>
@@ -8,24 +28,24 @@
     <th>Relationship:<input type="text" name="contact_relationship" ng-model="newContact.contact_relationship"></th>
     <input type="submit" value="Add Emergency Contact">
   </form>
-  <table>
+<hr>
+  <h2>Your Tasks</h2>
+    <table>
     <tr>
-      <th>First Name:</th>
-      <th>Last Name:</th>
-      <th>Email:</th>
-      <th>Phone:</th>
-      <th>Relationship:</th>
-      <th>Status:</th>
+      <th>Task Name</th>
+      <th>Task Note</th>
     </tr>
-    <tr ng-repeat="contact in contacts">
-      <td>{{ contact.contact_first_name }}</td>
-      <td>{{ contact.contact_last_name }}</td>
-      <td>{{ contact.contact_email }}</td>
-      <td>{{ contact.contact_phone }}</td>
-      <td>{{ contact.contact_relationship }}</td>
-      <!-- <td><button ng-click = "deleteUser($index)">Delete User</button></td> -->
+    <tr ng-repeat="event in events track by $index">
+      <td>{{ event.event_name }}</td>
+      <td>{{ event.event_note }}</td>
     </tr>
   </table>
+  <form ng-submit= "addTask()">
+    <th>Task Name:<input type="text" name="event_name" ng-model="newEvent.event_name"></th>
+    <th>Task Note(optional):<input type="text" name="event_note" ng-model="newEvent.event_note"></th>
+    <input type="submit" value="Add Task">
+  </form>
+  <hr>
   <a href="#/step1">Start a Task</a>
 </div>
 

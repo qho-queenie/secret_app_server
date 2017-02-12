@@ -1,6 +1,3 @@
-//Controller template
-
-//the following things enable this controller to access the models, and also to send html files as responses
 var path = require("path");
 var htmlPath = path.join(__dirname, "./../../client/");
 var requireFolder = require("./../config/req_folder.js");
@@ -10,26 +7,35 @@ var flowroute = require(path.join(__dirname, './../flowroute-messaging-nodejs-ma
 flowroute.configuration.username = "95004144";
 flowroute.configuration.password = "ca2d914d75da2b78953b98c13473c718";
 
-//when you call a model function it should return a value (usually an array, the result of a query)
-//after that you can make the response here in the controller
+sessionPendingMsgs = {};
 
-module.exports = {
+exps = {
 	test: function(req, res){
 		console.log(req.sessionID, "controller function called successfully");
 			res.send("successfully made it through route->controller->model->response");
-		// });
 	},
 
 	start_task: function(req, res){
 		console.log("task:", req.body);
+		console.log(req.body.minutes);
+		sessionPendingMsgs[req.sessionID] = true;
 		setTimeout(function(){
 			console.log("Countdown done");
+			if(sessionPendingMsgs[req.sessionID]){
+				exps.alert_contact_sms(req.body);
+			}
 		}, parseInt(req.body.minutes) * 60000);
+		res.sendStatus(200);
 	},
 
-	start_task_sms: function(req, res){
+	end_current_task: function(req, res){
+		sessionPendingMsgs[req.sessionID] = undefined;
+		res.sendStatus(200);
+	},
+
+	start_task_sms: function(data){
     	//Create and send a message
-		flowroute.MessagesController.createMessage({"to": req.body.phone_number, "from": "14089122921", "content": `${req.body.user_name} is starting task ${req.body.event_name}. You will be alerted again if they don't check in after ${req.body.duration} minutes.`}, function(err, response){
+		flowroute.MessagesController.createMessage({"to": data.phone_number, "from": "14089122921", "content": `${data.user_name} is starting task ${data.event_name}. You will be alerted again if they don't check in after ${data.duration} minutes.`}, function(err, response){
 		      if(err){
 		        console.log(err);
 		      }
@@ -37,9 +43,9 @@ module.exports = {
     	});
 	},
 
-	add_contact_sms: function(req, res){
+	add_contact_sms: function(data){
     	//Create and send a message
-		flowroute.MessagesController.createMessage({"to": req.body.phone_number, "from": "14089122921", "content": `${req.body.user_name} wants you to be an emergency contact for uSafe. Reply "YES" or "NO"`}, function(err, response){
+		flowroute.MessagesController.createMessage({"to": data.phone_number, "from": "14089122921", "content": `${data.user_name} wants you to be an emergency contact for uSafe. Reply "YES" or "NO"`}, function(err, response){
 		      if(err){
 		        console.log(err);
 		      }
@@ -47,9 +53,9 @@ module.exports = {
     	});
 	},
 
-	alert_contact_sms: function(req, res){
+	alert_contact_sms: function(data){
     	//Create and send a message
-		flowroute.MessagesController.createMessage({"to": req.body.phone_number, "from": "14089122921", "content": `${req.body.user_name} has not checked in after the specified time. Please contact your friend and make sure they are ok.`}, function(err, response){
+		flowroute.MessagesController.createMessage({"to": data.phone_number, "from": "14089122921", "content": `${data.user_name} has not checked in after the specified time. Please contact your friend and make sure they are ok.`}, function(err, response){
 		      if(err){
 		        console.log(err);
 		      }
@@ -121,6 +127,12 @@ module.exports = {
 		});
 	},
 
+	display_user: function(req, res){
+		models.model_template.display_user(req, res, function(err, rows, fields){
+			res.json({data:rows});
+		});
+	},
+
 	delete_event: function(req, res){
 		models.model_template.delete_event(req, res, function(err, rows, fields){
 			res.json(rows);
@@ -131,4 +143,5 @@ module.exports = {
 			res.json(rows);
 		})
 	}
-	}
+}
+module.exports = exps;

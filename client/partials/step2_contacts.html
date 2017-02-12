@@ -9,14 +9,14 @@
       <th>Relationship</th>
       <th>Status</th>
     </tr>
-    <tr ng-repeat="contact in contacts"> 
+    <tr ng-repeat="contact in contacts track by $index"> 
 		<td>{{contact.contact_first_name}}</td>
 		<td>{{contact.contact_last_name}}</td>
 		<td>{{contact.contact_email}}</td>
 		<td>{{contact.contact_phone}}</td>
 		<td>{{contact.contact_relationship}}</td>
 		<td>{{contact.contact_status}}</td>
-		<td><button ng-click="chooseContact($index)">Choose</button></td>
+		<td><button id="chooseContactButton{{$index}}" ng-click="chooseContact($index)">Choose</button></td>
     </tr>
   </table>
   <a href="#/step1">back</a> <a href="#/step3">next</a>
