@@ -1,0 +1,18 @@
+<div ng-controller='mainController'>
+<h1>Sign Up</h1>
+<form ng-submit="addUser()">
+  First Name:<input type="text" name="first_name" ng-model="newUser.first_name">
+  Last Name:<input type="text" name="last_name" ng-model="newUser.last_name">
+  Email:<input type="email" name="email" ng-model="newUser.email">
+  Phone:<input type="text" name="phone" ng-model="newUser.phone">
+  Password:<input type="password" name="password" ng-model="newUser.password">
+  Confirm Password:<input type="password" name="confirm_password" ng-model="newUser.confirm_password">
+  <input type="submit" value="SignUp">
+</form>
+<h1>Login</h1>
+  <form>
+  Email:<input type="text" name="email">
+  Password:<input type="text" name="password">
+  <input type="submit" value="Login">
+</form>
+

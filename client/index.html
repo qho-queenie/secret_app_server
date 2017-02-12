@@ -7,23 +7,11 @@
     <script src='controllers/mainController.js'></script>
   </head>
 <body ng-app="app">
-  <div ng-controller='mainController'>
-  <h1>Sign Up</h1>
-  <form action="/registration" method="post">
-    First Name:<input type="text" name="first_name" ng-model="newUser.first_name">
-    Last Name:<input type="text" name="last_name" ng-model="newUser.last_name">
-    Email:<input type="email" name="email" ng-model="newUser.email">
-    Phone:<input type="text" name="phone" ng-model="newUser.phone">
-    Password:<input type="password" name="password" ng-model="newUser.password">
-    Confirm Password:<input type="password" name="confirm_password" ng-model="newUser.confirm_password">
-    <button ng-submit="addUser()">Sign Up</button>
-  </form>
-  <h1>Login</h1>
-    <form action="/login" method="post">
-    Email:<input type="text" name="email">
-    Password:<input type="text" name="password">
-    <input type="button" name="submit" value="Login">
-  </form>
+<div id="partials">
+  <div ng-app="app">
+    <div ng-view="">
+    </div>
   </div>
+</div>
 </body>
 </html>
