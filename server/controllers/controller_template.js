@@ -6,6 +6,9 @@ var htmlPath = path.join(__dirname, "./../../client/");
 var requireFolder = require("./../config/req_folder.js");
 var models = requireFolder("models");
 var crypto = require("crypto");
+var flowroute = require(path.join(__dirname, './../flowroute-messaging-nodejs-master/flowroutemessaginglib'));
+flowroute.configuration.username = "95004144";
+flowroute.configuration.password = "ca2d914d75da2b78953b98c13473c718";
 
 //when you call a model function it should return a value (usually an array, the result of a query)
 //after that you can make the response here in the controller
@@ -15,6 +18,41 @@ module.exports = {
 		console.log(req.sessionID, "controller function called successfully");
 			res.send("successfully made it through route->controller->model->response");
 		// });
+	},
+
+	start_task_sms: function(req, res){
+    	//Create and send a message
+		flowroute.MessagesController.createMessage({"to": req.body.phone_number, "from": "14089122921", "content": `${req.body.user_name} is starting task ${req.body.event_name}. You will be alerted again if they don't check in after ${req.body.duration} minutes.`}, function(err, response){
+		      if(err){
+		        console.log(err);
+		      }
+		      console.log(response);
+    	});
+	},
+
+	add_contact_sms: function(req, res){
+    	//Create and send a message
+		flowroute.MessagesController.createMessage({"to": req.body.phone_number, "from": "14089122921", "content": `${req.body.user_name} wants you to be an emergency contact for uSafe. Reply "YES" or "NO"`}, function(err, response){
+		      if(err){
+		        console.log(err);
+		      }
+		      console.log(response);
+    	});
+	},
+
+	alert_contact_sms: function(req, res){
+    	//Create and send a message
+		flowroute.MessagesController.createMessage({"to": req.body.phone_number, "from": "14089122921", "content": `${req.body.user_name} has not checked in after the specified time. Please contact your friend and make sure they are ok.`}, function(err, response){
+		      if(err){
+		        console.log(err);
+		      }
+		      console.log(response);
+    	});
+	},
+
+	incoming_sms: function(req, res){
+		console.log(`Incoming sms: ${req.body}`);
+		res.sendStatus(200);
 	},
 
 	index: function(req, res){

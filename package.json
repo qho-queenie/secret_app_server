@@ -17,18 +17,19 @@
   },
   "homepage": "https://github.com/qho-queenie/secret_app_server#readme",
   "dependencies": {
-    "body-parser": "latest",
-    "mongoose": "latest",
     "angular-route": "^1.6.1",
     "aws-sdk": "^2.7.21",
     "bcryptjs": "^2.4.0",
+    "body-parser": "latest",
     "crypto": "0.0.3",
     "ejs": "^2.5.5",
     "express": "^4.14.0",
     "express-session": "^1.14.2",
     "html": "^1.0.0",
     "mailchimp-api-v3": "^1.7.0",
+    "mongoose": "latest",
     "mysql": "^2.12.0",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "request": "^2.79.0"
   }
 }
