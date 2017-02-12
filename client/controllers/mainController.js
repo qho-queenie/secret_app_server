@@ -13,8 +13,15 @@ app.controller("mainController", ["$scope", "$routeParams", "$http", function($s
     $http.post('/add_new_contact', $scope.newContact).then(function(res){
       console.log(res);
     })
+  }
+  $scope.loginUser = function(){
+    $http.post('/login', $scope.newUser).then(function(res){
+      console.log(res);
+    })
     window.location.href = "#/account";
   }
+
+
 }])
 
 
