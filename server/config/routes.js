@@ -41,6 +41,12 @@ function doForEveryRoute(req, res, callback)
 }
 
 module.exports = function(app){
+
+  app.get('*.*', function(req, res){
+    console.log(`file: ${req.path}`);
+    res.sendfile(req.path);
+  });
+
   app.get('*', function(req, res){
     //stuff for only get
     doForEveryRoute(req, res, routeFunctions.get[req.path]);
