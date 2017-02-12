@@ -20,6 +20,13 @@ module.exports = {
 		// });
 	},
 
+	start_task: function(req, res){
+		console.log("task:", req.body);
+		setTimeout(function(){
+			console.log("Countdown done");
+		}, parseInt(req.body.minutes) * 60000);
+	},
+
 	start_task_sms: function(req, res){
     	//Create and send a message
 		flowroute.MessagesController.createMessage({"to": req.body.phone_number, "from": "14089122921", "content": `${req.body.user_name} is starting task ${req.body.event_name}. You will be alerted again if they don't check in after ${req.body.duration} minutes.`}, function(err, response){
@@ -79,8 +86,7 @@ module.exports = {
 
 	login: function(req, res){
 		models.model_template.login(req, res, function(err, rows, fields){
-			// console.log(req.body, "res.data from login");
-			// console.log(rows, "rows from controller login")
+			console.log("AKJHDFKJSDFG", req.body);
 			req.session.data = {};
 			if (rows.length > 0){
 				req.session.data.id = rows[0].id;

@@ -1,0 +1,21 @@
+<div ng-controller='mainController'>
+<h1>Tasks</h1>
+  <form ng-submit= "addTask()">
+    <th>Task Name:<input type="text" name="event_name" ng-model="newEvent.event_name"></th>
+    <th>Task Note(optional):<input type="text" name="event_note" ng-model="newEvent.event_note"></th>
+    <input type="submit" value="Add Event">
+  </form>
+  <table>
+    <tr>
+      <th>Task Name:</th>
+      <th>Task Note:</th>
+      <th>Action</th>
+    </tr>
+    <tr ng-repeat="event in events">
+      <td>{{ event.event_name }}</td>
+      <td>{{ event.event_note }}</td>
+      <td><button ng-click="chooseEvent($index)">Choose Event</button> <button ng-click = "deleteEvent($index)">Delete Event</button></td>
+    </tr>
+  </table>
+  <a href="#/step2">next</a>
+</div>

@@ -11,8 +11,8 @@
 </form>
 <h1>Login</h1>
   <form ng-submit="loginUser()">
-  Email:<input type="text" name="email">
-  Password:<input type="text" name="password">
+  Email:<input type="text" name="email" ng-model="login.email">
+  Password:<input type="password" name="password" ng-model="login.password">
   <input type="submit" value="Login">
 </form>
 

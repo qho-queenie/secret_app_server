@@ -27,6 +27,7 @@ routeFunctions = {
     '/login' : controllers.controller_template.login,
     '/add_new_event' : controllers.controller_template.add_new_event,
     '/add_new_contact' : controllers.controller_template.add_new_contact,
+    '/start_task' : controllers.controller_template.start_task,
     '/start_task_sms' : controllers.controller_template.start_task_sms,
     '/add_contact_sms' : controllers.controller_template.add_contact_sms,
     '/alert_contact_sms' : controllers.controller_template.alert_contact_sms

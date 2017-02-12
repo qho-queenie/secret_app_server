@@ -1,0 +1,9 @@
+<div ng-controller='mainController'>
+<h1>Tasks</h1>
+<p>{{chosen_event}}</p>
+  <form ng-submit= "startCountdown(configured_task)">
+    <p>Alert {{chosen_contact}} in <input type="text" name="minutes" ng-model="minutes"></p>
+    <input type="submit" value="Start">
+  </form>
+  <a href="#/step2">back</a>
+</div>
