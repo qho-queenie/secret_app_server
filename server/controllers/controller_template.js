@@ -7,7 +7,9 @@ var flowroute = require(path.join(__dirname, './../flowroute-messaging-nodejs-ma
 flowroute.configuration.username = "95004144";
 flowroute.configuration.password = "ca2d914d75da2b78953b98c13473c718";
 
-sessionPendingMsgs = {};
+var sessionPendingMsgs = {};
+
+var hardcodedPhoneNumber = "14083061863";
 
 exps = {
 	test: function(req, res){
@@ -19,6 +21,7 @@ exps = {
 		console.log("task:", req.body);
 		console.log(req.body.minutes);
 		sessionPendingMsgs[req.sessionID] = true;
+		exps.start_task_sms(req.body);
 		setTimeout(function(){
 			console.log("Countdown done");
 			if(sessionPendingMsgs[req.sessionID]){
@@ -37,7 +40,7 @@ exps = {
     	//Create and send a message
     	var phone = data.contact_phone_number;
     	if(!phone)
-    		phone = "14158102472";
+    		phone = hardcodedPhoneNumber;
 		flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${data.user[0].first_name} is starting task ${data.event_name}. You will be alerted again if they don't check in after ${data.duration} minutes.`}, function(err, response){
 		      if(err){
 		        console.log(err);
@@ -47,8 +50,11 @@ exps = {
 	},
 
 	add_contact_sms: function(data){
-    	//Create and send a message
-		flowroute.MessagesController.createMessage({"to": data.contact_phone_number, "from": "14089122921", "content": `${data.user[0].first_name} wants you to be an emergency contact for uSafe. Reply "YES" or "NO"`}, function(err, response){
+    	//Create and send a message    	
+    	var phone = data.contact_phone_number;
+    	if(!phone)
+    		phone = hardcodedPhoneNumber;
+		flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${data.user[0].first_name} wants you to be an emergency contact for uSafe. Reply "YES" or "NO"`}, function(err, response){
 		      if(err){
 		        console.log(err);
 		      }
@@ -58,7 +64,10 @@ exps = {
 
 	alert_contact_sms: function(data){
     	//Create and send a message
-		flowroute.MessagesController.createMessage({"to": data.contact_phone_number, "from": "14089122921", "content": `${data.user[0].first_name} has not checked in after the specified time. Please contact your friend and make sure they are ok.`}, function(err, response){
+    	var phone = data.contact_phone_number;
+    	if(!phone)
+    		phone = hardcodedPhoneNumber;
+		flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${data.user[0].first_name} has not checked in after the specified time. Please contact your friend and make sure they are ok.`}, function(err, response){
 		      if(err){
 		        console.log(err);
 		      }
