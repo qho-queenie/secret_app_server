@@ -6,8 +6,7 @@
     <th>Email:<input type="text" name="contact_email" ng-model="newContact.contact_email"></th>
     <th>Phone:<input type="text" name="contact_phone" ng-model="newContact.contact_phone"></th>
     <th>Relationship:<input type="text" name="contact_relationship" ng-model="newContact.contact_relationship"></th>
-    <th>Status:<input type="text" name="contact_status" ng-model="newContact.contact_status"></th>
-    <input type="submit" value="Login">
+    <input type="submit" value="Add Emergency Contact">
   </form>
   <table>
     <tr>
@@ -24,7 +23,6 @@
       <td>{{ contact.contact_email }}</td>
       <td>{{ contact.contact_phone }}</td>
       <td>{{ contact.contact_relationship }}</td>
-      <td>{{ contact.contact_status }}</td>
       <!-- <td><button ng-click = "deleteUser($index)">Delete User</button></td> -->
     </tr>
   </table>
