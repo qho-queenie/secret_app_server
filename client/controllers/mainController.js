@@ -4,13 +4,13 @@ app.controller("mainController", ["$scope", "$routeParams", "$http", function($s
   $scope.events = [];
 
   $http.get('/display_events').then(function(res){
-    console.log(res);
-    $scope.events = res.data;
+    console.log(res.data.data);
+    $scope.events = res.data.data;
   });
 
   $http.get('/display_contacts').then(function(res){
-    console.log(res);
-    $scope.contacts = res.data;
+    console.log(res.data.data);
+    $scope.contacts = res.data.data;
   });
 
   $scope.addUser = function() {
