@@ -4,6 +4,7 @@ app.controller("mainController", ["$scope", "$routeParams", "$http", function($s
   $scope.contacts = [];
   $scope.events = [];
   $scope.user = [];
+  $scope.choices = {};
 
   if(window.location.hash != "#/"){
     document.getElementById("navbar").style.visibility = "visible";
@@ -11,24 +12,27 @@ app.controller("mainController", ["$scope", "$routeParams", "$http", function($s
     document.getElementById("navbar").style.visibility = "hidden";
   }
 
-  $http.get('/display_events').then(function(res){
-    console.log(res.data.data);
-    $scope.events = res.data.data;
-  });
+$scope.load = function(){
+    $http.get('/display_events').then(function(res){
+      console.log(res.data.data);
+      $scope.events = res.data.data;
+    });
 
-  $http.get('/display_user').then(function(res){
-    console.log(res.data.data);
-    $scope.user = res.data.data;
-  });
+    $http.get('/display_user').then(function(res){
+      console.log(res.data.data);
+      $scope.user = res.data.data;
+    });
 
-  $http.get('/display_contacts').then(function(res){
-    console.log(res.data.data);
-    $scope.contacts = res.data.data;
+    $http.get('/display_contacts').then(function(res){
+      console.log(res.data.data);
+      $scope.contacts = res.data.data;
 
-    for(var contact of $scope.contacts){
-      contact.contact_status = ["Pending", "Accepted", "Rejected"][parseInt(contact.contact_status)];
-    }
-  });
+      for(var contact of $scope.contacts){
+        contact.contact_status = ["Pending", "Accepted", "Rejected"][parseInt(contact.contact_status)];
+      }
+    });
+  };
+  $scope.load();
 
   $scope.addUser = function() {
     $scope.users.push($scope.newUser);
@@ -97,11 +101,18 @@ app.controller("mainController", ["$scope", "$routeParams", "$http", function($s
     });
   };
 
-  $scope.deleteContact = function() {
-    $http.get('/delete_contact').then(function(res){
+  $scope.deleteContact = function(index) {
+    $http.get(`/delete_contact?id=${$scope.contacts[index].id}`).then(function(res){
       console.log(res);
     });
-    window.location.href = "#/account";
+    $scope.load();
+  }
+
+  $scope.deleteEvent = function(index) {
+    $http.get(`/delete_event?id=${$scope.events[index].id}`).then(function(res){
+      console.log(res);
+    });
+    $scope.load();
   }
 
   $scope.chooseEvent = function(index){
@@ -118,6 +129,7 @@ app.controller("mainController", ["$scope", "$routeParams", "$http", function($s
     $scope.lastChoiceButton = document.getElementById("chooseContactButton" + index);
     $scope.lastChoiceButton.style["background-color"] = "#ffff00";
     $scope.chosen_contact = $scope.contacts[index];
+    console.log("chosen_contact:", $scope.chosen_contact);
     console.log($scope.contacts[index]);
   };
 

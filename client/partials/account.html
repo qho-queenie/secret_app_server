@@ -18,6 +18,7 @@
       <td>{{ contact.contact_phone }}</td>
       <td>{{ contact.contact_relationship }}</td>
       <td>{{ contact.contact_status}}</td>
+      <td><button ng-click = "deleteContact($index)">Delete Contact</button></td>
     </tr>
   </table>
    <form ng-submit= "addContact()">
@@ -38,6 +39,7 @@
     <tr ng-repeat="event in events track by $index">
       <td>{{ event.event_name }}</td>
       <td>{{ event.event_note }}</td>
+      <td><button ng-click = "deleteEvent($index)">Delete Task</button></td>
     </tr>
   </table>
   <form ng-submit= "addTask()">
