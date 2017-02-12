@@ -35,7 +35,10 @@ exps = {
 
 	start_task_sms: function(data){
     	//Create and send a message
-		flowroute.MessagesController.createMessage({"to": data.contact_phone_number, "from": "14089122921", "content": `${data.user[0].first_name} is starting task ${data.event_name}. You will be alerted again if they don't check in after ${data.duration} minutes.`}, function(err, response){
+    	var phone = data.contact_phone_number;
+    	if(!phone)
+    		phone = "14158102472";
+		flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${data.user[0].first_name} is starting task ${data.event_name}. You will be alerted again if they don't check in after ${data.duration} minutes.`}, function(err, response){
 		      if(err){
 		        console.log(err);
 		      }
