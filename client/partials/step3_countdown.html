@@ -1,12 +1,12 @@
-<div ng-controller='mainController'>
+<div>
 <h1>Tasks</h1>
-<p>{{chosen_event}}</p>
+<p>{{choices.chosen_event}}</p>
   <form ng-submit="startCountdown(configured_task)">
-    <p>Alert {{chosen_contact.contact_first_name}} in <input type="text" name="minutes" ng-model="minutes"> minutes.</p>
+    <p>Alert {{choices.chosen_contact.contact_first_name}} in <input type="text" name="minutes" ng-model="minutes"> minutes.</p>
     <input type="submit" value="Start">
   </form>
   <p id="countdownContainer" style="visibility: hidden;">
-  <span id="minCounter"></span>:<span id="secCounter"></span> until alerting {{chosen_contact.contact_first_name}}.
+  <span id="minCounter"></span>:<span id="secCounter"></span> until alerting {{choices.chosen_contact.contact_first_name}}.
   </p>
   <button ng-click="endCurrentTask()">Done</button>
   <p>Press 'Done' when you have finished your task safely.</p>

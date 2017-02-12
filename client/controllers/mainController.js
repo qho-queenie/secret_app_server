@@ -1,10 +1,13 @@
 var loop;
 app.controller("mainController", ["$scope", "$routeParams", "$http", function($scope, $routeParams, $http){
-  $scope.users = [];
-  $scope.contacts = [];
-  $scope.events = [];
-  $scope.user = [];
-  $scope.choices = {};
+  if (!$scope.initalized) {
+    $scope.initalized = true
+    $scope.users = [];
+    $scope.contacts = [];
+    $scope.events = [];
+    $scope.user = [];
+    $scope.choices = {};
+  }
 
   if(window.location.hash != "#/"){
     document.getElementById("navbar").style.visibility = "visible";
@@ -65,8 +68,8 @@ $scope.load = function(){
 
   $scope.startCountdown = function(){
     var data = {
-      contact: $scope.chosen_contact,
-      event: $scope.chosen_event,
+      contact: $scope.choices.chosen_contact,
+      event: $scope.choices.chosen_event,
       minutes: $scope.minutes,
       user: $scope.user
     };
@@ -93,7 +96,7 @@ $scope.load = function(){
           secCounter.innerText = "00";
           minCounter.innerText = "00";
           clearInterval(loop);
-        }else{   
+        }else{
           secCounter.innerText = ((second < 10)?"0":"") + second;
           minCounter.innerText = ((minute < 10)?"0":"") + minute;
         }
@@ -120,7 +123,8 @@ $scope.load = function(){
       $scope.lastChoiceButton.style["background-color"] = "";
     $scope.lastChoiceButton = document.getElementById("chooseEventButton" + index);
     $scope.lastChoiceButton.style["background-color"] = "#ffff00";
-    $scope.chosen_event = $scope.events[index];
+    $scope.choices.chosen_event = $scope.events[index];
+    console.log('chosen_event',$scope.choices.chosen_event);
   };
 
   $scope.chooseContact = function(index){
@@ -128,8 +132,8 @@ $scope.load = function(){
       $scope.lastChoiceButton.style["background-color"] = "";
     $scope.lastChoiceButton = document.getElementById("chooseContactButton" + index);
     $scope.lastChoiceButton.style["background-color"] = "#ffff00";
-    $scope.chosen_contact = $scope.contacts[index];
-    console.log("chosen_contact:", $scope.chosen_contact);
+    $scope.choices.chosen_contact = $scope.contacts[index];
+    console.log("chosen_contact:", $scope.choices.chosen_contact);
     console.log($scope.contacts[index]);
   };
 
