@@ -1,13 +1,14 @@
 var loop;
+var globals = {
+  choices: {}
+};
 app.controller("mainController", ["$scope", "$routeParams", "$http", function($scope, $routeParams, $http){
-  if (!$scope.initalized) {
-    $scope.initalized = true
-    $scope.users = [];
-    $scope.contacts = [];
-    $scope.events = [];
-    $scope.user = [];
-    $scope.choices = {};
-  }
+
+  $scope.users = [];
+  $scope.contacts = [];
+  $scope.events = [];
+  $scope.user = [];
+  $scope.choices = globals.choices;
 
   if(window.location.hash != "#/"){
     document.getElementById("navbar").style.visibility = "visible";
@@ -124,6 +125,7 @@ $scope.load = function(){
     $scope.lastChoiceButton = document.getElementById("chooseEventButton" + index);
     $scope.lastChoiceButton.style["background-color"] = "#ffff00";
     $scope.choices.chosen_event = $scope.events[index];
+    globals.choices.chosen_event = $scope.events[index];
     console.log('chosen_event',$scope.choices.chosen_event);
   };
 
@@ -133,6 +135,7 @@ $scope.load = function(){
     $scope.lastChoiceButton = document.getElementById("chooseContactButton" + index);
     $scope.lastChoiceButton.style["background-color"] = "#ffff00";
     $scope.choices.chosen_contact = $scope.contacts[index];
+    globals.choices.chosen_contact = $scope.contacts[index];
     console.log("chosen_contact:", $scope.choices.chosen_contact);
     console.log($scope.contacts[index]);
   };

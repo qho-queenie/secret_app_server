@@ -1,6 +1,6 @@
 <div>
 <h1>Tasks</h1>
-<p>{{choices.chosen_event}}</p>
+<p>{{choices.chosen_event.event_name}}</p>
   <form ng-submit="startCountdown(configured_task)">
     <p>Alert {{choices.chosen_contact.contact_first_name}} in <input type="text" name="minutes" ng-model="minutes"> minutes.</p>
     <input type="submit" value="Start">

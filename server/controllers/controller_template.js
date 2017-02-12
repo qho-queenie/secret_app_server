@@ -38,10 +38,10 @@ exps = {
 
 	start_task_sms: function(data){
     	//Create and send a message
-    	var phone = data.contact_phone_number;
+    	var phone = data.contact.contact_phone;
     	if(!phone)
     		phone = hardcodedPhoneNumber;
-		flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${data.user[0].first_name} is starting task ${data.event_name}. You will be alerted again if they don't check in after ${data.duration} minutes.`}, function(err, response){
+		flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${data.user[0].first_name} is starting task ${data.event.event_name}. You will be alerted again if they don't check in after ${data.minutes} minutes.`}, function(err, response){
 		      if(err){
 		        console.log(err);
 		      }
@@ -51,7 +51,7 @@ exps = {
 
 	add_contact_sms: function(data){
     	//Create and send a message    	
-    	var phone = data.contact_phone_number;
+    	var phone = data.contact.contact_phone;
     	if(!phone)
     		phone = hardcodedPhoneNumber;
 		flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${data.user[0].first_name} wants you to be an emergency contact for uSafe. Reply "YES" or "NO"`}, function(err, response){
@@ -64,7 +64,7 @@ exps = {
 
 	alert_contact_sms: function(data){
     	//Create and send a message
-    	var phone = data.contact_phone_number;
+    	var phone = data.contact.contact_phone;
     	if(!phone)
     		phone = hardcodedPhoneNumber;
 		flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${data.user[0].first_name} has not checked in after the specified time. Please contact your friend and make sure they are ok.`}, function(err, response){
