@@ -32,7 +32,8 @@ routeFunctions = {
     '/start_task' : controllers.controller_template.start_task,
     '/start_task_sms' : controllers.controller_template.start_task_sms,
     '/add_contact_sms' : controllers.controller_template.add_contact_sms,
-    '/alert_contact_sms' : controllers.controller_template.alert_contact_sms
+    '/alert_contact_sms' : controllers.controller_template.alert_contact_sms,
+    '/sms_reply' : controllers.controller_template.sms_reply
   }
 };
 

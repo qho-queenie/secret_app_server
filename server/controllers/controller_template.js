@@ -62,6 +62,9 @@ exps = {
 		      console.log(response);
     	});
 	},
+	sms_reply: function(req, res){
+			console.log(req.body, "reply from controller")
+	},
 
 	alert_contact_sms: function(data){
     	//Create and send a message
