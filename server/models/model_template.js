@@ -53,6 +53,7 @@ module.exports = {
 	},
 	delete_contact: function(req, res, callback){
 		console.log("model function for delete_contact");
+		console.log(req.query.id, "id to be deleted")
 		var doq = `DELETE FROM contacts WHERE id = ${req.query.id}`;
 		doQuery(doq, callback);
 		console.log(doq);
@@ -69,7 +70,7 @@ module.exports = {
 		console.log(req.body);
 		console.log(req.session.data.id);
 		console.log(req.session.data);
-		var doq = `INSERT INTO contacts (contact_first_name, contact_last_name, contact_email, contact_phone, contact_relationship, contact_status, created_at, updated_at, users_id) VALUES ("${req.body.contact_first_name}", "${req.body.contact_last_name}", "${req.body.contact_email}", "${req.body.contact_phone}", "${req.body.contact_relationship}", 1, NOW(), NOW(), ${req.session.data.id})`;
+		var doq = `INSERT INTO contacts (contact_first_name, contact_last_name, contact_email, contact_phone, contact_relationship, contact_status, created_at, updated_at, users_id) VALUES ("${req.body.contact_first_name}", "${req.body.contact_last_name}", "${req.body.contact_email}", "${req.body.contact_phone}", "${req.body.contact_relationship}", 0, NOW(), NOW(), ${req.session.data.id})`;
 		doQuery(doq, callback);
 		console.log(doq);
 	}

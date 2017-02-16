@@ -50,11 +50,12 @@ exps = {
 	},
 
 	add_contact_sms: function(data){
-    	//Create and send a message    	
-    	var phone = data.contact.contact_phone;
+    	//Create and send a message
+    	var phone = data.contact_phone;
+			console.log(data.contact_phone, "contact number from data.contact_phone phone var")
     	if(!phone)
     		phone = hardcodedPhoneNumber;
-		flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${data.user[0].first_name} wants you to be an emergency contact for uSafe. Reply "YES" or "NO"`}, function(err, response){
+		flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${data.user_first_name} wants you to be an emergency contact for uSafe?. Reply "YES" if you wish to be their emergency contact. Reply "NO" if you do not wish to do so`}, function(err, response){
 		      if(err){
 		        console.log(err);
 		      }
@@ -122,6 +123,7 @@ exps = {
 	},
 	add_new_contact: function(req, res){
 		models.model_template.add_new_contact(req, res, function(err, rows, fields){
+			add_contact_sms(res.body);
 		console.log(rows, "add_new_contact from controllers")
 		res.json(rows);
 		})
