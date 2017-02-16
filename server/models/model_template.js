@@ -33,7 +33,7 @@ module.exports = {
 
 	display_events: function(req, res, callback){
 		console.log("model function for display_events");
-		doQuery(`SELECT * FROM events where user_id = ${req.session.data.id}`, callback);
+		doQuery(`SELECT * FROM users JOIN events ON users.id = events.user_id WHERE events.user_id = ${req.session.data.id}`, callback);
 	},
 
 	display_user: function(req, res, callback){
