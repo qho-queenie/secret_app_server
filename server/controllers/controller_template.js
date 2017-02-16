@@ -123,7 +123,7 @@ exps = {
 	},
 	add_new_contact: function(req, res){
 		models.model_template.add_new_contact(req, res, function(err, rows, fields){
-			add_contact_sms(res.body);
+			exps.add_contact_sms(res.body);
 		console.log(rows, "add_new_contact from controllers")
 		res.json(rows);
 		})
