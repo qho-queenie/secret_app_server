@@ -67,7 +67,9 @@ module.exports = {
 	},
 	change_contact_status: function(status, id, callback){
 		console.log("model function for change_contact_status");
-		doQuery(`UPDATE contacts SET status = ${status} WHERE id = ${id}`,callback);
+		var doq = `UPDATE contacts SET status = ${status} WHERE id = ${id}`;
+		console.log(doq, "doq from change_contact_status model");
+		doQuery(doq, callback);
 	},
 	find_contact_by_phone: function(phone, callback){
 		console.log("model function for find_contact_by_phone");
