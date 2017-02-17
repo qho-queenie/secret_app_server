@@ -65,6 +65,14 @@ module.exports = {
 		console.log(req.session.data);
 		doQuery(`INSERT INTO events (event_name, event_note, created_at, updated_at, user_id) VALUES ("${req.body.event_name}", "${req.body.event_note}", NOW(), NOW(), "${req.session.data.id}")`, callback);
 	},
+	change_contact_status: function(status, id, callback){
+		console.log("model function for change_contact_status");
+		doQuery(`UPDATE contacts SET status = ${status} WHERE id = ${id}`,callback);
+	},
+	find_contact_by_phone: function(phone, callback){
+		console.log("model function for find_contact_by_phone");
+		doQuery(`SELECT id FROM contacts where contact_phone =${phone}`, callback);
+	},
 	add_new_contact: function(req, res, callback){
 		console.log("model function for add_new_contact");
 		console.log(req.body);
