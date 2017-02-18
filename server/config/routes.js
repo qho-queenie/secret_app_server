@@ -45,7 +45,16 @@ function doForEveryRoute(req, res, callback)
   console.log(`Session ID: ${req.sessionID}`);
   console.log("-----------------------------");
   console.log(callback);
-  callback(req, res);
+  try{
+    if(callback){
+      callback(req, res);
+    }
+    else{
+      console.log("Route doesn't exist.");
+    }
+  }catch(e){
+    console.log(e);
+  }
 }
 
 module.exports = function(app){
