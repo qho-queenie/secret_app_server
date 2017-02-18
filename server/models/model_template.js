@@ -89,7 +89,7 @@ module.exports = {
 		var last_name = (req.body.last_name)?`last_name="${req.body.last_name}", `:"";
 		var email = (req.body.email)?`email="${req.body.email}", `:"";
 		var phone = (req.body.phone)?`phone="${req.body.phone}", `:"";
-		var password = (req.body.password)?`password="{req.body.password}", `:"";
+		var password = (req.body.password)?`password="${req.body.password}", `:"";
 		var doq = `UPDATE users SET ${first_name}${last_name}${email}${phone}${password}updated_at=NOW() WHERE id=${req.session.data.id}`;
 		console.log(doq);
 		doQuery(doq, callback);
