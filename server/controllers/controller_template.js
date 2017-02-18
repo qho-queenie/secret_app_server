@@ -3,6 +3,7 @@ var htmlPath = path.join(__dirname, "./../../client/");
 var requireFolder = require("./../config/req_folder.js");
 var models = requireFolder("models");
 var crypto = require("crypto");
+var nodemailer = require("../config/emailer.js");
 var flowroute = require(path.join(__dirname, './../flowroute-messaging-nodejs-master/flowroutemessaginglib'));
 flowroute.configuration.username = "95004144";
 flowroute.configuration.password = "ca2d914d75da2b78953b98c13473c718";
@@ -66,9 +67,11 @@ exps = {
 			console.log(req.body, "reply from controller")
 			models.model_template.find_contact_by_phone(req.body.from, function(err, rows){
 				if (req.body.body.toUpperCase() === "YES"){
+					console.log("hitting yes");
 					models.model_template.change_contact_status(1, rows[0].id, function(err, rows){console.log("YES replied at controller")});
 				}
 				else if (req.body.body.toUpperCase() === "NO"){
+					console.log("hitting no");
 					models.model_template.change_contact_status(2, rows[0].id, function(err, rows){console.log("NO replied at controller")});
 				}
 				else {
@@ -178,6 +181,11 @@ exps = {
 	edit_profile: function(req, res){
 		models.model_template.edit_profile(req, res, function(err, rows, fields){
 			res.json(rows);
+		})
+	},
+	retrieve_password: function(req, res){
+		console.log(req.body, "retrieve_password in the controller");
+		models.model_template.retrieve_password(req, res, function( err, rows, fields){
 		})
 	}
 }

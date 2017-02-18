@@ -93,5 +93,8 @@ module.exports = {
 		var doq = `UPDATE users SET ${first_name}${last_name}${email}${phone}${password}updated_at=NOW() WHERE id=${req.session.data.id}`;
 		console.log(doq);
 		doQuery(doq, callback);
+	},
+	retrieve_password: function(req, res, callback){
+		console.log("retrieve_password in the model");
 	}
 }

@@ -34,7 +34,8 @@ routeFunctions = {
     '/add_contact_sms' : controllers.controller_template.add_contact_sms,
     '/alert_contact_sms' : controllers.controller_template.alert_contact_sms,
     '/sms_reply' : controllers.controller_template.sms_reply,
-    '/edit_profile' : controllers.controller_template.edit_profile
+    '/edit_profile' : controllers.controller_template.edit_profile,
+    '/retrieve_password' : controllers.controller_template.retrieve_password
   }
 };
 
