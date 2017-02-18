@@ -176,7 +176,7 @@ exps = {
 		})
 	},
 	edit_profile: function(req, res){
-		models.model_template.edit_profile(req, res, function(err, row, fields){
+		models.model_template.edit_profile(req, res, function(err, rows, fields){
 			res.json(rows);
 		})
 	}
