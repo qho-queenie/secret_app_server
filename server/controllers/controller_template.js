@@ -125,8 +125,11 @@ exps = {
 			if (rows.length > 0){
 				req.session.data.id = rows[0].id;
 				console.log(req.session, "session");
+				res.json({success: true});
 			}
-			res.json({validation_errors: []});
+			else{
+				res.json({success: false, validation_errors: ["Invalid Login"]});
+			}
 		});
 	},
 
