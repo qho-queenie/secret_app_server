@@ -174,6 +174,11 @@ exps = {
 		models.model_template.delete_contact(req, res, function(err, rows, fields){
 			res.json(rows);
 		})
+	},
+	edit_profile: function(req, res){
+		models.model_template.edit_profile(req, res, function(err, row, fields){
+			res.json(rows);
+		})
 	}
 }
 module.exports = exps;
