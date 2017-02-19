@@ -95,6 +95,9 @@ module.exports = {
 		doQuery(doq, callback);
 	},
 	retrieve_password: function(req, res, callback){
-		console.log("retrieve_password in the model");
+		console.log(req.body, "retrieve_password in the model");
+		var doQ = `SELECT id FROM users WHERE email = "${req.body.email}"`
+		console.log(doQ);
+		doQuery(doQ, callback);
 	}
 }

@@ -65,7 +65,8 @@ exps = {
 	},
 	sms_reply: function(req, res){
 			console.log(req.body, "reply from controller")
-			models.model_template.find_contact_by_phone(req.body.from, function(err, rows){
+			models.model_template.
+			tact_by_phone(req.body.from, function(err, rows){
 				if (req.body.body.toUpperCase() === "YES"){
 					console.log("hitting yes");
 					models.model_template.change_contact_status(1, rows[0].id, function(err, rows){console.log("YES replied at controller")});
@@ -186,6 +187,16 @@ exps = {
 	retrieve_password: function(req, res){
 		console.log(req.body, "retrieve_password in the controller");
 		models.model_template.retrieve_password(req, res, function( err, rows, fields){
+		console.log(rows.length, "rows from retrieve_password controller");
+		if (rows.length === 0){
+			res.json({success: false, validation_errors: ["We can't find your record. Try again or register?"]});
+		}
+		else{
+			console.log("loop for found");
+			models.model_templates.valid_email(req, res, function(err, rows, fields){
+			res.json("we found your record");
+			})
+		}
 		})
 	}
 }
