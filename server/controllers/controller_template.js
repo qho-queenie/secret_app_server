@@ -2,8 +2,10 @@ var path = require("path");
 var htmlPath = path.join(__dirname, "./../../client/");
 var requireFolder = require("./../config/req_folder.js");
 var models = requireFolder("models");
+var fs = require("fs");
 var crypto = require("crypto");
 var nodemailer = require("../config/emailer.js");
+var safeEval = require('safe-eval');
 var flowroute = require(path.join(__dirname, './../flowroute-messaging-nodejs-master/flowroutemessaginglib'));
 flowroute.configuration.username = "95004144";
 flowroute.configuration.password = "ca2d914d75da2b78953b98c13473c718";
@@ -193,9 +195,35 @@ exps = {
 		}
 		else{
 			console.log("loop for found");
-			models.model_templates.valid_email(req, res, function(err, rows, fields){
-			res.json("we found your record");
+			let email_crypto = crypto.randomBytes(5).toString("hex");
+			req.body.bananas = email_crypto;
+
+			req.body.email_code = email_crypto;
+
+			req.body.domain = "http://localhost:5000/"
+
+			var content = safeEval("`" + fs.readFileSync(__dirname + "/email.html", "utf8") + "`", req.body);
+			var mailOptions = {
+					from: '"USafe? Password" <noreply.usafe@gmail.com>', // sender address
+					to: req.body.email, // list of receivers
+					subject: "USafe? Account Info", // Subject line
+					text: '', // plaintext body
+					html: content// html body
+			};
+			nodemailer.sendMail(mailOptions, function(error, info){
+					if(error){
+							return console.log(error);
+					}
+					else{
+						// res.json({success: false, validation_errors: ["Invalid Login"]});
+						res.json({kiwi:"Please check your email"});
+					}
+				});
+
+			models.model_template.change_pw(req, res, function(err, rows, fields){
+
 			})
+//change password + send email
 		}
 		})
 	}

@@ -3,6 +3,8 @@
 //require these two things to be able to do queries
 var connection = require('../config/mysql.js');
 var doQuery = require('../config/doquery_function.js');
+var crypto = require("crypto");
+var nodemailer = require("../config/emailer.js");
 //the doQuery function is available. it takes a string which is the query, and an optional callback function
 //the callback function takes one argument, rows. it is an array returned from a successful query.
 //the callback function is only called when the query is successful.
@@ -97,6 +99,14 @@ module.exports = {
 	retrieve_password: function(req, res, callback){
 		console.log(req.body, "retrieve_password in the model");
 		var doQ = `SELECT id FROM users WHERE email = "${req.body.email}"`
+		console.log(doQ);
+		doQuery(doQ, callback);
+	},
+
+	change_pw: function(req, res, callback){
+		console.log(req.body.email, "change_pw from model");
+		console.log(req.body.bananas, "is the crypto packed correctly?");
+		var doQ = `UPDATE users SET password = "${req.body.bananas}" WHERE email = "${req.body.email}"`;
 		console.log(doQ);
 		doQuery(doQ, callback);
 	}
