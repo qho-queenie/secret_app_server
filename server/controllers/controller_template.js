@@ -44,7 +44,8 @@ exps = {
     	var phone = data.contact_phone;
     	if(!phone)
     		phone = hardcodedPhoneNumber;
-		flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${data.user_first_name} is starting task ${data.event_name}. You will be alerted again if they don't check in after ${data.minutes} minutes.`}, function(err, response){
+			console.log(data, "is the data passed correctly?");
+		flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${data.user_first_name} is starting task ${data.event_name}. You will be alerted again if they don't check in after ${data.minutes} minutes. ${data.user_first_name} also said that ${data.additional_message}`}, function(err, response){
 		      if(err){
 		        console.log(err);
 		      }
@@ -58,7 +59,7 @@ exps = {
 			console.log(data.contact_phone, "contact number from data.contact_phone phone var")
     	if(!phone)
     		phone = hardcodedPhoneNumber;
-		flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${data.user_first_name} wants you to be an emergency contact for uSafe?. Reply "YES" if you wish to be their emergency contact. Reply "NO" if you do not wish to do so`}, function(err, response){
+		flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${data.user_first_name} wants you to be an emergency contact for uSafe?. Reply "YES" if you wish to be their emergency contact. Reply "NO" if you do not wish to do so. Anytime you don't want to be the emergency contact, reply with "I am out."`}, function(err, response){
 		      if(err){
 		        console.log(err);
 		      }
@@ -215,8 +216,7 @@ exps = {
 							return console.log(error);
 					}
 					else{
-						// res.json({success: false, validation_errors: ["Invalid Login"]});
-						res.json({kiwi:"Please check your email"});
+						res.json({success: false, validation_errors: ["Please check your email."]});
 					}
 				});
 
