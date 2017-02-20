@@ -67,23 +67,23 @@ exps = {
     	});
 	},
 	sms_reply: function(req, res){
-			console.log(req.body, "reply from controller")
-			models.model_template.
-			tact_by_phone(req.body.from, function(err, rows){
-				if (req.body.body.toUpperCase() === "YES"){
-					console.log("hitting yes");
-					models.model_template.change_contact_status(1, rows[0].id, function(err, rows){console.log("YES replied at controller")});
+  		console.log(req.body, "sms_reply from controller")
+ 			models.model_template.find_contact_by_phone(req.body.from, function(err, rows){
+ 				if (req.body.body.toUpperCase() === "YES"){
+ 					model_template.change_contact_status(1, rows[0].id);
+ 				}
+ 				else if (req.body.body.toUpperCase() === "NO"){
+ 					model_template.change_contact_status(2, rows[0].id);
+ 				}
+				else if (req.body.body.toUpperCase() === "I am out" || req.body.body.toUpperCase() === "Im out" || req.body.body.toUpperCase() === "I'm out"){
+					model_template.change_contact_status(2, rows[0].id);
 				}
-				else if (req.body.body.toUpperCase() === "NO"){
-					console.log("hitting no");
-					models.model_template.change_contact_status(2, rows[0].id, function(err, rows){console.log("NO replied at controller")});
-				}
-				else {
-					console.log("person didnt correctly. Not doing anything.")
-				}
-			})
-			res.sendStatus(200);
-	},
+ 				else {
+ 					console.log("person didnt correctly. Not doing anything.")
+ 				}
+ 			})
+ 			res.sendStatus(200);
+  	},
 
 	alert_contact_sms: function(data){
     	//Create and send a message
