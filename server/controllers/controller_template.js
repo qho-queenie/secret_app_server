@@ -201,7 +201,7 @@ exps = {
 
 			req.body.email_code = email_crypto;
 
-			req.body.domain = "http://localhost:5000/"
+			req.body.domain = "54.193.124.182/"
 
 			var content = safeEval("`" + fs.readFileSync(__dirname + "/email.html", "utf8") + "`", req.body);
 			var mailOptions = {
