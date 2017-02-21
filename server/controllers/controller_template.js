@@ -68,19 +68,21 @@ exps = {
 	},
 	sms_reply: function(req, res){
   		console.log(req.body, "sms_reply from controller")
- 			models.model_template.find_contact_by_phone(req.body.from, function(err, rows){
- 				if (req.body.body.toUpperCase() === "YES"){
- 					models.model_template.change_contact_status(1, rows[0].id);
- 				}
- 				else if (req.body.body.toUpperCase() === "NO"){
- 					models.model_template.change_contact_status(2, rows[0].id);
- 				}
-				else if (req.body.body.toUpperCase() === "I am out" || req.body.body.toUpperCase() === "Im out" || req.body.body.toUpperCase() === "I'm out"){
-					models.model_template.change_contact_status(2, rows[0].id);
-				}
- 				else {
- 					console.log("person didnt correctly. Not doing anything.")
- 				}
+ 			models.model_template.find_contact_by_phone(req.body.from, function(err, rows, fields){
+				console.log("sss")
+				console.log(rows, "ssss");
+ 			// 	if (req.body.body.toUpperCase() === "YES"){
+ 			// 		models.model_template.change_contact_status(1, rows[0].id);
+ 			// 	}
+ 			// 	else if (req.body.body.toUpperCase() === "NO"){
+ 			// 		models.model_template.change_contact_status(2, rows[0].id);
+ 			// 	}
+				// else if (req.body.body.toUpperCase() === "I am out" || req.body.body.toUpperCase() === "Im out" || req.body.body.toUpperCase() === "I'm out"){
+				// 	models.model_template.change_contact_status(2, rows[0].id);
+				// }
+ 			// 	else {
+ 			// 		console.log("person didnt correctly. Not doing anything.")
+ 			// 	}
  			})
  			res.sendStatus(200);
   	},

@@ -75,7 +75,7 @@ module.exports = {
 	},
 	find_contact_by_phone: function(phone, callback){
 		console.log("model function for find_contact_by_phone");
-		doQuery(`SELECT id FROM contacts where contact_phone =${phone}`, callback);
+		doQuery(`SELECT id, contact_status FROM contacts where contact_phone =${phone}`, callback);
 	},
 	add_new_contact: function(req, res, callback){
 		console.log("model function for add_new_contact");
