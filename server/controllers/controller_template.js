@@ -71,6 +71,7 @@ exps = {
  			models.model_template.find_contact_by_phone(req.body.from, function(err, rows, fields){
 				console.log("sss")
 				console.log(rows, "ssss");
+				console.log(req.body);
 				if (rows[0].contact_status == 0  ){
 	 				if (req.body.body.toUpperCase() === "YES" ){
 	 					models.model_template.change_contact_status(1, rows[0].id, function(){});
