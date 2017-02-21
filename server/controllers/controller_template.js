@@ -80,7 +80,7 @@ exps = {
 	 					models.model_template.change_contact_status(2, rows[0].id, function(){});
 	 				}
 				}
-				else if (rows[0].contact_status == 1 && (req.body.body.toUpperCase() == "I am out" || req.body.body.toUpperCase() == "Im out" || req.body.body.toUpperCase() == "I\'m out")){
+					else if (rows[0].contact_status == 1 && (req.body.body.toUpperCase() == "I AM OUT" || req.body.body.toUpperCase() == "IM OUT" || req.body.body.toUpperCase() == "I\'M OUT")){
 					models.model_template.change_contact_status(2, rows[0].id, function(){});
 				}
  				else {
