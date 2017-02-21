@@ -73,14 +73,14 @@ exps = {
 				console.log(rows, "ssss");
 				if (rows[0].contact_status == 0  ){
 	 				if (req.body.body.toUpperCase() === "YES" ){
-	 					models.model_template.change_contact_status(1, rows[0].id);
+	 					models.model_template.change_contact_status(1, rows[0].id, function(){});
 	 				}
 	 				else if (req.body.body.toUpperCase() === "NO"){
-	 					models.model_template.change_contact_status(2, rows[0].id);
+	 					models.model_template.change_contact_status(2, rows[0].id, function(){});
 	 				}
 				}
 				else if (rows[0].contact_status == 1 && (req.body.body.toUpperCase() === "I am out" || req.body.body.toUpperCase() === "Im out" || req.body.body.toUpperCase() === "I'm out")){
-					models.model_template.change_contact_status(2, rows[0].id);
+					models.model_template.change_contact_status(2, rows[0].id, function(){});
 				}
  				else {
  					console.log("person didnt correctly. Not doing anything.")
