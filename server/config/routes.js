@@ -21,7 +21,8 @@ routeFunctions = {
     '/delete_event' : controllers.controller_template.delete_event,
     '/display_contacts' : controllers.controller_template.display_contacts,
     '/delete_contact' : controllers.controller_template.delete_contact,
-    '/end_current_task' : controllers.controller_template.end_current_task
+    '/end_current_task' : controllers.controller_template.end_current_task,
+    '/remove_declined_contacts' : controllers.controller_template.remove_declined_contacts
   },
   post:
   {

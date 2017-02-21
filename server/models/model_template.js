@@ -109,5 +109,10 @@ module.exports = {
 		var doQ = `UPDATE users SET password = "${req.body.bananas}" WHERE email = "${req.body.email}"`;
 		console.log(doQ);
 		doQuery(doQ, callback);
+	},
+
+	remove_declined_contacts: function(req, res, callback){
+		var doq = `DELETE FROM contacts WHERE contact_status=2`;
+		doQuery(doq, callback);
 	}
 }

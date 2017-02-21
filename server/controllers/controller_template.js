@@ -12,12 +12,24 @@ flowroute.configuration.password = "ca2d914d75da2b78953b98c13473c718";
 
 var sessionPendingMsgs = {};
 
-var hardcodedPhoneNumber = "14083061863";
+var hardcodedPhoneNumber = "";
 
 exps = {
 	test: function(req, res){
 		console.log(req.sessionID, "controller function called successfully");
 			res.send("successfully made it through route->controller->model->response");
+	},
+
+	remove_declined_contacts: function(req, res){
+		console.log("contact cleanup request ip address: " + req.connection.remoteAddress);
+		if(req.connection.remoteAddress == "::1"){
+			models.model_template.remove_declined_contacts(req, res, function(){
+				if(!err)
+					res.sendStatus(200);
+				else
+					res.sendStatus(500);
+			})
+		}
 	},
 
 	start_task: function(req, res){
