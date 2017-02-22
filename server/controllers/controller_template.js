@@ -7,8 +7,8 @@ var crypto = require("crypto");
 var nodemailer = require("../config/emailer.js");
 var safeEval = require('safe-eval');
 var flowroute = require(path.join(__dirname, './../flowroute-messaging-nodejs-master/flowroutemessaginglib'));
-var flowroute.configuration.username = "95004144";
-var flowroute.configuration.password = "ca2d914d75da2b78953b98c13473c718";
+	flowroute.configuration.username = "95004144";
+	flowroute.configuration.password = "ca2d914d75da2b78953b98c13473c718";
 
 var sessionPendingMsgs = {};
 
