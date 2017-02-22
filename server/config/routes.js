@@ -63,7 +63,7 @@ module.exports = function(app){
 
   app.get('*.*', function(req, res){
     console.log(`file: ${req.path}`);
-    res.sendfile(req.path);
+    res.sendFile(req.path);
   });
 
   app.get('*', function(req, res){

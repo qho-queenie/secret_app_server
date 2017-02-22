@@ -32,6 +32,7 @@ exps = {
 		}
 		else{
 			console.log("Tried to run cleanup contacts but the wrong IP requested it");
+			res.sendStatus(500);
 		}
 	},
 
