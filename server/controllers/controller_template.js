@@ -7,8 +7,8 @@ var crypto = require("crypto");
 var nodemailer = require("../config/emailer.js");
 var safeEval = require('safe-eval');
 var flowroute = require(path.join(__dirname, './../flowroute-messaging-nodejs-master/flowroutemessaginglib'));
-flowroute.configuration.username = "95004144";
-flowroute.configuration.password = "ca2d914d75da2b78953b98c13473c718";
+var flowroute.configuration.username = "95004144";
+var flowroute.configuration.password = "ca2d914d75da2b78953b98c13473c718";
 
 var sessionPendingMsgs = {};
 
@@ -29,6 +29,9 @@ exps = {
 				else
 					res.sendStatus(500);
 			})
+		}
+		else{
+			console.log("Tried to run cleanup contacts but the wrong IP requested it");
 		}
 	},
 
@@ -214,11 +217,9 @@ exps = {
 		else{
 			console.log("loop for found");
 			let email_crypto = crypto.randomBytes(5).toString("hex");
-			req.body.bananas = email_crypto;
 
 			req.body.email_code = email_crypto;
-
-			req.body.domain = "54.193.124.182/"
+			req.body.domain = "54.193.124.182/";
 
 			var content = safeEval("`" + fs.readFileSync(__dirname + "/email.html", "utf8") + "`", req.body);
 			var mailOptions = {
