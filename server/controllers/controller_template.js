@@ -175,7 +175,7 @@ exps = {
 			if(req.body[field].length < 1){
 				let err = `${field} should not be empty.`;
 				console.log(`validation error: ${err}`);
-				validation_errors.push[err];
+				validation_errors.push(err);
 				valid = false;
 			}
 		}
