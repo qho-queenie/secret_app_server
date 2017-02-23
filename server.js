@@ -25,7 +25,15 @@ app.use(session({
 
 require('./server/config/db.js');
 require('./server/config/routes.js')(app);
+var hourlyLoop = require("./server/config/hourlyLoop.js");
 
+//run every hour
+setInterval(hourlyLoop, 3600000);
+
+	var day = new Date().getDay();
+	var hour = new Date().getUTCHours();
+	console.log(day);
+	console.log(hour);
 
 var server = app.listen(port, function() {
 	console.log("listening on port", port);

@@ -168,11 +168,30 @@ exps = {
 		})
 	},
 	add_new_contact: function(req, res){
-		models.model_template.add_new_contact(req, res, function(err, rows, fields){
-			exps.add_contact_sms(req.body);
-		console.log(rows, "add_new_contact from controllers")
-		res.json(rows);
-		})
+		var valid = true;
+		var validation_errors = [];
+
+		for(let field of ["contact_first_name", "contact_last_name", "contact_relationship", "contact_phone", "contact_email", "user_first_name"]){
+			if(req.body[field].length < 1){
+				validation_errors.push[`${field} should not be empty.`];
+				valid = false
+			}
+		}
+
+		console.log(req.body);
+
+		if(valid){
+			models.model_template.add_new_contact(req, res, function(err, rows, fields){
+				exps.add_contact_sms(req.body);
+			console.log(rows, "add_new_contact from controllers")
+			res.json(rows);
+			})
+		}
+		else
+		{
+			console.log("validation failed");
+			res.json({validation_errors: validation_errors});
+		}
 	},
 	display_events: function(req, res){
 		models.model_template.display_events(req, res, function(err, rows, fields){
