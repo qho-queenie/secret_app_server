@@ -1,0 +1,3 @@
+#!/bin/bash
+curl http://localhost:5000/remove_declined_contacts
+echo cleanup declined contacts script running
