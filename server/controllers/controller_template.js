@@ -173,8 +173,10 @@ exps = {
 
 		for(let field of ["contact_first_name", "contact_last_name", "contact_relationship", "contact_phone", "contact_email", "user_first_name"]){
 			if(req.body[field].length < 1){
-				validation_errors.push[`${field} should not be empty.`];
-				valid = false
+				let err = `${field} should not be empty.`;
+				console.log(`validation error: ${err}`);
+				validation_errors.push[err];
+				valid = false;
 			}
 		}
 
@@ -190,6 +192,7 @@ exps = {
 		else
 		{
 			console.log("validation failed");
+			console.log(validation_errors);
 			res.json({validation_errors: validation_errors});
 		}
 	},
