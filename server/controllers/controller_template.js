@@ -162,10 +162,16 @@ exps = {
 	},
 
 	add_new_event: function(req, res){
-		models.model_template.add_new_event(req, res, function(err, rows, fields){
-		console.log(rows, "add_new_event from controllers")
-		res.json(rows);
-		})
+
+		if(req.body.event_name.length > 0){
+			models.model_template.add_new_event(req, res, function(err, rows, fields){
+			console.log(rows, "add_new_event from controllers")
+			res.json(rows);
+			})
+		}
+		else{
+			res.json({validation_error: "Task name cannot be empty."});	
+		}
 	},
 	add_new_contact: function(req, res){
 		var valid = true;
