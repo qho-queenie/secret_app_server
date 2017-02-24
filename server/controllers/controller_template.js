@@ -97,7 +97,7 @@ exps = {
 						console.log("yes and crypto passed");
 	 					models.model_template.change_contact_status(1, rows[0].id, function(){});
 	 				}
-	 				else if (req.body.body.toUpperCase().includes("NO"){
+	 				else if (req.body.body.toUpperCase().includes("NO")){
 						console.log("yes and crypto did not passed");
 	 					models.model_template.change_contact_status(2, rows[0].id, function(){});
 	 				}
