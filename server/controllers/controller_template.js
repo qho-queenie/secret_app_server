@@ -144,12 +144,41 @@ exps = {
 		// });
 	},
 	registration: function(req, res){
-		models.model_template.registration(req, res, function(err, rows, fields){
-			// console.log(req.body, "res.data from registration");
-			console.log(rows);
-			// res.json({id: rows.insertId});
-			res.json(rows.insertId);
-		});
+
+		var valid = true;
+		var validation_errors = [];
+
+		for(let field of ["first_name", "last_name", "email", "password", "confirm_password", "phone"]){
+			if(req.body[field].length < 1){
+				validationError(`${field} should not be empty.`);
+			}
+		}
+
+		if(req.body.password !== req.body.confirm_password)
+		{
+			validationError("password and confirm password must match.");
+		}
+
+		if(req.body.password.length < 8)
+		{
+			validationError("password and confirm password must match.");
+		}
+
+		if(valid)
+		{
+			models.model_template.registration(req, res, function(err, rows, fields){
+				// console.log(req.body, "res.data from registration");
+				console.log(rows);
+				// res.json({id: rows.insertId});
+				res.json(rows.insertId);
+			});
+		}
+
+		function validationError(errMsg){
+			console.log(`validation error: ${errMsg}`);
+			valid = false;
+			validation_errors.push(errMsg);
+		}
 	},
 
 	login: function(req, res){
@@ -179,30 +208,31 @@ exps = {
 			res.json({validation_error: "Task name cannot be empty."});
 		}
 	},
+
 	add_new_contact: function(req, res){
-		var valid = true;
+        var valid = true;
+		var validation_errors = [];
+
+		for(let field of ["contact_first_name", "contact_last_name", "contact_email", "contact_relationship", "contact_phone"]){
 			if(req.body[field].length < 1){
-				res.json({success: false, validation_errors: ["Fields cannot be empty when adding new contact"]});
+				validation_errors.push(`${field} cannot be empty.`)
 				valid = false;
 			}
-			else{
-				res.json({success: true});
-			}
-
-
-		if(valid){
-			models.model_template.add_new_contact(req, res, function(err, rows, fields){
-				exps.add_contact_sms(req.body);
-			console.log(rows, "add_new_contact from controllers")
-			res.json(rows);
-			})
 		}
+        console.log(req.body);
+        if(valid){
+            models.model_template.add_new_contact(req, res, function(err, rows, fields){
+            	exps.add_contact_sms(req.body);
+            	console.log(rows, "add_new_contact from controllers")
+            	res.json({success: true, data: rows});
+            });
+        }
 		else
-		{
-			console.log("validation failed");
-			res.json({validation_errors: validation_errors});
-		}
-	},
+        {
+            console.log("validation failed");
+            res.json({success: false, validation_errors: validation_errors});
+        }
+    },
 
 
 	display_contacts: function(req, res){
