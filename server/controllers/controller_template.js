@@ -73,7 +73,7 @@ exps = {
     	//Create and send a message
     	var phone = data.contact_phone;
 			var sms_crypto = crypto.randomBytes(3).toString("hex").toLowerCase();
-			console.log(sms_crypto, "sms_crypto";)
+			console.log(sms_crypto, "sms_crypto");
 			console.log(data.contact_phone, "contact number from data.contact_phone phone var")
     	if(!phone)
     		phone = hardcodedPhoneNumber;
