@@ -97,13 +97,12 @@ exps = {
 						console.log("yes and crypto passed");
 	 					models.model_template.change_contact_status(1, rows[0].id, function(){});
 	 				}
-	 				else if (req.body.body.toUpperCase().includes("NO")){
+	 				else if (req.body.body.toUpperCase().includes("NO"){
 						console.log("yes and crypto did not passed");
 	 					models.model_template.change_contact_status(2, rows[0].id, function(){});
 	 				}
 				}
 					else if (rows[0].contact_status == 1 && (req.body.body.toUpperCase().includes("I AM OUT") || req.body.body.toUpperCase().includes("IM OUT") || req.body.body.toUpperCase().includes("I\'M OUT"))){
-						console.log("im out passed");
 					models.model_template.change_contact_status(2, rows[0].id, function(){});
 				}
  				else {
@@ -182,17 +181,14 @@ exps = {
 	},
 	add_new_contact: function(req, res){
 		var valid = true;
-		var validation_errors = [];
-
-		for(let field of ["contact_first_name", "contact_last_name", "contact_relationship", "contact_phone", "contact_email", "user_first_name"]){
 			if(req.body[field].length < 1){
-				let err = `${field} should not be empty.`;
-				console.log(`validation error: ${err}`);
-				validation_errors.push(err);
+				res.json({success: false, validation_errors: ["Fields cannot be empty when adding new contact"]});
 				valid = false;
 			}
+			else{
+				res.json({success: true});
+			}
 		}
-
 		console.log(req.body);
 
 		if(valid){
@@ -205,16 +201,11 @@ exps = {
 		else
 		{
 			console.log("validation failed");
-			console.log(validation_errors);
 			res.json({validation_errors: validation_errors});
 		}
 	},
-	display_events: function(req, res){
-		models.model_template.display_events(req, res, function(err, rows, fields){
-			console.log(rows)
-			res.json({data:rows});
-		});
-	},
+
+
 	display_contacts: function(req, res){
 		models.model_template.display_contacts(req, res, function(err, rows, fields){
 			console.log(rows, "rows from display_contacts in controller")
