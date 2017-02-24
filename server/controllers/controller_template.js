@@ -188,8 +188,7 @@ exps = {
 			else{
 				res.json({success: true});
 			}
-		}
-		console.log(req.body);
+
 
 		if(valid){
 			models.model_template.add_new_contact(req, res, function(err, rows, fields){
