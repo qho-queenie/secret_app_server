@@ -97,12 +97,12 @@ exps = {
 						console.log("yes and crypto passed");
 	 					models.model_template.change_contact_status(1, rows[0].id, function(){});
 	 				}
-	 				else if (req.body.body.toUpperCase().includes("NO"){
+	 				else if (req.body.body.toUpperCase().includes("NO")){
 						console.log("yes and crypto did not passed");
 	 					models.model_template.change_contact_status(2, rows[0].id, function(){});
 	 				}
 				}
-					else if (rows[0].contact_status == 1 && (req.body.body.toUpperCase().includes("I AM OUT") || req.body.body.toUpperCase().includes("IM OUT") || req.body.body.toUpperCase().includes("I\'M OUT")){
+					else if (rows[0].contact_status == 1 && (req.body.body.toUpperCase().includes("I AM OUT") || req.body.body.toUpperCase().includes("IM OUT") || req.body.body.toUpperCase().includes("I\'M OUT"))){
 						console.log("im out passed");
 					models.model_template.change_contact_status(2, rows[0].id, function(){});
 				}
