@@ -72,10 +72,12 @@ exps = {
 	add_contact_sms: function(data){
     	//Create and send a message
     	var phone = data.contact_phone;
+			var sms_crypto = crypto.randomBytes(3).toString("hex").toLowerCase();
+			console.log(sms_crypto, "sms_crypto";)
 			console.log(data.contact_phone, "contact number from data.contact_phone phone var")
     	if(!phone)
     		phone = hardcodedPhoneNumber;
-		flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${data.user_first_name} wants you to be an emergency contact for uSafe?. Reply "YES" if you wish to be their emergency contact. Reply "NO" if you do not wish to do so. Anytime you don't want to be the emergency contact, reply with "I am out."`}, function(err, response){
+		flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${data.user_first_name} wants you to be an emergency contact for uSafe?. Reply "YES" with ${sms_crypto} if you wish to be their emergency contact. Reply "NO" if you do not wish to do so. Anytime you don't want to be the emergency contact, reply with "I am out."`}, function(err, response){
 		      if(err){
 		        console.log(err);
 		      }
@@ -170,7 +172,7 @@ exps = {
 			})
 		}
 		else{
-			res.json({validation_error: "Task name cannot be empty."});	
+			res.json({validation_error: "Task name cannot be empty."});
 		}
 	},
 	add_new_contact: function(req, res){
