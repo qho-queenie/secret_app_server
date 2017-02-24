@@ -90,15 +90,20 @@ exps = {
 				console.log("sss")
 				console.log(rows, "ssss");
 				console.log(req.body);
-				if (rows[0].contact_status == 0  ){
-	 				if (req.body.body.toUpperCase() === "YES" ){
+				console.log(sms_crypto, "is the sms_crypto is here?")
+
+				if (rows[0].contact_status == 0){
+	 				if (req.body.body.toUpperCase().includes("YES") && req.body.body.toUpperCase().includes(`${sms_crypto}`)){
+						console.log("yes and crypto passed");
 	 					models.model_template.change_contact_status(1, rows[0].id, function(){});
 	 				}
-	 				else if (req.body.body.toUpperCase() === "NO"){
+	 				else if (req.body.body.toUpperCase().includes("NO"){
+						console.log("yes and crypto did not passed");
 	 					models.model_template.change_contact_status(2, rows[0].id, function(){});
 	 				}
 				}
-					else if (rows[0].contact_status == 1 && (req.body.body.toUpperCase() == "I AM OUT" || req.body.body.toUpperCase() == "IM OUT" || req.body.body.toUpperCase() == "I\'M OUT")){
+					else if (rows[0].contact_status == 1 && (req.body.body.toUpperCase().includes("I AM OUT") || req.body.body.toUpperCase().includes("IM OUT") || req.body.body.toUpperCase().includes("I\'M OUT")){
+						console.log("im out passed");
 					models.model_template.change_contact_status(2, rows[0].id, function(){});
 				}
  				else {
