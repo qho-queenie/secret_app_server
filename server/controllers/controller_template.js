@@ -14,6 +14,9 @@ var sessionPendingMsgs = {};
 
 var hardcodedPhoneNumber = "";
 
+var publicObject[sms_crypto] = req.session.data.id;
+console.log(publicObject, "publicObject from public");
+
 exps = {
 	test: function(req, res){
 		console.log(req.sessionID, "controller function called successfully");
@@ -80,6 +83,9 @@ exps = {
 			var sms_crypto = crypto.randomBytes(3).toString("hex").toLowerCase();
 			console.log(sms_crypto, "sms_crypto");
 			console.log(data.contact_phone, "contact number from data.contact_phone phone var")
+			console.log(req.session.data.id, "req.session.data.id from add_contact_sms")
+			publicObject[sms_crypto] = req.session.data.id;
+			console.log(publicObject, "publicObject from add_contact_sms controller");
     	if(!phone)
     		phone = hardcodedPhoneNumber;
 		flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${data.user_first_name} wants you to be an emergency contact for uSafe?. Reply "YES" with ${sms_crypto} if you wish to be their emergency contact. Reply "NO" if you do not wish to do so. Anytime you don't want to be the emergency contact, reply with "I am out."`}, function(err, response){
@@ -92,20 +98,19 @@ exps = {
 	sms_reply: function(req, res){
   		console.log(req.body, "sms_reply from controller")
  			models.model_template.find_contact_by_phone(req.body.from, function(err, rows, fields){
-				console.log("sss")
 				console.log(rows, "ssss");
 				console.log(req.body, "is the sms_crypto is here?")
 
-				if (rows[0].contact_status == 0){
-	 				if (req.body.body.toUpperCase().includes("YES") && req.body.body.toUpperCase().includes(`${sms_crypto}`)){
-						console.log("yes and crypto passed");
-	 					models.model_template.change_contact_status(1, rows[0].id, function(){});
-	 				}
+				if (rows[0].contact_status == 0 && req.body.body.toUpperCase().includes("YES")){
+						console.log("there is a yes in include");
+						var key = req.body.body.toUpperCase().replace("YES", "").trim();
+						var id = publicObject[key];
+						models.model_template.change_contact_status(1, rows[0].id, function(){});
+					}
 	 				else if (req.body.body.toUpperCase().includes("NO")){
 						console.log("yes and crypto did not passed");
 	 					models.model_template.change_contact_status(2, rows[0].id, function(){});
 	 				}
-				}
 					else if (rows[0].contact_status == 1 && (req.body.body.toUpperCase().includes("I AM OUT") || req.body.body.toUpperCase().includes("IM OUT") || req.body.body.toUpperCase().includes("I\'M OUT"))){
 					models.model_template.change_contact_status(2, rows[0].id, function(){});
 				}
@@ -114,7 +119,7 @@ exps = {
  				}
  			})
  			res.sendStatus(200);
-  	},
+  },
 
 	alert_contact_sms: function(data){
     	//Create and send a message
