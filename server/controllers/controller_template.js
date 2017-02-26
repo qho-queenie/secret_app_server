@@ -94,8 +94,7 @@ exps = {
  			models.model_template.find_contact_by_phone(req.body.from, function(err, rows, fields){
 				console.log("sss")
 				console.log(rows, "ssss");
-				console.log(req.body);
-				console.log(sms_crypto, "is the sms_crypto is here?")
+				console.log(req.body, "is the sms_crypto is here?")
 
 				if (rows[0].contact_status == 0){
 	 				if (req.body.body.toUpperCase().includes("YES") && req.body.body.toUpperCase().includes(`${sms_crypto}`)){
