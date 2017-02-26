@@ -83,7 +83,7 @@ exps = {
 			var sms_crypto = crypto.randomBytes(3).toString("hex").toLowerCase();
 			console.log(sms_crypto, "sms_crypto");
 			console.log(data.contact_phone, "contact number from data.contact_phone phone var")
-			console.log(req.session.data.id, "req.session.data.id from add_contact_sms")
+			console.log(req.session.data, "req.session.data.id from add_contact_sms")
 			publicObject[sms_crypto] = req.session.data.id;
 			console.log(publicObject, "publicObject from add_contact_sms controller");
     	if(!phone)
