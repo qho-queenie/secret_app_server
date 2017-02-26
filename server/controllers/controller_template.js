@@ -106,13 +106,13 @@ exps = {
 		if (req.body.body.toUpperCase().includes("YES")){
 			console.log("there is a yes in include");
 			status = 1;
-			var key = req.body.body.toUpperCase().replace("YES", "").trim();
+			var key = req.body.body.toLowerCase().replace("yes", "").trim();
 			changeStatus = true;
 		}
 		else if (req.body.body.toUpperCase().includes("NO")){
 			console.log("there is a no in include");
 			status = 2;
-			var key = req.body.body.toUpperCase().replace("NO", "").trim();
+			var key = req.body.body.toLowerCase().replace("no", "").trim();
 			changeStatus = true;
 		}
 		else if (req.body.body.toUpperCase().includes("I AM OUT") || req.body.body.toUpperCase().includes("IM OUT") || req.body.body.toUpperCase().includes("I\'M OUT")){
@@ -120,9 +120,9 @@ exps = {
 			status = 2;
 			//not working yet
 		}
-			else{
-				console.log("person didnt reply correctly. Not doing anything.")
-			}
+		else{
+			console.log("person didnt reply correctly. Not doing anything.")
+		}
 
 		var id = publicObject[key];
 		console.log(`id from publicObject: ${id}`);
