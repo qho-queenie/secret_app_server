@@ -97,12 +97,12 @@ exps = {
 	},
 	sms_reply: function(req, res){
   		console.log(req.body, "sms_reply from controller")
- 			models.model_template.find_contact_by_phone(req.body.from, function(err, rows, fields){
-			console.log(rows, "ssss");
-			console.log(req.body, "is the req.body still here?")
+ 		// 	models.model_template.find_contact_by_phone(req.body.from, function(err, rows, fields){
+			// console.log(rows, "ssss");
+			// console.log(req.body, "is the req.body still here?")
 
-				if (rows[0].contact_status == 0 && req.body.body.toUpperCase().includes("YES")){
-						console.log("there is a yes in include and current status is 0");
+				if (req.body.body.toUpperCase().includes("YES")){
+						console.log("there is a yes in include");
 						var key = req.body.body.toUpperCase().replace("YES", "").trim();
 						var id = publicObject[key];
 						models.model_template.change_contact_status(1, id, function(err, rows, fields){
@@ -125,7 +125,7 @@ exps = {
 							console.log(publicObject, "delete from publicObject");
 						});
 	 				}
-					else if (rows[0].contact_status == 1 && (req.body.body.toUpperCase().includes("I AM OUT") || req.body.body.toUpperCase().includes("IM OUT") || req.body.body.toUpperCase().includes("I\'M OUT"))){
+					else if (req.body.body.toUpperCase().includes("I AM OUT") || req.body.body.toUpperCase().includes("IM OUT") || req.body.body.toUpperCase().includes("I\'M OUT")){
 					models.model_template.change_contact_status(2, id, function(err, rows, fields){
 						console.log(errs, "errs");
 						console.log(rows, "rows");
@@ -137,9 +137,10 @@ exps = {
  				else {
  					console.log("person didnt reply correctly. Not doing anything.")
  				}
- 			})
- 			res.sendStatus(200);
-  },
+				res.sendStatus(200);
+ 			},
+
+
 
 	alert_contact_sms: function(data){
     	//Create and send a message
