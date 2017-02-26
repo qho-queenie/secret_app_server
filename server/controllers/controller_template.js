@@ -77,8 +77,9 @@ exps = {
     	});
 	},
 
-	add_contact_sms: function(data){
+	add_contact_sms: function(req){
     	//Create and send a message
+    	var data = req.body;
     	var phone = data.contact_phone;
 			var sms_crypto = crypto.randomBytes(3).toString("hex").toLowerCase();
 			console.log(sms_crypto, "sms_crypto");
@@ -252,7 +253,7 @@ exps = {
         console.log(req.body);
         if(valid){
             models.model_template.add_new_contact(req, res, function(err, rows, fields){
-            	exps.add_contact_sms(req.body);
+            	exps.add_contact_sms(req);
             	console.log(rows, "add_new_contact from controllers")
             	res.json({success: true, data: rows});
             });
