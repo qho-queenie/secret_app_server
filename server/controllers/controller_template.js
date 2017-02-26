@@ -101,47 +101,48 @@ exps = {
  		// 	models.model_template.find_contact_by_phone(req.body.from, function(err, rows, fields){
 			// console.log(rows, "ssss");
 			// console.log(req.body, "is the req.body still here?")
+		var status = 0;
+		var changeStatus = false;
+		if (req.body.body.toUpperCase().includes("YES")){
+			console.log("there is a yes in include");
+			status = 1;
+			var key = req.body.body.toUpperCase().replace("YES", "").trim();
+			changeStatus = true;
+		}
+		else if (req.body.body.toUpperCase().includes("NO")){
+			console.log("there is a no in include");
+			status = 2;
+			var key = req.body.body.toUpperCase().replace("NO", "").trim();
+			changeStatus = true;
+		}
+		else if (req.body.body.toUpperCase().includes("I AM OUT") || req.body.body.toUpperCase().includes("IM OUT") || req.body.body.toUpperCase().includes("I\'M OUT")){
+			console.log("im out");
+			status = 2;
+			//not working yet
+		}
+			else{
+				console.log("person didnt reply correctly. Not doing anything.")
+			}
 
-				if (req.body.body.toUpperCase().includes("YES")){
-						console.log("there is a yes in include");
-						var key = req.body.body.toUpperCase().replace("YES", "").trim();
-						var id = publicObject[key];
-						models.model_template.change_contact_status(1, id, function(err, rows, fields){
-							console.log(err, "err");
-							console.log(rows, "rows");
-							console.log(fields, "fields");
-							delete publicObject[key];
-							console.log(publicObject, "delete from publicObject");
-						});
-					}
-	 				else if (req.body.body.toUpperCase().includes("NO")){
-						console.log("no in the sms reply");
-						var key = req.body.body.toUpperCase().replace("NO", "").trim();
-						var id = publicObject[key];
-	 					models.model_template.change_contact_status(2, id, function(err, rows, fields){
-							console.log(err, "err");
-							console.log(rows, "rows");
-							console.log(fields, "fields");
-							delete publicObject[key];
-							console.log(publicObject, "delete from publicObject");
-						});
-	 				}
-					else if (req.body.body.toUpperCase().includes("I AM OUT") || req.body.body.toUpperCase().includes("IM OUT") || req.body.body.toUpperCase().includes("I\'M OUT")){
-					models.model_template.change_contact_status(2, id, function(err, rows, fields){
-						console.log(errs, "errs");
-						console.log(rows, "rows");
-						console.log(fields, "fields");
-						delete publicObject[key];
-						console.log(publicObject, "delete from publicObject");
-					});
-				}
- 				else {
- 					console.log("person didnt reply correctly. Not doing anything.")
- 				}
-				res.sendStatus(200);
- 			},
-
-
+		var id = publicObject[key];
+		console.log(`id from publicObject: ${id}`);
+		if(publicObject[key] && changeStatus)
+		{
+			models.model_template.change_contact_status(status, id, function(err, rows, fields){
+				console.log(err, "err");
+				console.log(rows, "rows");
+				console.log(fields, "fields");
+				delete publicObject[key];
+				console.log(publicObject, "delete from publicObject");
+			});
+		}
+		else if(!publicObject[key])
+		{
+			console.log(`${key} not found`);
+		}
+			
+		res.sendStatus(200);
+ 	},
 
 	alert_contact_sms: function(data){
     	//Create and send a message
