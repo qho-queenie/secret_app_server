@@ -105,8 +105,9 @@ module.exports = {
 
 	change_pw: function(req, res, callback){
 		console.log(req.body.email, "change_pw from model");
-		console.log(req.body.bananas, "is the crypto packed correctly?");
-		var doQ = `UPDATE users SET password = "${req.body.bananas}" WHERE email = "${req.body.email}"`;
+		console.log(req.body.email_code, "is the crypto packed correctly?");
+		console.log(req.body, "the whole req.body from change_pw in model");
+		var doQ = `UPDATE users SET password = "${req.body.email_code}" WHERE email = "${req.body.email}"`;
 		console.log(doQ);
 		doQuery(doQ, callback);
 	},
