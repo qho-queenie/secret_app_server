@@ -107,7 +107,7 @@ exps = {
 						var key = req.body.body.toUpperCase().replace("YES", "").trim();
 						var id = publicObject[key];
 						models.model_template.change_contact_status(1, id, function(err, rows, fields){
-							console.log(errs, "errs");
+							console.log(err, "err");
 							console.log(rows, "rows");
 							console.log(fields, "fields");
 							delete publicObject[key];
@@ -119,7 +119,7 @@ exps = {
 						var key = req.body.body.toUpperCase().replace("NO", "").trim();
 						var id = publicObject[key];
 	 					models.model_template.change_contact_status(2, id, function(err, rows, fields){
-							console.log(errs, "errs");
+							console.log(err, "err");
 							console.log(rows, "rows");
 							console.log(fields, "fields");
 							delete publicObject[key];
