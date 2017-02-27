@@ -110,6 +110,7 @@ exps = {
 			console.log("there is a no in include");
 			status = 2;
 			var key = req.body.body.toLowerCase().replace("no", "").trim();
+			console.log(key, "da key");
 			changeStatus = true;
 		}
 		else if (req.body.body.toUpperCase().includes("I AM OUT") || req.body.body.toUpperCase().includes("IM OUT") || req.body.body.toUpperCase().includes("I\'M OUT")){
@@ -122,8 +123,9 @@ exps = {
 		}
 
 		var id = publicObject[key];
+		console.log(id, "da id");
 		console.log(publicObject, "checking publicObject before sms_reply goes into change status");
-		console.log(`id from publicObject: ${id}`);
+		console.log(id, "id from publicObject");
 		if(publicObject[key] && changeStatus)
 		{
 			models.model_template.change_contact_status(status, id, function(err, rows, fields){
