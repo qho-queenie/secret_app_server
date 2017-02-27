@@ -124,7 +124,7 @@ exps = {
 		}
 
 		var email = publicObject[key];
-		console.log(id, "da id");
+		console.log(email, "da email");
 		console.log(publicObject, "checking publicObject before sms_reply goes into change status");
 		console.log(email, "email from publicObject");
 		if(publicObject[key] && changeStatus)
