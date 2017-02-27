@@ -67,10 +67,10 @@ module.exports = {
 		console.log(req.session.data);
 		doQuery(`INSERT INTO events (event_name, event_note, created_at, updated_at, user_id) VALUES ("${req.body.event_name}", "${req.body.event_note}", NOW(), NOW(), "${req.session.data.id}")`, callback);
 	},
-	change_contact_status: function(status, email, callback){
+	change_contact_status: function(status, reply_insertID, callback){
 		console.log("model function for change_contact_status");
 		// var doq = `UPDATE contacts SET contact_status = ${status} WHERE id = ${id}`;
-		var doq = `UPDATE contacts SET contact_status = ${status} WHERE contact_email = "${email}"`;
+		var doq = `UPDATE contacts SET contact_status = ${status} WHERE id = "${reply_insertID}"`;
 		console.log(doq, "doq from change_contact_status model");
 		doQuery(doq, callback);
 	},

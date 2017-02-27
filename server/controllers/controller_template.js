@@ -80,16 +80,19 @@ exps = {
 	add_contact_sms: function(req){
     	//Create and send a message
     	var data = req.body;
+			console.log(data, "checking data at add_contact_sms");
     	var phone = data.contact_phone;
-			var sms_crypto = crypto.randomBytes(3).toString("hex").toLowerCase();
-			publicObject[sms_crypto] = data.contact_email;
-			console.log(sms_crypto, "sms_crypto");
+
 			console.log(data.contact_phone, "contact number from data.contact_phone phone var");
+
+			let inserID_crypto = crypto.randomBytes(5).toString("hex");
+			publicObject[inserID_crypto] = data.insertID;
+
 			console.log(publicObject, "checking the publicObject before we send the request sms");
 
     	if(!phone)
     		phone = hardcodedPhoneNumber;
-		flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${data.user_first_name} wants you to be an emergency contact for uSafe?. Reply "YES" with ${sms_crypto} if you wish to be their emergency contact. Reply "NO" if you do not wish to do so. Anytime you don't want to be the emergency contact, reply with "I am out."`}, function(err, response){
+		flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${data.user_first_name} wants you to be an emergency contact for uSafe?. Reply "YES" with ${inserID_crypto} if you wish to be their emergency contact. Reply "NO" if you do not wish to do so. Anytime you don't want to be the emergency contact, reply with "I am out."`}, function(err, response){
 		      if(err){
 		        console.log(err);
 		      }
@@ -123,17 +126,17 @@ exps = {
 			console.log("person didnt reply correctly. Not doing anything.")
 		}
 
-		var email = publicObject[key];
-		console.log(email, "da email");
+		var reply_insertID = publicObject[key];
+		console.log(reply_insertID, "da reply_insertID");
 		console.log(publicObject, "checking publicObject before sms_reply goes into change status");
-		console.log(email, "email from publicObject");
-		if(publicObject[key] && changeStatus)
+
+		if(reply_insertID && changeStatus)
 		{
-			models.model_template.change_contact_status(status, email, function(err, rows, fields){
+			models.model_template.change_contact_status(status, reply_insertID, function(err, rows, fields){
 				console.log(err, "err");
 				console.log(rows, "rows");
 				console.log(fields, "fields");
-				delete publicObject[key];
+				// delete publicObject[key];
 				console.log(publicObject, "delete from publicObject");
 			});
 		}
@@ -255,8 +258,10 @@ exps = {
         console.log(req.body);
         if(valid){
             models.model_template.add_new_contact(req, res, function(err, rows, fields){
+							console.log(rows["insertID"], "add_new_contact from controllers");
+
+							req.body.insertID = rows["inserID"];
             	exps.add_contact_sms(req);
-            	console.log(rows, "add_new_contact from controllers")
             	res.json({success: true, data: rows});
             });
         }
