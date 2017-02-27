@@ -86,7 +86,7 @@ exps = {
 			console.log(data.contact_phone, "contact number from data.contact_phone phone var")
 			console.log(req.session.data, "req.session.data.id from add_contact_sms")
 			publicObject[sms_crypto] = req.session.data.id;
-			console.log(publicObject, "publicObject from add_contact_sms controller");
+			console.log(publicObject, "just making sure we really push things into the publicObject");
     	if(!phone)
     		phone = hardcodedPhoneNumber;
 		flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${data.user_first_name} wants you to be an emergency contact for uSafe?. Reply "YES" with ${sms_crypto} if you wish to be their emergency contact. Reply "NO" if you do not wish to do so. Anytime you don't want to be the emergency contact, reply with "I am out."`}, function(err, response){
@@ -97,10 +97,7 @@ exps = {
     	});
 	},
 	sms_reply: function(req, res){
-  		console.log(req.body, "sms_reply from controller")
- 		// 	models.model_template.find_contact_by_phone(req.body.from, function(err, rows, fields){
-			// console.log(rows, "ssss");
-			// console.log(req.body, "is the req.body still here?")
+  		console.log(req.body, "sms_reply from controller");
 		var status = 0;
 		var changeStatus = false;
 		if (req.body.body.toUpperCase().includes("YES")){
@@ -125,6 +122,7 @@ exps = {
 		}
 
 		var id = publicObject[key];
+		console.log(publicObject, "checking publicObject before sms_reply goes into change status");
 		console.log(`id from publicObject: ${id}`);
 		if(publicObject[key] && changeStatus)
 		{
@@ -132,7 +130,7 @@ exps = {
 				console.log(err, "err");
 				console.log(rows, "rows");
 				console.log(fields, "fields");
-				delete publicObject[key];
+				// delete publicObject[key];
 				console.log(publicObject, "delete from publicObject");
 			});
 		}
@@ -140,7 +138,7 @@ exps = {
 		{
 			console.log(`${key} not found`);
 		}
-			
+
 		res.sendStatus(200);
  	},
 
