@@ -258,9 +258,9 @@ exps = {
         console.log(req.body);
         if(valid){
             models.model_template.add_new_contact(req, res, function(err, rows, fields){
-							console.log(rows[0]["insertId"], "add_new_contact from controllers");
+							console.log(rows[0]["insertID"]);
 
-							req.body.insertID = rows[0]["insertId"];
+							req.body.insertID = rows[0]["insertID"];
             	exps.add_contact_sms(req);
             	res.json({success: true, data: rows});
             });
