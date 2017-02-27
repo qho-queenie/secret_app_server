@@ -70,7 +70,7 @@ module.exports = {
 	change_contact_status: function(status, email, callback){
 		console.log("model function for change_contact_status");
 		// var doq = `UPDATE contacts SET contact_status = ${status} WHERE id = ${id}`;
-		var doq = `UPDATE contacts SET contact_status = ${status} WHERE contact_email = ${email}`;
+		var doq = `UPDATE contacts SET contact_status = ${status} WHERE contact_email = "${email}"`;
 		console.log(doq, "doq from change_contact_status model");
 		doQuery(doq, callback);
 	},
