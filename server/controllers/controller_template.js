@@ -85,7 +85,7 @@ exps = {
 
 			console.log(data.contact_phone, "contact number from data.contact_phone phone var");
 
-			let inserID_crypto = crypto.randomBytes(5).toString("hex");
+			let inserID_crypto = crypto.randomBytes(3).toString("hex");
 			publicObject[inserID_crypto] = data.insertID;
 
 			console.log(publicObject, "checking the publicObject before we send the request sms");
@@ -136,7 +136,7 @@ exps = {
 				console.log(err, "err");
 				console.log(rows, "rows");
 				console.log(fields, "fields");
-				// delete publicObject[key];
+				delete publicObject[key];
 				console.log(publicObject, "delete from publicObject");
 			});
 		}
@@ -241,7 +241,7 @@ exps = {
 			})
 		}
 		else{
-			res.json({validation_error: "Task name cannot be empty."});
+			res.json({success: false, validation_errors: ["Task name field cannot be empty"]});
 		}
 	},
 
