@@ -67,10 +67,9 @@ module.exports = {
 		console.log(req.session.data);
 		doQuery(`INSERT INTO events (event_name, event_note, created_at, updated_at, user_id) VALUES ("${req.body.event_name}", "${req.body.event_note}", NOW(), NOW(), "${req.session.data.id}")`, callback);
 	},
-	change_contact_status: function(status, reply_insertID, callback){
+	change_contact_status: function(status, crypto_code, callback){
 		console.log("model function for change_contact_status");
-		// var doq = `UPDATE contacts SET contact_status = ${status} WHERE id = ${id}`;
-		var doq = `UPDATE contacts SET contact_status = ${status} WHERE id = "${reply_insertID}"`;
+		var doq = `UPDATE contacts SET contact_status = ${status} WHERE crypto_code = "${crypto_code}"`;
 		console.log(doq, "doq from change_contact_status model");
 		doQuery(doq, callback);
 	},
@@ -78,12 +77,12 @@ module.exports = {
 		console.log("model function for find_contact_by_phone");
 		doQuery(`SELECT id, contact_status FROM contacts WHERE contact_phone=${phone}`, callback);
 	},
-	add_new_contact: function(req, res, callback){
+	add_new_contact: function(req, res, crypto_code, callback){
 		console.log("model function for add_new_contact");
 		console.log(req.body);
 		console.log(req.session.data.id);
 		console.log(req.session.data);
-		var doq = `INSERT INTO contacts (contact_first_name, contact_last_name, contact_email, contact_phone, contact_relationship, contact_status, created_at, updated_at, users_id) VALUES ("${req.body.contact_first_name}", "${req.body.contact_last_name}", "${req.body.contact_email}", "${req.body.contact_phone}", "${req.body.contact_relationship}", 0, NOW(), NOW(), ${req.session.data.id})`;
+		var doq = `INSERT INTO contacts (contact_first_name, contact_last_name, contact_email, contact_phone, contact_relationship, contact_status, created_at, updated_at, users_id, crypto_code) VALUES ("${req.body.contact_first_name}", "${req.body.contact_last_name}", "${req.body.contact_email}", "${req.body.contact_phone}", "${req.body.contact_relationship}", 0, NOW(), NOW(), ${req.session.data.id}, ${crypto_code})`;
 		doQuery(doq, callback);
 		console.log(doq);
 	},

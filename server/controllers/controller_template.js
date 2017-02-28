@@ -14,9 +14,6 @@ var sessionPendingMsgs = {};
 
 var hardcodedPhoneNumber = "";
 
-var publicObject = {};
-console.log(publicObject, "publicObject from public");
-
 exps = {
 	test: function(req, res){
 		console.log(req.sessionID, "controller function called successfully");
@@ -77,7 +74,7 @@ exps = {
     	});
 	},
 
-	add_contact_sms: function(req){
+	add_contact_sms: function(req, crypto_code){
     	//Create and send a message
     	var data = req.body;
 			console.log(data, "checking data at add_contact_sms");
@@ -85,14 +82,9 @@ exps = {
 
 			console.log(data.contact_phone, "contact number from data.contact_phone phone var");
 
-			let inserID_crypto = crypto.randomBytes(3).toString("hex");
-			publicObject[inserID_crypto] = data.insertID;
-
-			console.log(publicObject, "checking the publicObject before we send the request sms");
-
     	if(!phone)
     		phone = hardcodedPhoneNumber;
-		flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${data.user_first_name} wants you to be an emergency contact for uSafe?. Reply "YES" with ${inserID_crypto} if you wish to be their emergency contact. Reply "NO" if you do not wish to do so. Anytime you don't want to be the emergency contact, reply with "I am out."`}, function(err, response){
+		flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${data.user_first_name} wants you to be an emergency contact for uSafe?. Reply "YES" with ${crypto_code} if you wish to be their emergency contact. If you don't want to accept, no action is needed. Anytime you don't want to be the emergency contact, reply with "I am out." and ${crypto_code}`}, function(err, response){
 		      if(err){
 		        console.log(err);
 		      }
@@ -106,15 +98,7 @@ exps = {
 		if (req.body.body.toUpperCase().includes("YES")){
 			console.log("there is a yes in include");
 			status = 1;
-			var key = req.body.body.toLowerCase().replace("yes", "").trim();
-			console.log(key, "da key!!");
-			changeStatus = true;
-		}
-		else if (req.body.body.toUpperCase().includes("NO")){
-			console.log("there is a no in include");
-			status = 2;
-			var key = req.body.body.toLowerCase().replace("no", "").trim();
-			console.log(key, "da key");
+			var crypto_code = req.body.body.toLowerCase().replace("yes", "").trim();
 			changeStatus = true;
 		}
 		else if (req.body.body.toUpperCase().includes("I AM OUT") || req.body.body.toUpperCase().includes("IM OUT") || req.body.body.toUpperCase().includes("I\'M OUT")){
@@ -126,23 +110,13 @@ exps = {
 			console.log("person didnt reply correctly. Not doing anything.")
 		}
 
-		var reply_insertID = publicObject[key];
-		console.log(reply_insertID, "da reply_insertID");
-		console.log(publicObject, "checking publicObject before sms_reply goes into change status");
-
 		if(reply_insertID && changeStatus)
 		{
-			models.model_template.change_contact_status(status, reply_insertID, function(err, rows, fields){
+			models.model_template.change_contact_status(status, crypto_code, function(err, rows, fields){
 				console.log(err, "err");
 				console.log(rows, "rows");
 				console.log(fields, "fields");
-				delete publicObject[key];
-				console.log(publicObject, "delete from publicObject");
 			});
-		}
-		else if(!publicObject[key])
-		{
-			console.log(`${key} not found`);
 		}
 
 		res.sendStatus(200);
@@ -259,12 +233,9 @@ exps = {
 		}
         console.log(req.body);
         if(valid){
-            models.model_template.add_new_contact(req, res, function(err, rows, fields){
-							console.log(rows, "the real rows");
-							console.log(rows["insertId"]);
-
-							req.body.insertID = rows["insertId"];
-            	exps.add_contact_sms(req);
+		var crypto_code = crypto.randomBytes(3).toString("hex");
+            models.model_template.add_new_contact(req, res, crypto_code, function(err, rows, fields){
+            	exps.add_contact_sms(req, crypto_code);
             	res.json({success: true, data: rows});
             });
         }
