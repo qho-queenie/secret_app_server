@@ -95,16 +95,18 @@ exps = {
   		console.log(req.body, "sms_reply from controller");
 		var status = 0;
 		var changeStatus = false;
+		var crypto_code;
 		if (req.body.body.toUpperCase().includes("YES")){
 			console.log("there is a yes in include");
 			status = 1;
-			var crypto_code = req.body.body.toLowerCase().replace("yes", "").trim();
+			crypto_code = req.body.body.toLowerCase().replace("yes", "").trim();
 			changeStatus = true;
 		}
 		else if (req.body.body.toUpperCase().includes("I AM OUT") || req.body.body.toUpperCase().includes("IM OUT") || req.body.body.toUpperCase().includes("I\'M OUT")){
 			console.log("im out");
 			status = 2;
-			//not working yet
+			crypto_code = req.body.body.toLowerCase().replace("i am out").replace("im out").replace("i\'m out").trim();
+			changeStatus = true;
 		}
 		else{
 			console.log("person didnt reply correctly. Not doing anything.")
