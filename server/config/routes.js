@@ -3,6 +3,7 @@ var path = require("path");
 var controllerPath = path.join(__dirname, "./../controllers");
 var controllers = {};
 var session = require("express-session");
+var nodemailer = require(path.join(__dirname, "./../config/emailer.js"));
 // var mongoose = require('mongoose');
 // var Content = mongoose.model('Content');
 
@@ -55,7 +56,29 @@ function doForEveryRoute(req, res, callback)
       console.log("Route doesn't exist.");
     }
   }catch(e){
+
     console.log(e);
+
+    function exceptionEmail(email){
+    var mailOptions = {
+          from: '"USafe? app" <noreply.usafe@gmail.com>', // sender address
+          to: email, // list of receivers
+          subject: "USafe? server exception", // Subject line
+          text: '', // plaintext body
+          html: `<b>Server exception occurred.</b><br><b>route:</b> ${req.path}<br><br><b>exception:</b><br>${e}`// html body
+      };
+      nodemailer.sendMail(mailOptions, function(error, info){
+          if(error){
+              return console.log(error);
+          }
+          else{
+            res.sendStatus(200);
+          }
+        });
+    }
+
+    exceptionEmail("qho.queenieho@gmail.com");
+    exceptionEmail("chris.rollins.dev@gmail.com");
   }
 }
 
