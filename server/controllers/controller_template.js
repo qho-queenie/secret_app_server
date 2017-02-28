@@ -22,7 +22,7 @@ exps = {
 
 	remove_declined_contacts: function(req, res){
 		console.log("contact cleanup request ip address: " + req.connection.remoteAddress);
-		if(req.connection.remoteAddress == "::1"){
+		if(req.connection.remoteAddress == "::ffff:127.0.0.1"){
 			models.model_template.remove_declined_contacts(req, res, function(){
 				if(!err)
 					res.sendStatus(200);

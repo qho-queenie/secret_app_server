@@ -1,6 +1,6 @@
 module.exports = function(){
 	var day = new Date().getDay();
-	var day = new Date().getUTCHours();
+	var hours = new Date().getUTCHours();
 	console.log(day);
 	console.log(hour);
 
