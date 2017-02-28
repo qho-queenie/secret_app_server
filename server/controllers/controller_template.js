@@ -234,6 +234,7 @@ exps = {
         console.log(req.body);
         if(valid){
 		var crypto_code = crypto.randomBytes(3).toString("hex");
+		console.log(crypto_code, "crypto code");
             models.model_template.add_new_contact(req, res, crypto_code, function(err, rows, fields){
             	exps.add_contact_sms(req, crypto_code);
             	res.json({success: true, data: rows});
