@@ -171,7 +171,7 @@ exps = {
 
 		if(req.body.password.length < 8)
 		{
-			validationError("password and confirm password must match.");
+			validationError("password should be at least 8 characters.");
 		}
 
 		if(valid)
