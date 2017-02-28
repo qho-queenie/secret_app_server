@@ -94,17 +94,20 @@ exps = {
 	sms_reply: function(req, res){
   		console.log(req.body, "sms_reply from controller");
 		var status = 0;
+		var expectedStatus = 0;
 		var changeStatus = false;
 		var crypto_code;
 		if (req.body.body.toUpperCase().includes("YES")){
 			console.log("there is a yes in include");
 			status = 1;
+			expectedStatus = 0;
 			crypto_code = req.body.body.toLowerCase().replace("yes", "").trim();
 			changeStatus = true;
 		}
 		else if (req.body.body.toUpperCase().includes("I AM OUT") || req.body.body.toUpperCase().includes("IM OUT") || req.body.body.toUpperCase().includes("I\'M OUT")){
 			console.log("im out");
 			status = 2;
+			expectedStatus = 1;
 			crypto_code = req.body.body.toLowerCase().replace("i am out", "").replace("im out", "").replace("i\'m out", "").trim();
 			changeStatus = true;
 		}
@@ -114,7 +117,7 @@ exps = {
 
 		if(changeStatus)
 		{
-			models.model_template.change_contact_status(status, crypto_code, function(err, rows, fields){
+			models.model_template.change_contact_status(status, crypto_code, expectedStatus, function(err, rows, fields){
 				console.log(err, "err");
 				console.log(rows, "rows");
 				console.log(fields, "fields");
