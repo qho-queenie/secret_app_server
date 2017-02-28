@@ -105,7 +105,7 @@ exps = {
 		else if (req.body.body.toUpperCase().includes("I AM OUT") || req.body.body.toUpperCase().includes("IM OUT") || req.body.body.toUpperCase().includes("I\'M OUT")){
 			console.log("im out");
 			status = 2;
-			crypto_code = req.body.body.toLowerCase().replace("i am out").replace("im out").replace("i\'m out").trim();
+			crypto_code = req.body.body.toLowerCase().replace("i am out", "").replace("im out", "").replace("i\'m out", "").trim();
 			changeStatus = true;
 		}
 		else{
