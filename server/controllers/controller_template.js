@@ -160,7 +160,7 @@ exps = {
 
 		for(let field of ["first_name", "last_name", "email", "password", "confirm_password", "phone"]){
 			if(req.body[field].length < 1){
-				validationError(`${field} should not be empty.`);
+				validationError(`${field.replace("_", " ")} should not be empty.`);
 			}
 		}
 
@@ -227,7 +227,7 @@ exps = {
 
 		for(let field of ["contact_first_name", "contact_last_name", "contact_email", "contact_relationship", "contact_phone"]){
 			if(req.body[field].length < 1){
-				validation_errors.push(`${field} cannot be empty.`)
+				validation_errors.push(`${field.replace("_", " ")} cannot be empty.`)
 				valid = false;
 			}
 		}
