@@ -8,7 +8,7 @@ module.exports = function(debug){
 
 	if((day == 0 && hour == 0) || debug === true){
 		console.log("time to cleanup declined contacts");
-		models.model_template.remove_declined_contacts(undefined, undefined, function(err, rows){
+		models.remove_declined_contacts(undefined, undefined, function(err, rows){
 			console.log(`result of cleanup: ${rows}`);
 		})
 	}
