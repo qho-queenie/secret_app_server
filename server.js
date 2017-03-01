@@ -30,7 +30,8 @@ var hourlyLoop = require("./server/config/hourlyLoop.js");
 //run every hour
 setInterval(hourlyLoop, 3600000);
 
-hourlyLoop(true);
+//to debug timed events
+//hourlyLoop(true);
 
 var server = app.listen(port, function() {
 	console.log("listening on port", port);
