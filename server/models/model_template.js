@@ -34,18 +34,27 @@ module.exports = {
 	},
 
 	display_events: function(req, res, callback){
-		console.log("model function for display_events");
-		doQuery(`SELECT * FROM users JOIN events ON users.id = events.user_id WHERE events.user_id = ${req.session.data.id}`, callback);
+		if(req.session.data){
+			doQuery(`SELECT * FROM users JOIN events ON users.id = events.user_id WHERE events.user_id = ${req.session.data.id}`, callback);
+		}else{
+			console.log("Session is missing for query that requires session. Aborting.");
+		}
 	},
 
 	display_user: function(req, res, callback){
-		doQuery(`SELECT * FROM users where id = ${req.session.data.id}`, callback);
+		if(req.session.data){
+			doQuery(`SELECT * FROM users where id = ${req.session.data.id}`, callback);
+		}else{
+			console.log("Session is missing for query that requires session. Aborting.");
+		}
 	},
 
 	display_contacts: function(req, res, callback){
-		console.log("model function for display_events");
-		console.log(req.session.data);
-		doQuery(`SELECT * FROM contacts where users_id = ${req.session.data.id}`, callback);
+		if(req.session.data){
+			doQuery(`SELECT * FROM contacts where users_id = ${req.session.data.id}`, callback);
+		}else{
+			console.log("Session is missing for query that requires session. Aborting.");
+		}
 	},
 	delete_event: function(req, res, callback){
 		console.log("model function for delete_event");
@@ -61,11 +70,11 @@ module.exports = {
 		console.log(doq);
 	},
 	add_new_event: function(req, res, callback){
-		console.log("model function for add_new_event");
-		console.log(req.body);
-		console.log(req.session.data.id);
-		console.log(req.session.data);
-		doQuery(`INSERT INTO events (event_name, event_note, created_at, updated_at, user_id) VALUES ("${req.body.event_name}", "${req.body.event_note}", NOW(), NOW(), "${req.session.data.id}")`, callback);
+		if(req.session.data){
+			doQuery(`INSERT INTO events (event_name, event_note, created_at, updated_at, user_id) VALUES ("${req.body.event_name}", "${req.body.event_note}", NOW(), NOW(), "${req.session.data.id}")`, callback);
+		}else{
+			console.log("Session is missing for query that requires session. Aborting.");
+		}
 	},
 	change_contact_status: function(status, crypto_code, expectedStatus, callback){
 		console.log("model function for change_contact_status");
@@ -78,13 +87,11 @@ module.exports = {
 		doQuery(`SELECT id, contact_status FROM contacts WHERE contact_phone=${phone}`, callback);
 	},
 	add_new_contact: function(req, res, crypto_code, callback){
-		console.log("model function for add_new_contact");
-		console.log(req.body);
-		console.log(req.session.data.id);
-		console.log(req.session.data);
-		var doq = `INSERT INTO contacts (contact_first_name, contact_last_name, contact_email, contact_phone, contact_relationship, contact_status, created_at, updated_at, users_id, crypto_code) VALUES ("${req.body.contact_first_name}", "${req.body.contact_last_name}", "${req.body.contact_email}", "${req.body.contact_phone}", "${req.body.contact_relationship}", 0, NOW(), NOW(), ${req.session.data.id}, "${crypto_code}")`;
-		doQuery(doq, callback);
-		console.log(doq);
+		if(req.session.data){
+			doQuery(`INSERT INTO contacts (contact_first_name, contact_last_name, contact_email, contact_phone, contact_relationship, contact_status, created_at, updated_at, users_id, crypto_code) VALUES ("${req.body.contact_first_name}", "${req.body.contact_last_name}", "${req.body.contact_email}", "${req.body.contact_phone}", "${req.body.contact_relationship}", 0, NOW(), NOW(), ${req.session.data.id}, "${crypto_code}")`, callback);
+		}else{
+			console.log("Session is missing for query that requires session. Aborting.");
+		}
 	},
 	edit_profile: function(req, res, callback){
 		var first_name = (req.body.first_name)?`first_name="${req.body.first_name}", `:"";
@@ -92,9 +99,11 @@ module.exports = {
 		var email = (req.body.email)?`email="${req.body.email}", `:"";
 		var phone = (req.body.phone)?`phone="${req.body.phone}", `:"";
 		var password = (req.body.password)?`password="${req.body.password}", `:"";
-		var doq = `UPDATE users SET ${first_name}${last_name}${email}${phone}${password}updated_at=NOW() WHERE id=${req.session.data.id}`;
-		console.log(doq);
-		doQuery(doq, callback);
+		if(req.session.data){
+			doQuery(`UPDATE users SET ${first_name}${last_name}${email}${phone}${password}updated_at=NOW() WHERE id=${req.session.data.id}`, callback);
+		}else{
+			console.log("Session is missing for query that requires session. Aborting.");
+		}
 	},
 	retrieve_password: function(req, res, callback){
 		console.log(req.body, "retrieve_password in the model");
