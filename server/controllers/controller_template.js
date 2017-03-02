@@ -162,6 +162,7 @@ exps = {
 
 		var valid = true;
 		var validation_errors = [];
+		var letters = /^[A-Za-z]+$/;
 
 		for(let field of ["first_name", "last_name", "email", "password", "confirm_password", "phone"]){
 			if(req.body[field].length < 1){
@@ -178,9 +179,9 @@ exps = {
 		{
 			validationError("password should be at least 8 characters.");
 		}
-		if(req.body.phone.length < 11)
+		if(req.body.phone.length < 11 || req.body.phone.match(letters)))
 		{
-			validationError("Phone number must in the format of 1(area-code)XXX-XXX");
+			validationError("Phone number must in the format of 1(area-code)XXX-XXX and numbers only");
 		}
 		if(valid)
 		{
@@ -188,6 +189,7 @@ exps = {
 				// console.log(req.body, "res.data from registration");
 				if (rows === undefined || rows.insertId === undefined){
 					res.json({success: false, validation_errors: ["Email has been taken already. Nice try."]});
+					console.log("email has been taken");
 				}
 				else if (rows.insertId){
 					req.session.data = {};
