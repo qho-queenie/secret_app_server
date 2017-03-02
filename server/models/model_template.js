@@ -35,7 +35,9 @@ module.exports = {
 
 	display_events: function(req, res, callback){
 		if(req.session.data){
-			doQuery(`SELECT * FROM users JOIN events ON users.id = events.user_id WHERE events.user_id = ${req.session.data.id}`, callback);
+			var doq = `SELECT * FROM users JOIN events ON users.id = events.user_id WHERE events.user_id = ${req.session.data.id}`;
+			console.log(doq);
+			doQuery(doq, callback);
 		}else{
 			console.log("Session is missing for query that requires session. Aborting.");
 			callback();
