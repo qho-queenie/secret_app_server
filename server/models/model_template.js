@@ -38,6 +38,7 @@ module.exports = {
 			doQuery(`SELECT * FROM users JOIN events ON users.id = events.user_id WHERE events.user_id = ${req.session.data.id}`, callback);
 		}else{
 			console.log("Session is missing for query that requires session. Aborting.");
+			callback();
 		}
 	},
 
@@ -46,6 +47,7 @@ module.exports = {
 			doQuery(`SELECT * FROM users where id = ${req.session.data.id}`, callback);
 		}else{
 			console.log("Session is missing for query that requires session. Aborting.");
+			callback();
 		}
 	},
 
@@ -54,6 +56,7 @@ module.exports = {
 			doQuery(`SELECT * FROM contacts where users_id = ${req.session.data.id}`, callback);
 		}else{
 			console.log("Session is missing for query that requires session. Aborting.");
+			callback();
 		}
 	},
 	delete_event: function(req, res, callback){
@@ -74,6 +77,7 @@ module.exports = {
 			doQuery(`INSERT INTO events (event_name, event_note, created_at, updated_at, user_id) VALUES ("${req.body.event_name}", "${req.body.event_note}", NOW(), NOW(), "${req.session.data.id}")`, callback);
 		}else{
 			console.log("Session is missing for query that requires session. Aborting.");
+			callback();
 		}
 	},
 	change_contact_status: function(status, crypto_code, expectedStatus, callback){
@@ -91,6 +95,7 @@ module.exports = {
 			doQuery(`INSERT INTO contacts (contact_first_name, contact_last_name, contact_email, contact_phone, contact_relationship, contact_status, created_at, updated_at, users_id, crypto_code) VALUES ("${req.body.contact_first_name}", "${req.body.contact_last_name}", "${req.body.contact_email}", "${req.body.contact_phone}", "${req.body.contact_relationship}", 0, NOW(), NOW(), ${req.session.data.id}, "${crypto_code}")`, callback);
 		}else{
 			console.log("Session is missing for query that requires session. Aborting.");
+			callback();
 		}
 	},
 	edit_profile: function(req, res, callback){
@@ -103,6 +108,7 @@ module.exports = {
 			doQuery(`UPDATE users SET ${first_name}${last_name}${email}${phone}${password}updated_at=NOW() WHERE id=${req.session.data.id}`, callback);
 		}else{
 			console.log("Session is missing for query that requires session. Aborting.");
+			callback();
 		}
 	},
 	retrieve_password: function(req, res, callback){
