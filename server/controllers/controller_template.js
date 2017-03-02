@@ -178,7 +178,10 @@ exps = {
 		{
 			validationError("password should be at least 8 characters.");
 		}
-
+		if(req.body.phone.length < 11)
+		{
+			validationError("Phone number must in the format of 1(area-code)XXX-XXX");
+		}
 		if(valid)
 		{
 			models.model_template.registration(req, res, function(err, rows, fields){
