@@ -184,7 +184,15 @@ exps = {
 			models.model_template.registration(req, res, function(err, rows, fields){
 				// console.log(req.body, "res.data from registration");
 				console.log(rows);
-				res.json({success: true, data: rows.insertId});
+				if (rows.insertId){
+					req.session.data = {};
+					req.session.data.id = rows.insertId;
+					res.json({success: true, data: rows.insertId});
+				}
+				else{
+					res.json({success: false, validation_errors: ["registration failed."]});
+				}
+
 			});
 		}
 		else{
