@@ -189,8 +189,7 @@ exps = {
 				if (rows === undefined || rows.insertId === undefined){
 					res.json({success: false, validation_errors: ["Email has been taken already. Nice try."]});
 				}
-				console.log(rows);
-				if (rows.insertId){
+				else if (rows.insertId){
 					req.session.data = {};
 					req.session.data.id = rows.insertId;
 					res.json({success: true, data: rows.insertId});
