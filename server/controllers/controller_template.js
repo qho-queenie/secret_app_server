@@ -186,7 +186,7 @@ exps = {
 		{
 			models.model_template.registration(req, res, function(err, rows, fields){
 				// console.log(req.body, "res.data from registration");
-				if (rows === undefined){
+				if (rows === undefined || rows.insertId === undefined){
 					res.json({success: false, validation_errors: ["Email has been taken already. Nice try."]});
 				}
 				console.log(rows);
