@@ -179,7 +179,7 @@ exps = {
 		{
 			validationError("password should be at least 8 characters.");
 		}
-		if(req.body.phone.length < 11 || req.body.phone.match(letters)))
+		if(req.body.phone.length < 11 || req.body.phone.match(letters))
 		{
 			validationError("Phone number must in the format of 1(area-code)XXX-XXX and numbers only");
 		}
