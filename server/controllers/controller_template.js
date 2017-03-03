@@ -86,12 +86,12 @@ exps = {
 
     	if(!phone)
     		phone = hardcodedPhoneNumber;
-		flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${data.user_first_name} wants you to be an emergency contact for uSafe?. Reply "YES" with ${crypto_code} if you wish to be their emergency contact. Don't reply if you do not wish to. And anytime you don't want to be the emergency contact anymore, reply with "I am out." and ${crypto_code}`}, function(err, response){
+		flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${data.user_first_name} wants you to be an emergency contact for uSafe?. Reply "YES" with ${crypto_code} if you wish to be their emergency contact. Don't reply if you do not wish to. And anytime you don't want to be the emergency contact anymore, reply with "I am out." and ${crypto_code}`}, function(err, res){
 		      if(err){
 		        console.log(err);
 		      }
 		      console.log(response, "response from the createMessage");
-					response.json({data:response});
+					res.json({success: true, validation_errors: []});;
     	});
 	},
 	sms_reply: function(req, res){
