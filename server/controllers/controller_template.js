@@ -120,9 +120,22 @@ exps = {
 		if(changeStatus)
 		{
 			models.model_template.change_contact_status(status, crypto_code, expectedStatus, function(err, rows, fields){
-				console.log(err, "err");
 				console.log(rows, "rows");
 				console.log(fields, "fields");
+				console.log(req.from, "req.from");
+				console.log(crypto_code, "is crypto is here????");
+				if (rows["insertId"] !== null){
+					flowroute.MessagesController.createMessage({"to": req.from, "from": "14089122921", "content":
+					`You are now${data.user_first_name}'s emergency contact on USafe? Anytime you don't want to be the emergency contact anymore, reply "I'm out" with ${crypto_code}`}, function(err, response){
+								if(err){
+									console.log(err);
+								}
+								console.log("response from the createMessage");
+						});
+				}
+				else{
+					console.log(err, "err");
+				}
 			});
 		}
 
