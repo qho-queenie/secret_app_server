@@ -86,12 +86,11 @@ exps = {
 
     	if(!phone)
     		phone = hardcodedPhoneNumber;
-		flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${data.user_first_name} wants you to be an emergency contact for uSafe?. Reply "YES" with ${crypto_code} if you wish to be their emergency contact. Don't reply if you do not wish to. And anytime you don't want to be the emergency contact anymore, reply with "I am out." and ${crypto_code}`}, function(err, res){
+		flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${data.user_first_name} wants you to be an emergency contact for uSafe?. Reply "YES" with ${crypto_code} if you wish to be their emergency contact. Don't reply if you do not wish to. And anytime you don't want to be the emergency contact anymore, reply with "I am out." and ${crypto_code}`}, function(err, response){
 		      if(err){
 		        console.log(err);
 		      }
 		      console.log("response from the createMessage");
-					res.json({success: true, validation_errors: []});;
     	});
 	},
 	sms_reply: function(req, res){
@@ -265,7 +264,7 @@ exps = {
 		console.log(crypto_code, "crypto code");
             models.model_template.add_new_contact(req, res, crypto_code, function(err, rows, fields){
             	exps.add_contact_sms(req, crypto_code);
-            	res.json({success: true, data: rows});
+            	res.json({success: true, validation_errors:[]});
             });
         }
 		else
