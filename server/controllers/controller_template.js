@@ -149,6 +149,15 @@ exps = {
 								console.log("response from the status === 1 receipt");
 						});
 					}
+					else
+					{
+						flowroute.MessagesController.createMessage({"to": req.body.from, "from": "14089122921", "content":
+						"You endered the wrong code."}, function(err, response){
+								if(err){
+									console.log(err);
+								}
+						});
+					}
 				})
 			}
 			else if (status === 2){
@@ -160,6 +169,15 @@ exps = {
 									console.log(err);
 								}
 								console.log("response from the status === 2 receipt");
+						});
+					}
+					else
+					{
+						flowroute.MessagesController.createMessage({"to": req.body.from, "from": "14089122921", "content":
+						"You endered the wrong code."}, function(err, response){
+								if(err){
+									console.log(err);
+								}
 						});
 					}
 				})
