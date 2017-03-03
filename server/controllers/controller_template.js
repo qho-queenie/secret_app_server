@@ -152,7 +152,7 @@ exps = {
 					else
 					{
 						flowroute.MessagesController.createMessage({"to": req.body.from, "from": "14089122921", "content":
-						"You endered the wrong code."}, function(err, response){
+						"Say what? You entered the wrong code."}, function(err, response){
 								if(err){
 									console.log(err);
 								}
@@ -174,7 +174,7 @@ exps = {
 					else
 					{
 						flowroute.MessagesController.createMessage({"to": req.body.from, "from": "14089122921", "content":
-						"You endered the wrong code."}, function(err, response){
+						"Say what? You entered the wrong code."}, function(err, response){
 								if(err){
 									console.log(err);
 								}
