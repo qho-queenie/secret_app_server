@@ -92,6 +92,11 @@ module.exports = {
 		console.log("model function for find_contact_by_phone");
 		doQuery(`SELECT id, contact_status FROM contacts WHERE contact_phone=${phone}`, callback);
 	},
+	find_user_by_crypto: function(crypto, callback){
+		console.log("model function for find_contact_by_crypto");
+		doQuery(`select (users.id, users.first_name, contacts.id, contacts.contact_first_name) FROM users join contacts on users.id = contacts.users_id WHERE contacts.crypto = "${crypto}"`, callback);
+	},
+
 	add_new_contact: function(req, res, crypto_code, callback){
 		if(req.session.data){
 			console.log("add_new_contact from the model");

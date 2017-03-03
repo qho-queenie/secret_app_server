@@ -86,7 +86,7 @@ exps = {
 
     	if(!phone)
     		phone = hardcodedPhoneNumber;
-		flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${data.user_first_name} wants you to be an emergency contact for uSafe?. Reply "YES" with ${crypto_code} if you wish to be their emergency contact. Don't reply if you do not wish to. And anytime you don't want to be the emergency contact anymore, reply with "I am out." and ${crypto_code}`}, function(err, response){
+		flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${data.user_first_name} wants you to be an emergency contact for uSafe?. Reply "YES" with ${crypto_code} if you wish to be their emergency contact.`}, function(err, response){
 		      if(err){
 		        console.log(err);
 		      }
@@ -119,23 +119,32 @@ exps = {
 
 		if(changeStatus)
 		{
-			models.model_template.change_contact_status(status, crypto_code, expectedStatus, function(err, rows, fields){
-				console.log(rows, "rows");
-				console.log(fields, "fields");
-				console.log(req.from, "req.from");
-				console.log(crypto_code, "is crypto is here????");
-				if (rows["insertId"] !== null){
-					flowroute.MessagesController.createMessage({"to": req.from, "from": "14089122921", "content":
-					`You are now${data.user_first_name}'s emergency contact on USafe? Anytime you don't want to be the emergency contact anymore, reply "I'm out" with ${crypto_code}`}, function(err, response){
+			if (status === 1){
+				models.model_template.find_user_by_crypto(crypto_code, function(err, rows, fields){
+					flowroute.MessagesController.createMessage({"to": req.body.from, "from": "14089122921", "content":
+					`You are now ${rows.first_name}'s emergency contact on USafe? Anytime you don't want to be the emergency contact anymore, reply "I'm out" with ${crypto_code}`}, function(err, response){
 								if(err){
 									console.log(err);
 								}
-								console.log("response from the createMessage");
+								console.log("response from the status === 1 receipt");
 						});
-				}
-				else{
-					console.log(err, "err");
-				}
+				})
+			}
+			else if (status === 2){
+				models.model_template.find_user_by_crypto(crypto_code, function(err, rows, fields){
+					flowroute.MessagesController.createMessage({"to": req.body.from, "from": "14089122921", "content":
+					`You are no longer ${rows.first_name}'s emergency contact on USafe?`}, function(err, response){
+								if(err){
+									console.log(err);
+								}
+								console.log("response from the status === 2 receipt");
+						});
+				})
+			}
+			models.model_template.change_contact_status(status, crypto_code, expectedStatus, function(err, rows, fields){
+				console.log(rows, "rows");
+				console.log(fields, "fields");
+				console.log(err, "err");
 			});
 		}
 
