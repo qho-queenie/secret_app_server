@@ -91,7 +91,7 @@ exps = {
 		        console.log(err);
 		      }
 		      console.log(response, "response from the createMessage");
-					res.json({data:response});
+					response.json({data:response});
     	});
 	},
 	sms_reply: function(req, res){
