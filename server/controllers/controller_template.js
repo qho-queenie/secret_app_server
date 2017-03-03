@@ -12,6 +12,8 @@ var flowroute = require(path.join(__dirname, './../flowroute-messaging-nodejs-ma
 
 var sessionPendingMsgs = {};
 
+var user_timers = {};
+
 var hardcodedPhoneNumber = "";
 
 exps = {
@@ -41,14 +43,30 @@ exps = {
 		console.log(req.body.minutes);
 		sessionPendingMsgs[req.sessionID] = true;
 		exps.start_task_sms(req.body);
+		var ms = parseInt(req.body.minutes) * 60000;
+		user_timers[req.session.data.id] = {timeLimitSeconds: ~~(ms/1000), startTime: process.hrtime()};
 		setTimeout(function(){
 			console.log("Countdown done");
 			if(sessionPendingMsgs[req.sessionID]){
 				exps.alert_contact_sms(req.body);
 			}
-		}, parseInt(req.body.minutes) * 60000);
+		}, ms);
 		res.sendStatus(200);
 	},
+
+	get_current_timer(req, res){
+		var timer = user_timers[req.session.data.id];
+		if(timer){
+			var timeElapsed = process.hrtime(timer.startTime)[0];
+			console.log(timeElapsed)
+			var timeRemaining = ~~(timer.timeLimitSeconds - timeElapsed);
+			res.json({timeRemaining: timeRemaining});
+		}
+		else{
+			res.json({});
+		}
+	},
+
 	display_events: function(req, res){
 		models.model_template.display_events(req, res, function(err, rows, fields){
 			console.log(rows)
