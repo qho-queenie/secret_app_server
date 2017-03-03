@@ -95,7 +95,7 @@ module.exports = {
 	add_new_contact: function(req, res, crypto_code, callback){
 		if(req.session.data){
 			console.log("add_new_contact from the model");
-			var doq1 = `INSERT INTO contacts (contact_first_name, contact_last_name, contact_email, contact_phone, contact_relationship, contact_status, created_at, updated_at, users_id, crypto_code) VALUES ("${req.body.contact_first_name}", "${req.body.contact_last_name}", "${req.body.contact_email}", "${req.body.contact_phone}", "${req.body.contact_relationship}", 0, NOW(), NOW(), ${req.session.data.id}, "${crypto_code}")`);
+			var doq1 = `INSERT INTO contacts (contact_first_name, contact_last_name, contact_email, contact_phone, contact_relationship, contact_status, created_at, updated_at, users_id, crypto_code) VALUES ("${req.body.contact_first_name}", "${req.body.contact_last_name}", "${req.body.contact_email}", "${req.body.contact_phone}", "${req.body.contact_relationship}", 0, NOW(), NOW(), ${req.session.data.id}, "${crypto_code}")`;
 			console.log(doq1);
 			doQuery(doq1, callback);
 		}else{
