@@ -140,7 +140,7 @@ exps = {
 			if (status === 1){
 				models.model_template.find_user_by_crypto(crypto_code, function(err, rows, fields){
 					console.log(rows, "find_user_by_crypto rows");
-					if(rows){
+					if(rows[0]){
 						flowroute.MessagesController.createMessage({"to": req.body.from, "from": "14089122921", "content":
 						`You are now ${rows[0].first_name}'s emergency contact on USafe? Anytime you don't want to be the emergency contact anymore, reply "I'm out" with ${crypto_code}`}, function(err, response){
 								if(err){
@@ -153,7 +153,7 @@ exps = {
 			}
 			else if (status === 2){
 				models.model_template.find_user_by_crypto(crypto_code, function(err, rows, fields){
-					if(rows){
+					if(rows[0]){
 						flowroute.MessagesController.createMessage({"to": req.body.from, "from": "14089122921", "content":
 						`You are no longer ${rows[0].first_name}'s emergency contact on USafe?`}, function(err, response){
 								if(err){
