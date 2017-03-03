@@ -90,7 +90,7 @@ exps = {
 		      if(err){
 		        console.log(err);
 		      }
-		      console.log(response, "response from the createMessage");
+		      console.log("response from the createMessage");
 					res.json({success: true, validation_errors: []});;
     	});
 	},
