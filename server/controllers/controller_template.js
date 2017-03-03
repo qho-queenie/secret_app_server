@@ -69,8 +69,10 @@ exps = {
 		flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${data.user_first_name} is starting task ${data.event_name}. You will be alerted again if they don't check in after ${data.minutes} minutes. ${data.user_first_name} also said that ${data.additional_message}`}, function(err, response){
 		      if(err){
 		        console.log(err);
+						res.json({success: false, validation_errors: ["Something went wrong. Please try again."]});
 		      }
-		      console.log(response);
+					console.log(response);
+		      res.json({success: true, validation_errors: []});;
     	});
 	},
 
@@ -88,7 +90,8 @@ exps = {
 		      if(err){
 		        console.log(err);
 		      }
-		      console.log(response);
+		      console.log(response, "response from the createMessage");
+					res.json({data:response});
     	});
 	},
 	sms_reply: function(req, res){
@@ -174,7 +177,7 @@ exps = {
 
 		if(req.body.password !== req.body.confirm_password)
 		{
-			validationError("password and confirm password must match.");
+			validationError("Password and confirm password must match.");
 		}
 		if(re.test(req.body.email) == false)
 		{
@@ -182,7 +185,7 @@ exps = {
 		}
 		if(req.body.password.length < 8)
 		{
-			validationError("password should be at least 8 characters.");
+			validationError("Password should be at least 8 characters.");
 		}
 		if(req.body.phone.length < 11 || req.body.phone.match(letters))
 		{
