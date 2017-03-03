@@ -163,6 +163,8 @@ exps = {
 		var valid = true;
 		var validation_errors = [];
 		var letters = /^[A-Za-z]+$/;
+		var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
 
 		for(let field of ["first_name", "last_name", "email", "password", "confirm_password", "phone"]){
 			if(req.body[field].length < 1){
@@ -174,14 +176,17 @@ exps = {
 		{
 			validationError("password and confirm password must match.");
 		}
-
+		if(re.test(req.body.email) == false)
+		{
+			validationError("Invalid email");
+		}
 		if(req.body.password.length < 8)
 		{
 			validationError("password should be at least 8 characters.");
 		}
 		if(req.body.phone.length < 11 || req.body.phone.match(letters))
 		{
-			validationError("Phone number must in the format of 1(area-code)XXX-XXX and numbers only");
+			validationError("Phone number must in the format of 1(area-code)XXX-XXX and must numbers only");
 		}
 		if(valid)
 		{
