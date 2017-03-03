@@ -87,10 +87,10 @@ exps = {
 		flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${data.user_first_name} is starting task ${data.event_name}. You will be alerted again if they don't check in after ${data.minutes} minutes. ${data.user_first_name} also said that ${data.additional_message}`}, function(err, response){
 		      if(err){
 		        console.log(err);
-						res.json({success: false, validation_errors: ["Something went wrong. Please try again."]});
+						// res.json({success: false, validation_errors: ["Something went wrong. Please try again."]});
 		      }
 					console.log(response);
-		      res.json({success: true, validation_errors: []});;
+		      // res.json({success: true, validation_errors: []});
     	});
 	},
 
