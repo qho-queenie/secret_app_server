@@ -43,6 +43,7 @@ exps = {
 	start_task: function(req, res){
 		console.log("task:", req.body);
 		console.log(req.body.minutes);
+		sessionPendingMsgs[req.sessionID] = true;
 		exps.start_task_sms(req.body);
 		console.log(req.body.contact_phone, "req.body.phone in start_task controller");
 		current_tasks_phone[req.session.data.id] = req.body.contact_phone;
@@ -92,7 +93,6 @@ exps = {
 
 	start_task_sms: function(data){
     	//Create and send a message
-			sessionPendingMsgs[req.sessionID] = true;
 			// `${data.user_first_name} has not checked in after the specified time. Please contact your friend and make sure they are ok.`;
     	var phone = data.contact_phone;
     	if(!phone)
