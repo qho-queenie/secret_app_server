@@ -78,6 +78,7 @@ exps = {
 	},
 	end_current_task: function(req, res){
 		var phone = current_tasks_phone[req.session.data.id];
+		console.log(current_tasks_phone, "current_tasks_phone at end_current_task controller")
 		console.log(phone, "phone from end_current_task controller");
 		models.model_template.display_user(req, res, function(err, rows, fields){
 		console.log(rows, "rows from end_current_task controller");
@@ -91,7 +92,8 @@ exps = {
 
 	start_task_sms: function(data){
     	//Create and send a message
-			sessionPendingMsgs[req.sessionID] = `${data.user_first_name} has not checked in after the specified time. Please contact your friend and make sure they are ok.`;
+			sessionPendingMsgs[req.sessionID] = true;
+			// `${data.user_first_name} has not checked in after the specified time. Please contact your friend and make sure they are ok.`;
     	var phone = data.contact_phone;
     	if(!phone)
     		phone = hardcodedPhoneNumber;
