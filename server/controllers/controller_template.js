@@ -80,7 +80,7 @@ exps = {
 		var phone = current_tasks_phone[req.session.data.id];
 		console.log(phone, "phone from end_current_task controller");
 		models.model_template.display_user(req, res, function(err, rows, fields){
-		console.log(rows, "rows from end_current_task controller";)
+		console.log(rows, "rows from end_current_task controller");
 				sessionPendingMsgs[req.sessionID] = undefined;
 				flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${rows[0]["first_name"]} has checked in safely.`, function(err, response){
 				})
