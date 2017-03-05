@@ -16,6 +16,8 @@ var user_timers = {};
 
 var hardcodedPhoneNumber = "";
 
+var current_tasks_phone = {};
+
 exps = {
 	test: function(req, res){
 		console.log(req.sessionID, "controller function called successfully");
@@ -41,8 +43,9 @@ exps = {
 	start_task: function(req, res){
 		console.log("task:", req.body);
 		console.log(req.body.minutes);
-		sessionPendingMsgs[req.sessionID] = true;
 		exps.start_task_sms(req.body);
+		console.log(req.body.contact_phone, "req.body.phone in start_task controller");
+		current_tasks_phone[req.session.data.id] = req.body.contact_phone;
 		var ms = parseInt(req.body.minutes) * 60000;
 		user_timers[req.session.data.id] = {timeLimitSeconds: ~~(ms/1000), startTime: process.hrtime()};
 		setTimeout(function(){
@@ -74,12 +77,21 @@ exps = {
 		});
 	},
 	end_current_task: function(req, res){
-		sessionPendingMsgs[req.sessionID] = undefined;
+		var phone = current_tasks_phone[req.session.data.id];
+		console.log(phone, "phone from end_current_task controller");
+		models.model_template.display_user(req, res, function(err, rows, fields){
+		console.log(rows, "rows from end_current_task controller";)
+				sessionPendingMsgs[req.sessionID] = undefined;
+				flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${rows[0]["first_name"]} has checked in safely.`, function(err, response){
+				})
+		})
+
 		res.sendStatus(200);
 	},
 
 	start_task_sms: function(data){
     	//Create and send a message
+			sessionPendingMsgs[req.sessionID] = `${data.user_first_name} has not checked in after the specified time. Please contact your friend and make sure they are ok.`;
     	var phone = data.contact_phone;
     	if(!phone)
     		phone = hardcodedPhoneNumber;
@@ -193,7 +205,6 @@ exps = {
  	},
 
 	alert_contact_sms: function(data){
-    	//Create and send a message
     	var phone = data.contact_phone;
     	if(!phone)
     		phone = hardcodedPhoneNumber;
