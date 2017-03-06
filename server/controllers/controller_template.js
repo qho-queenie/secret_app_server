@@ -111,6 +111,8 @@ exps = {
 
 	add_contact_sms: function(req, crypto_code){
     	//Create and send a message
+
+		if(req.session.data){
     	var data = req.body;
 			console.log(data, "checking data at add_contact_sms");
     	var phone = data.contact_phone;
@@ -125,6 +127,11 @@ exps = {
 		      }
 		      console.log("response from the createMessage");
     	});
+		}else{
+			console.log("Can't add contact without session.");
+		}
+		res.sendStatus(200);
+
 	},
 	sms_reply: function(req, res){
 
