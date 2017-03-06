@@ -18,10 +18,30 @@ var hardcodedPhoneNumber = "";
 
 var current_tasks_phone = {};
 
+var contact_availability = {};
+
 exps = {
 	test: function(req, res){
 		console.log(req.sessionID, "controller function called successfully");
 			res.send("successfully made it through route->controller->model->response");
+	},
+
+	check_contact_availability: function(req, res){
+		var avail = (contact_availability[req.query.id] == true)
+		if(!avail)
+		{
+
+		models.model_template.get_contact_avail_info(req.query.id, function(err, rows, fields){
+			var phone = rows[0].contact_phone;
+			var crypto_code = rows[0].crypto_code;
+			var user_first_name = rows[0].first_name;
+			flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${rows[0]["first_name"]} wants to know if you are available to be their emergency contact for an upcoming task. Reply with "Available" and ${crypto_code} to let them know you have their back.`}, function(err, response){
+				console.log(response);
+			})
+		})
+
+		}
+		res.json({availability: avail});
 	},
 
 	remove_declined_contacts: function(req, res){
@@ -141,6 +161,7 @@ exps = {
 			var expectedStatus = 0;
 			var changeStatus = false;
 			var crypto_code;
+			var availability_response = false;
 			if (req.body.body.toUpperCase().includes("YES")){
 				console.log("there is a yes in include");
 				status = 1;
@@ -154,6 +175,12 @@ exps = {
 				expectedStatus = 1;
 				crypto_code = req.body.body.toLowerCase().replace("i am out", "").replace("im out", "").replace("i\'m out", "").trim();
 				changeStatus = true;
+			}
+			else if (req.body.body.toUpperCase().includes("AVAILABLE")){
+				console.log("available");
+				availability_response = true;
+				crypto_code = req.body.body.toLowerCase().replace("available", "").trim();
+
 			}
 			else{
 				console.log("person didnt reply correctly. Not doing anything.")
@@ -211,6 +238,12 @@ exps = {
 					console.log(fields, "fields");
 					console.log(err, "err");
 				});
+			}
+			else if(availability_response === true)
+			{	
+				contact_availability[crypto_code] = true;
+				var duration = 3600000;
+				setTimeout(function(){contact_availability[crypto_code] == undefined;}, duration);
 			}
 
 			res.sendStatus(200);

@@ -98,6 +98,14 @@ module.exports = {
 		console.log(doq, "doq from find_user_by_crypto");
 		doQuery(doq, callback);
 	},
+	get_contact_avail_info: function(contact_id, callback){
+		var doq = `select contact_phone, crypto_code, users.first_name from contacts join users on users.contact_id = contacts.id where id = ${contact_id}`;
+		doQuery(doq, callback);
+	},
+	get_contact_avail_info_from_crypto: function(crypto_code, callback){
+		var doq = `select contact_phone, contact_id, crypto_code, users.first_name from contacts join users on users.contact_id = contacts.id where id = ${contact_id}`;
+		doQuery(doq, callback);
+	},
 
 	add_new_contact: function(req, res, crypto_code, callback){
 		if(req.session.data){
