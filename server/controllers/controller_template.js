@@ -119,7 +119,7 @@ exps = {
 
     	if(!phone)
     		phone = hardcodedPhoneNumber;
-		flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${data.user_first_name} wants you to be an emergency contact for uSafe?. Reply "YES" with ${crypto_code} if you wish to be their emergency contact. No action is needed if you do not wish so.`}, function(err, response){
+		flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${data.user_first_name} wants you to be an emergency contact on uSafe?. Reply "YES" with ${crypto_code} if you wish to be their emergency contact. No action is needed if you do not wish so.`}, function(err, response){
 		      if(err){
 		        console.log(err);
 		      }
@@ -127,84 +127,87 @@ exps = {
     	});
 	},
 	sms_reply: function(req, res){
-  		console.log(req.body, "sms_reply from controller");
-		var status = 0;
-		var expectedStatus = 0;
-		var changeStatus = false;
-		var crypto_code;
-		if (req.body.body.toUpperCase().includes("YES")){
-			console.log("there is a yes in include");
-			status = 1;
-			expectedStatus = 0;
-			crypto_code = req.body.body.toLowerCase().replace("yes", "").trim();
-			changeStatus = true;
-		}
-		else if (req.body.body.toUpperCase().includes("I AM OUT") || req.body.body.toUpperCase().includes("IM OUT") || req.body.body.toUpperCase().includes("I\'M OUT")){
-			console.log("im out");
-			status = 2;
-			expectedStatus = 1;
-			crypto_code = req.body.body.toLowerCase().replace("i am out", "").replace("im out", "").replace("i\'m out", "").trim();
-			changeStatus = true;
-		}
-		else{
-			console.log("person didnt reply correctly. Not doing anything.")
-		}
 
-		if(changeStatus)
-		{
-			if (status === 1){
-				models.model_template.find_user_by_crypto(crypto_code, function(err, rows, fields){
-					console.log(rows, "find_user_by_crypto rows");
-					if(rows[0]){
-						flowroute.MessagesController.createMessage({"to": req.body.from, "from": "14089122921", "content":
-						`You are now ${rows[0].first_name}'s emergency contact on USafe? Anytime you don't want to be the emergency contact anymore, reply "I'm out" with ${crypto_code}`}, function(err, response){
-								if(err){
-									console.log(err);
-								}
-								console.log("response from the status === 1 receipt");
-						});
-					}
-					else
-					{
-						flowroute.MessagesController.createMessage({"to": req.body.from, "from": "14089122921", "content":
-						"Say what? You entered the wrong code."}, function(err, response){
-								if(err){
-									console.log(err);
-								}
-						});
-					}
-				})
+		setTimeout(function(){
+	  		console.log(req.body, "sms_reply from controller");
+			var status = 0;
+			var expectedStatus = 0;
+			var changeStatus = false;
+			var crypto_code;
+			if (req.body.body.toUpperCase().includes("YES")){
+				console.log("there is a yes in include");
+				status = 1;
+				expectedStatus = 0;
+				crypto_code = req.body.body.toLowerCase().replace("yes", "").trim();
+				changeStatus = true;
 			}
-			else if (status === 2){
-				models.model_template.find_user_by_crypto(crypto_code, function(err, rows, fields){
-					if(rows[0]){
-						flowroute.MessagesController.createMessage({"to": req.body.from, "from": "14089122921", "content":
-						`You are no longer ${rows[0].first_name}'s emergency contact on USafe?`}, function(err, response){
-								if(err){
-									console.log(err);
-								}
-								console.log("response from the status === 2 receipt");
-						});
-					}
-					else
-					{
-						flowroute.MessagesController.createMessage({"to": req.body.from, "from": "14089122921", "content":
-						"Say what? You entered the wrong code."}, function(err, response){
-								if(err){
-									console.log(err);
-								}
-						});
-					}
-				})
+			else if (req.body.body.toUpperCase().includes("I AM OUT") || req.body.body.toUpperCase().includes("IM OUT") || req.body.body.toUpperCase().includes("I\'M OUT")){
+				console.log("im out");
+				status = 2;
+				expectedStatus = 1;
+				crypto_code = req.body.body.toLowerCase().replace("i am out", "").replace("im out", "").replace("i\'m out", "").trim();
+				changeStatus = true;
 			}
-			models.model_template.change_contact_status(status, crypto_code, expectedStatus, function(err, rows, fields){
-				console.log(rows, "rows");
-				console.log(fields, "fields");
-				console.log(err, "err");
-			});
-		}
+			else{
+				console.log("person didnt reply correctly. Not doing anything.")
+			}
 
-		res.sendStatus(200);
+			if(changeStatus)
+			{
+				if (status === 1){
+					models.model_template.find_user_by_crypto(crypto_code, function(err, rows, fields){
+						console.log(rows, "find_user_by_crypto rows");
+						if(rows[0]){
+							flowroute.MessagesController.createMessage({"to": req.body.from, "from": "14089122921", "content":
+							`You are now ${rows[0].first_name}'s emergency contact on USafe? Anytime you don't want to be the emergency contact anymore, reply "I'm out" with ${crypto_code}`}, function(err, response){
+									if(err){
+										console.log(err);
+									}
+									console.log("response from the status === 1 receipt");
+							});
+						}
+						else
+						{
+							flowroute.MessagesController.createMessage({"to": req.body.from, "from": "14089122921", "content":
+							"Say what? You entered the wrong code."}, function(err, response){
+									if(err){
+										console.log(err);
+									}
+							});
+						}
+					})
+				}
+				else if (status === 2){
+					models.model_template.find_user_by_crypto(crypto_code, function(err, rows, fields){
+						if(rows[0]){
+							flowroute.MessagesController.createMessage({"to": req.body.from, "from": "14089122921", "content":
+							`You are no longer ${rows[0].first_name}'s emergency contact on USafe?`}, function(err, response){
+									if(err){
+										console.log(err);
+									}
+									console.log("response from the status === 2 receipt");
+							});
+						}
+						else
+						{
+							flowroute.MessagesController.createMessage({"to": req.body.from, "from": "14089122921", "content":
+							"Say what? You entered the wrong code."}, function(err, response){
+									if(err){
+										console.log(err);
+									}
+							});
+						}
+					})
+				}
+				models.model_template.change_contact_status(status, crypto_code, expectedStatus, function(err, rows, fields){
+					console.log(rows, "rows");
+					console.log(fields, "fields");
+					console.log(err, "err");
+				});
+			}
+
+			res.sendStatus(200);
+		}, 2000);
  	},
 
 	alert_contact_sms: function(data){
