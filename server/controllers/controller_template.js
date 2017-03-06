@@ -30,7 +30,7 @@ exps = {
 		var avail = (contact_availability[req.query.id] == true)
 		if(!avail)
 		{
-
+		console.log(req.query.id);
 		models.model_template.get_contact_avail_info(req.query.id, function(err, rows, fields){
 			var phone = rows[0].contact_phone;
 			var crypto_code = rows[0].crypto_code;
