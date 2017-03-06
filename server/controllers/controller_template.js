@@ -27,11 +27,12 @@ exps = {
 	},
 
 	check_contact_availability: function(req, res){
-		var avail = (contact_availability[req.query.id] == true)
+		var avail = (contact_availability[req.query.id] === true);
 		if(!avail)
 		{
 		console.log(req.query.id);
 		models.model_template.get_contact_avail_info(req.query.id, function(err, rows, fields){
+			console.log("rsule from get_contact_avail_info:", rows);
 			var phone = rows[0].contact_phone;
 			var crypto_code = rows[0].crypto_code;
 			var user_first_name = rows[0].first_name;
@@ -243,7 +244,7 @@ exps = {
 			{	
 				contact_availability[crypto_code] = true;
 				var duration = 3600000;
-				setTimeout(function(){contact_availability[crypto_code] == undefined;}, duration);
+				setTimeout(function(){contact_availability[crypto_code] = undefined;}, duration);
 			}
 
 			res.sendStatus(200);
