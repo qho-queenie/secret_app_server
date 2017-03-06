@@ -21,14 +21,14 @@ module.exports = {
 
 	registration: function(req, res, callback){
 		console.log("model function for registration");
-		var doQ = (`INSERT INTO users (first_name, last_name, email, phone, password, created_at, updated_at) VALUES("${req.body.first_name}", "${req.body.last_name}", "${req.body.email}", "${req.body.phone}", "${req.body.password}", NOW(), NOW())`);
+		var doQ = (`INSERT INTO users (first_name, last_name, email, phone, password, created_at, updated_at) VALUES("${req.body.first_name}", "${req.body.last_name}", "${req.body.email.toLowerCase()}", "${req.body.phone}", "${req.body.password}", NOW(), NOW())`);
 		doQuery(doQ, callback);
 		console.log(doQ);
 	},
 
 	login: function(req, res, callback){
 		console.log("model function for login");
-		var doQ1 = (`SELECT id FROM users WHERE email = "${req.body.email}" AND password = "${req.body.password}" LIMIT 1`);
+		var doQ1 = (`SELECT id FROM users WHERE email = "${req.body.email.toLowerCase()}" AND password = "${req.body.password}" LIMIT 1`);
 		doQuery(doQ1, callback);
 		console.log(doQ1);
 	},
@@ -99,12 +99,12 @@ module.exports = {
 		doQuery(doq, callback);
 	},
 	get_contact_avail_info: function(contact_id, callback){
-		var doq = `select contact_phone, crypto_code, users.first_name from contacts join users on users.contact_id = contacts.id where contacts.id = ${contact_id}`;
+		var doq = `select contact_phone, crypto_code, users.first_name from contacts join users on users.id = contacts.users_id where contacts.id = ${contact_id}`;
 		console.log(doq);
 		doQuery(doq, callback);
 	},
 	get_contact_avail_info_from_crypto: function(crypto_code, callback){
-		var doq = `select contact_phone, contact_id, crypto_code, users.first_name from contacts join users on users.contact_id = contacts.id where contacts.id = ${contact_id}`;
+		var doq = `select contact_phone, contact_id, crypto_code, users.first_name from contacts join users on users.id = contacts.users_id where contacts.id = ${contact_id}`;
 		doQuery(doq, callback);
 	},
 

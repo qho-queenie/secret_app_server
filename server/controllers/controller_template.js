@@ -32,7 +32,7 @@ exps = {
 		{
 		console.log(req.query.id);
 		models.model_template.get_contact_avail_info(req.query.id, function(err, rows, fields){
-			console.log("rsule from get_contact_avail_info:", rows);
+			console.log("results from get_contact_avail_info:", rows);
 			var phone = rows[0].contact_phone;
 			var crypto_code = rows[0].crypto_code;
 			var user_first_name = rows[0].first_name;
