@@ -130,7 +130,6 @@ exps = {
 		}else{
 			console.log("Can't add contact without session.");
 		}
-		res.sendStatus(200);
 
 	},
 	sms_reply: function(req, res){
