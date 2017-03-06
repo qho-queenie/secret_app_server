@@ -79,6 +79,7 @@ exps = {
 	},
 	end_current_task: function(req, res){
 		var phone = current_tasks_phone[req.session.data.id];
+		user_timers[req.session.data.id] = undefined;
 		console.log(current_tasks_phone, "current_tasks_phone at end_current_task controller")
 		console.log(phone, "phone from end_current_task controller");
 		models.model_template.display_user(req, res, function(err, rows, fields){
