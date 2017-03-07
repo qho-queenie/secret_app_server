@@ -20,6 +20,8 @@ var current_tasks_phone = {};
 
 var contact_availability = {};
 
+var msg_cooldowns = {};
+
 exps = {
 	test: function(req, res){
 		console.log(req.sessionID, "controller function called successfully");
@@ -49,11 +51,13 @@ exps = {
 	get_all_available_contacts: function(req, res){
 		var result = [];
 		models.model_template.display_contacts(req, res, function(err, rows, fields){
-			for(var contact of rows)
+			console.log("all contacts before availability check:", rows);
+			for(let contact of rows)
 			{
+				console.log("contact status, id:", contact.contact_status, contact_availability[contact.id]);
 				if(contact.contact_status == 1 && contact_availability[contact.id])
 				{
-					result.push(contact.name);
+					result.push(contact);
 				}
 			}
 			res.json(result);
