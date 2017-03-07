@@ -54,7 +54,8 @@ exps = {
 			console.log("all contacts before availability check:", rows);
 			for(let contact of rows)
 			{
-				console.log("contact status, id:", contact.contact_status, contact_availability[contact.id]);
+				console.log("contact status, id:", contact.contact_status, contact.id);
+				console.log(contact_availability);
 				if(contact.contact_status == 1 && contact_availability[contact.id])
 				{
 					result.push(contact);
