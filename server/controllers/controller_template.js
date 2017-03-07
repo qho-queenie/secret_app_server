@@ -264,7 +264,7 @@ exps = {
 			{	
 				models.model_template.get_contact_avail_info_from_crypto(crypto_code, function(err, rows, fields){
 					console.log(rows);
-					var id = rows[0].contact_id;
+					var id = rows[0].id;
 					contact_availability[id] = true;
 					var duration = 3600000;
 					setTimeout(function(){contact_availability[id] = undefined;}, duration);
