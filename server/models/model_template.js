@@ -104,7 +104,7 @@ module.exports = {
 		doQuery(doq, callback);
 	},
 	get_contact_avail_info_from_crypto: function(crypto_code, callback){
-		var doq = `select contact_phone, contacts.id, users.first_name from contacts join users on users.id = contacts.users_id where contacts.crypto_code = ${crypto_code}`;
+		var doq = `select contact_phone, contacts.id, users.first_name from contacts join users on users.id = contacts.users_id where contacts.crypto_code = "${crypto_code}"`;
 		console.log(doq);
 		doQuery(doq, callback);
 	},
