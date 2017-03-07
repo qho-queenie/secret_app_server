@@ -28,6 +28,7 @@ exps = {
 
 	check_contact_availability: function(req, res){
 		var avail = (contact_availability[req.query.id] === true);
+		console.log(contact_availability);
 		if(!avail)
 		{
 		console.log(req.query.id);
@@ -39,10 +40,24 @@ exps = {
 			flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${rows[0]["first_name"]} wants to know if you are available to be their emergency contact for an upcoming task. Reply with "Available" and ${crypto_code} to let them know you have their back.`}, function(err, response){
 				console.log(response);
 			})
-		})
+		});
 
 		}
 		res.json({availability: avail});
+	},
+
+	get_all_available_contacts: function(req, res){
+		var result = [];
+		models.model_template.display_contacts(req, res, function(err, rows, fields){
+			for(var contact of rows)
+			{
+				if(contact.contact_status == 1 && contact_availability[contact.id])
+				{
+					result.push(contact.name);
+				}
+			}
+			res.json(result);
+		});
 	},
 
 	remove_declined_contacts: function(req, res){
