@@ -123,7 +123,7 @@ exps = {
 				user_timers[req.session.data.id] = {timeLimitSeconds: ~~(ms/1000), startTime: process.hrtime()};
 				setTimeout(function(){
 					console.log("Countdown done");
-					if(sessionPendingMsgs[req.sessionID]){
+					if(sessionPendingMsgs[req.session.data.id]){
 						exps.alert_contact_sms(req.body);
 					}
 				}, ms);
@@ -159,17 +159,21 @@ exps = {
 		});
 	},
 	end_current_task: function(req, res){
-		var phone = current_tasks_phone[req.session.data.id];
-		user_timers[req.session.data.id] = undefined;
-		console.log(current_tasks_phone, "current_tasks_phone at end_current_task controller")
-		console.log(phone, "phone from end_current_task controller");
-		models.model_template.display_user(req, res, function(err, rows, fields){
-		console.log(rows, "rows from end_current_task controller");
-				sessionPendingMsgs[req.sessionID] = undefined;
-				flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${rows[0]["first_name"]} has checked in safely.`}, function(err, response){
-					console.log(response);
+
+		if(req.session.data && user_timers[req.session.data.id])
+		{
+			var phone = current_tasks_phone[req.session.data.id];
+			user_timers[req.session.data.id] = undefined;
+			console.log(current_tasks_phone, "current_tasks_phone at end_current_task controller")
+			console.log(phone, "phone from end_current_task controller");
+			models.model_template.display_user(req, res, function(err, rows, fields){
+			console.log(rows, "rows from end_current_task controller");
+					sessionPendingMsgs[req.sessionID] = undefined;
+					flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${rows[0]["first_name"]} has checked in safely.`}, function(err, response){
+						console.log(response);
+				})
 			})
-		})
+		}
 		res.sendStatus(200);
 	},
 
