@@ -60,7 +60,7 @@ exps = {
 				var phone = rows[0].contact_phone;
 				var crypto_code = rows[0].crypto_code;
 				var user_first_name = rows[0].first_name;
-				flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${rows[0]["first_name"]} wants to know if you are available to be their emergency contact for an upcoming task. Reply with "available" and ${crypto_code} to let them know you have their back. No action is needed if you aren't available.`}, function(err, response){
+				flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${rows[0]["first_name"]} wants to know if you are available to be their emergency contact for an upcoming task. Reply with "I'm down" and ${crypto_code} to let them know you have their back. No action is needed if you aren't available.`}, function(err, response){
 					console.log(response);
 				})
 			});
@@ -243,11 +243,12 @@ exps = {
 				crypto_code = pullOutCode(crypto_code, "i am out");
 				changeStatus = true;
 			}
-			else if (req.body.body.toUpperCase().includes("AVAILABLE")){
+			else if (req.body.body.toUpperCase().includes("IM DOWN") || req.body.body.toUpperCase().includes("I'M DOWN") || req.body.body.toUpperCase().includes("I AM DOWN")){
 				console.log("available");
 				availability_response = true;
-				crypto_code = pullOutCode(req.body.body, "available");
-
+				crypto_code = pullOutCode(req.body.body, "im down");
+				crypto_code = pullOutCode(crypto_code, "i'm down");
+				crypto_code = pullOutCode(crypto_code, "i am down");
 			}
 			else{
 				console.log("person didnt reply correctly. Not doing anything.")
