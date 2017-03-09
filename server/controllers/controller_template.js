@@ -460,8 +460,17 @@ exps = {
 				});
         	}
         	else{
-        		if(rows[0].)
-        		res.json({success: false, validation_errors: ["You have already have a pending contact request to that person."]});
+        		if(rows[0].contact_status == 0){
+        			res.json({success: false, validation_errors: ["You have already have a pending contact request to that person."]});
+        		}
+        		else if(rows[0].contact_status == 1)
+        		{
+        			res.json({success: false, validation_errors: ["You have already have that person as an emergency contact."]});
+        		}
+        		else if(rows[0].contact_status == 2)
+        		{
+        			res.json({success: false, validation_errors: ["That person has recently rejected your request. There is a cleanup every week of rejected contacts after which time you can try again."]});
+        		}
         	}
 
 		})
