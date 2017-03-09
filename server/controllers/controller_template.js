@@ -488,11 +488,11 @@ exps = {
         	}
         	else{
         		if(rows[0].contact_status == 0){
-        			res.json({success: false, validation_errors: ["You have already have a pending contact request to that person."]});
+        			res.json({success: false, validation_errors: ["You already have a pending contact request to that person."]});
         		}
         		else if(rows[0].contact_status == 1)
         		{
-        			res.json({success: false, validation_errors: ["You have already have that person as an emergency contact."]});
+        			res.json({success: false, validation_errors: ["You have already added that person as an emergency contact."]});
         		}
         		else if(rows[0].contact_status == 2)
         		{
