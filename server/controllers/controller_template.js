@@ -60,7 +60,7 @@ exps = {
 				var phone = rows[0].contact_phone;
 				var crypto_code = rows[0].crypto_code;
 				var user_first_name = rows[0].first_name;
-				flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${rows[0]["first_name"]} wants to know if you are available to be their emergency contact for an upcoming task. Reply with "Available" and ${crypto_code} to let them know you have their back.`}, function(err, response){
+				flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${rows[0]["first_name"]} wants to know if you are available to be their emergency contact for an upcoming task. Reply with "available" and ${crypto_code} to let them know you have their back. No action is needed if you aren't available.`}, function(err, response){
 					console.log(response);
 				})
 			});

@@ -5,14 +5,22 @@ module.exports = function doQuery(query, callback)
     try
     {
         connection.query(query, function(err, rows, fields){
-            callback(err, rows, fields);
+            try{
+                callback(err, rows, fields);
+            }
+            catch (e)
+            {
+                callback(e, rows, fields);
+                console.log(e);
+                console.log("---");
+                console.log(query);
+            }
         });
     }
     catch (e)
     {
-        callback(e, rows, fields);
+        callback(e);
         console.log(e);
         console.log("---");
-        console.log(query);
     }
 }
