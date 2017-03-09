@@ -110,7 +110,7 @@ exps = {
 
 		if(!cooldown){
 			msg_cooldowns.tasks[req.session.data.id] = true;
-			setTimeout(function(){msg_cooldowns.tasks[req.query.id] = false;}, ten_minutes);
+			setTimeout(function(){msg_cooldowns.tasks[req.session.data.id] = false;}, ten_minutes);
 
 			console.log("task:", req.body);
 			console.log(req.body.minutes);
