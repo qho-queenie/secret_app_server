@@ -30,6 +30,15 @@ const ten_minutes = 600000;
 const thirty_minutes = 1800000;
 const one_hour = 3600000;
 
+//helper for pulling out code in sms_reply
+function pullOutCode(message, toRemove){
+	var searchMask = "toRemove";
+	var regEx = new RegExp(searchMask, "ig");
+	var replaceMask = "";
+
+	return message.replace(regEx, replaceMask).trim();
+}
+
 exps = {
 	test: function(req, res){
 		console.log(req.sessionID, "controller function called successfully");
@@ -209,20 +218,22 @@ exps = {
 				console.log("there is a yes in include");
 				status = 1;
 				expectedStatus = 0;
-				crypto_code = req.body.body.replace("yes", "").trim();
+				crypto_code = pullOutCode(req.body.body, "yes");
 				changeStatus = true;
 			}
 			else if (req.body.body.toUpperCase().includes("I AM OUT") || req.body.body.toUpperCase().includes("IM OUT") || req.body.body.toUpperCase().includes("I\'M OUT")){
 				console.log("im out");
 				status = 2;
 				expectedStatus = 1;
-				crypto_code = req.body.body.replace("i am out", "").replace("im out", "").replace("i\'m out", "").trim();
+				crypto_code = pullOutCode(req.body.body, "im out");
+				crypto_code = pullOutCode(crypto_code, "i'm out");
+				crypto_code = pullOutCode(crypto_code, "i am out");
 				changeStatus = true;
 			}
 			else if (req.body.body.toUpperCase().includes("AVAILABLE")){
 				console.log("available");
 				availability_response = true;
-				crypto_code = req.body.body.replace("available", "").trim();
+				crypto_code = pullOutCode(req.body.body, "available");
 
 			}
 			else{
