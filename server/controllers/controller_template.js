@@ -104,28 +104,30 @@ exps = {
 
 	start_task: function(req, res){
 
-		var cooldown = msg_cooldowns.tasks[req.session.data.id];
+		var cooldown = true;
+		if(session.data){
+			cooldown = msg_cooldowns.tasks[req.session.data.id];
+			console.log(cooldown);
 
-		console.log(cooldown);
+			if(!cooldown){
+				msg_cooldowns.tasks[req.session.data.id] = true;
+				setTimeout(function(){msg_cooldowns.tasks[req.session.data.id] = false;}, ten_minutes);
 
-		if(!cooldown){
-			msg_cooldowns.tasks[req.session.data.id] = true;
-			setTimeout(function(){msg_cooldowns.tasks[req.session.data.id] = false;}, ten_minutes);
-
-			console.log("task:", req.body);
-			console.log(req.body.minutes);
-			sessionPendingMsgs[req.sessionID] = true;
-			exps.start_task_sms(req.body);
-			console.log(req.body.contact_phone, "req.body.phone in start_task controller");
-			current_tasks_phone[req.session.data.id] = req.body.contact_phone;
-			var ms = parseInt(req.body.minutes) * 60000;
-			user_timers[req.session.data.id] = {timeLimitSeconds: ~~(ms/1000), startTime: process.hrtime()};
-			setTimeout(function(){
-				console.log("Countdown done");
-				if(sessionPendingMsgs[req.sessionID]){
-					exps.alert_contact_sms(req.body);
-				}
-			}, ms);
+				console.log("task:", req.body);
+				console.log(req.body.minutes);
+				sessionPendingMsgs[req.sessionID] = true;
+				exps.start_task_sms(req.body);
+				console.log(req.body.contact_phone, "req.body.phone in start_task controller");
+				current_tasks_phone[req.session.data.id] = req.body.contact_phone;
+				var ms = parseInt(req.body.minutes) * 60000;
+				user_timers[req.session.data.id] = {timeLimitSeconds: ~~(ms/1000), startTime: process.hrtime()};
+				setTimeout(function(){
+					console.log("Countdown done");
+					if(sessionPendingMsgs[req.sessionID]){
+						exps.alert_contact_sms(req.body);
+					}
+				}, ms);
+			}
 		}
 
 		res.json({spam_cooldown: cooldown});
@@ -133,12 +135,17 @@ exps = {
 
 	get_current_timer(req, res){
 
-		var timer = user_timers[req.session.data.id];
-		if(timer){
-			var timeElapsed = process.hrtime(timer.startTime)[0];
-			console.log(timeElapsed)
-			var timeRemaining = ~~(timer.timeLimitSeconds - timeElapsed);
-			res.json({timeRemaining: timeRemaining});
+		if(session.data){
+			var timer = user_timers[req.session.data.id];
+			if(timer){
+				var timeElapsed = process.hrtime(timer.startTime)[0];
+				console.log(timeElapsed)
+				var timeRemaining = ~~(timer.timeLimitSeconds - timeElapsed);
+				res.json({timeRemaining: timeRemaining});
+			}
+			else{
+				res.json({});
+			}
 		}
 		else{
 			res.json({});
