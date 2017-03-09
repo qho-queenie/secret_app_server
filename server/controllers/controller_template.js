@@ -245,14 +245,20 @@ exps = {
 				changeStatus = true;
 			}
 			else if (req.body.body.toUpperCase().includes("IM DOWN") || req.body.body.toUpperCase().includes("I'M DOWN") || req.body.body.toUpperCase().includes("I AM DOWN")){
-				console.log("available");
+				console.log("im down");
 				availability_response = true;
 				crypto_code = pullOutCode(req.body.body, "im down");
 				crypto_code = pullOutCode(crypto_code, "i'm down");
 				crypto_code = pullOutCode(crypto_code, "i am down");
 			}
 			else{
-				console.log("person didnt reply correctly. Not doing anything.")
+				console.log("person didnt reply correctly. Not doing anything.");
+				flowroute.MessagesController.createMessage({"to": req.body.from, "from": "14089122921", "content":
+				"We didn't recognize that message. You may have made a typo. Please try again."}, function(err, response){
+					if(err){
+						console.log(err);
+					}
+				});
 			}
 
 			if(changeStatus)
@@ -263,19 +269,19 @@ exps = {
 						if(rows[0]){
 							flowroute.MessagesController.createMessage({"to": req.body.from, "from": "14089122921", "content":
 							`You are now ${rows[0].first_name}'s emergency contact on USafe? Anytime you don't want to be the emergency contact anymore, reply "I'm out" with ${crypto_code}`}, function(err, response){
-									if(err){
-										console.log(err);
-									}
-									console.log("response from the status === 1 receipt");
+								if(err){
+									console.log(err);
+								}
+								console.log("response from the status === 1 receipt");
 							});
 						}
 						else
 						{
 							flowroute.MessagesController.createMessage({"to": req.body.from, "from": "14089122921", "content":
 							"Say what? You entered the wrong code."}, function(err, response){
-									if(err){
-										console.log(err);
-									}
+								if(err){
+									console.log(err);
+								}
 							});
 						}
 					})
