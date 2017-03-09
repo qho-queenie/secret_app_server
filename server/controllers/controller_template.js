@@ -105,7 +105,7 @@ exps = {
 	start_task: function(req, res){
 
 		var cooldown = true;
-		if(session.data){
+		if(req.session.data){
 			cooldown = msg_cooldowns.tasks[req.session.data.id];
 			console.log(cooldown);
 
@@ -135,7 +135,7 @@ exps = {
 
 	get_current_timer(req, res){
 
-		if(session.data){
+		if(req.session.data){
 			var timer = user_timers[req.session.data.id];
 			if(timer){
 				var timeElapsed = process.hrtime(timer.startTime)[0];
