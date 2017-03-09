@@ -32,7 +32,7 @@ const one_hour = 3600000;
 
 //helper for pulling out code in sms_reply
 function pullOutCode(message, toRemove){
-	var searchMask = "toRemove";
+	var searchMask = toRemove;
 	var regEx = new RegExp(searchMask, "ig");
 	var replaceMask = "";
 
