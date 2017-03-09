@@ -21,7 +21,7 @@ var current_tasks_phone = {};
 
 var contact_availability = {};
 
-var msg_cooldowns = {availability: {}, tasks: {}, contact_requests: {}};
+var msg_cooldowns = {availability: {}, tasks: {}, contact_requests: {}, requests_per_phone_number: {}};
 
 //constants for statically delayed things, mostly limits on spamming.
 const one_minute = 60000;
@@ -29,6 +29,7 @@ const five_minutes = 300000;
 const ten_minutes = 600000;
 const thirty_minutes = 1800000;
 const one_hour = 3600000;
+const one_day = 86400000;
 
 //helper for pulling out code in sms_reply
 function pullOutCode(message, toRemove){
@@ -470,6 +471,23 @@ exps = {
         	setTimeout(function(){
         		msg_cooldowns.contact_requests[req.session.data.id]--;
         	}, ten_minutes);
+        }
+
+        if(msg_cooldowns.requests_per_phone_number[req.body.contact_phone] > 4){
+        	validation_errors.push("There are too many requests to this person right now. Please try again later.");
+        	valid = false;
+        }
+        else{
+        	if(typeof msg_cooldowns.requests_per_phone_number[req.body.contact_phone] !== "number"){
+        		msg_cooldowns.requests_per_phone_number[req.body.contact_phone] = 1;
+        	}
+        	else{
+				msg_cooldowns.requests_per_phone_number[req.body.contact_phone]++;
+        	}
+
+        	setTimeout(function(){
+        		msg_cooldowns.requests_per_phone_number[req.body.contact_phone]--;
+        	}, one_day);
         }
 
         //initial validations passed
