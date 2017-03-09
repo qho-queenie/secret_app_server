@@ -106,8 +106,10 @@ exps = {
 
 		var cooldown = msg_cooldowns.tasks[req.session.data.id];
 
+		console.log(cooldown);
+
 		if(!cooldown){
-			msg_cooldowns.tasks[req.query.id] = true;
+			msg_cooldowns.tasks[req.session.data.id] = true;
 			setTimeout(function(){msg_cooldowns.tasks[req.query.id] = false;}, ten_minutes);
 
 			console.log("task:", req.body);
