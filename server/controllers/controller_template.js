@@ -6,6 +6,7 @@ var fs = require("fs");
 var crypto = require("crypto");
 var nodemailer = require("../config/emailer.js");
 var safeEval = require('safe-eval');
+var shortid = require('shortid');
 var flowroute = require(path.join(__dirname, './../flowroute-messaging-nodejs-master/flowroutemessaginglib'));
 	flowroute.configuration.username = "95004144";
 	flowroute.configuration.password = "ca2d914d75da2b78953b98c13473c718";
@@ -20,7 +21,14 @@ var current_tasks_phone = {};
 
 var contact_availability = {};
 
-var msg_cooldowns = {};
+var msg_cooldowns = {availability: {}, tasks: {}, contact_requests: {}};
+
+//constants for statically delayed things, mostly limits on spamming.
+const one_minute = 60000;
+const five_minutes = 300000;
+const ten_minutes = 600000;
+const thirty_minutes = 1800000;
+const one_hour = 3600000;
 
 exps = {
 	test: function(req, res){
@@ -30,22 +38,26 @@ exps = {
 
 	check_contact_availability: function(req, res){
 		var avail = (contact_availability[req.query.id] === true);
+		var cooldown = msg_cooldowns.availability[req.query.id];
 		console.log(contact_availability);
-		if(!avail)
+		if(!avail && !cooldown)
 		{
-		console.log(req.query.id);
-		models.model_template.get_contact_avail_info(req.query.id, function(err, rows, fields){
-			console.log("results from get_contact_avail_info:", rows);
-			var phone = rows[0].contact_phone;
-			var crypto_code = rows[0].crypto_code;
-			var user_first_name = rows[0].first_name;
-			flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${rows[0]["first_name"]} wants to know if you are available to be their emergency contact for an upcoming task. Reply with "Available" and ${crypto_code} to let them know you have their back.`}, function(err, response){
-				console.log(response);
-			})
-		});
+			msg_cooldowns.availability[req.query.id] = true;
+			setTimeout(function(){msg_cooldowns.availability[req.query.id] = false;}, five_minutes);
+
+			console.log(req.query.id);
+			models.model_template.get_contact_avail_info(req.query.id, function(err, rows, fields){
+				console.log("results from get_contact_avail_info:", rows);
+				var phone = rows[0].contact_phone;
+				var crypto_code = rows[0].crypto_code;
+				var user_first_name = rows[0].first_name;
+				flowroute.MessagesController.createMessage({"to": phone, "from": "14089122921", "content": `${rows[0]["first_name"]} wants to know if you are available to be their emergency contact for an upcoming task. Reply with "Available" and ${crypto_code} to let them know you have their back.`}, function(err, response){
+					console.log(response);
+				})
+			});
 
 		}
-		res.json({availability: avail});
+		res.json({availability: avail, spam_cooldown: cooldown});
 	},
 
 	get_all_available_contacts: function(req, res){
@@ -82,24 +94,34 @@ exps = {
 	},
 
 	start_task: function(req, res){
-		console.log("task:", req.body);
-		console.log(req.body.minutes);
-		sessionPendingMsgs[req.sessionID] = true;
-		exps.start_task_sms(req.body);
-		console.log(req.body.contact_phone, "req.body.phone in start_task controller");
-		current_tasks_phone[req.session.data.id] = req.body.contact_phone;
-		var ms = parseInt(req.body.minutes) * 60000;
-		user_timers[req.session.data.id] = {timeLimitSeconds: ~~(ms/1000), startTime: process.hrtime()};
-		setTimeout(function(){
-			console.log("Countdown done");
-			if(sessionPendingMsgs[req.sessionID]){
-				exps.alert_contact_sms(req.body);
-			}
-		}, ms);
-		res.sendStatus(200);
+
+		var cooldown = msg_cooldowns.tasks[req.session.data.id];
+
+		if(!cooldown){
+			msg_cooldowns.tasks[req.query.id] = true;
+			setTimeout(function(){msg_cooldowns.tasks[req.query.id] = false;}, ten_minutes);
+
+			console.log("task:", req.body);
+			console.log(req.body.minutes);
+			sessionPendingMsgs[req.sessionID] = true;
+			exps.start_task_sms(req.body);
+			console.log(req.body.contact_phone, "req.body.phone in start_task controller");
+			current_tasks_phone[req.session.data.id] = req.body.contact_phone;
+			var ms = parseInt(req.body.minutes) * 60000;
+			user_timers[req.session.data.id] = {timeLimitSeconds: ~~(ms/1000), startTime: process.hrtime()};
+			setTimeout(function(){
+				console.log("Countdown done");
+				if(sessionPendingMsgs[req.sessionID]){
+					exps.alert_contact_sms(req.body);
+				}
+			}, ms);
+		}
+
+		res.json({spam_cooldown: cooldown});
 	},
 
 	get_current_timer(req, res){
+
 		var timer = user_timers[req.session.data.id];
 		if(timer){
 			var timeElapsed = process.hrtime(timer.startTime)[0];
@@ -187,20 +209,20 @@ exps = {
 				console.log("there is a yes in include");
 				status = 1;
 				expectedStatus = 0;
-				crypto_code = req.body.body.toLowerCase().replace("yes", "").trim();
+				crypto_code = req.body.body.replace("yes", "").trim();
 				changeStatus = true;
 			}
 			else if (req.body.body.toUpperCase().includes("I AM OUT") || req.body.body.toUpperCase().includes("IM OUT") || req.body.body.toUpperCase().includes("I\'M OUT")){
 				console.log("im out");
 				status = 2;
 				expectedStatus = 1;
-				crypto_code = req.body.body.toLowerCase().replace("i am out", "").replace("im out", "").replace("i\'m out", "").trim();
+				crypto_code = req.body.body.replace("i am out", "").replace("im out", "").replace("i\'m out", "").trim();
 				changeStatus = true;
 			}
 			else if (req.body.body.toUpperCase().includes("AVAILABLE")){
 				console.log("available");
 				availability_response = true;
-				crypto_code = req.body.body.toLowerCase().replace("available", "").trim();
+				crypto_code = req.body.body.replace("available", "").trim();
 
 			}
 			else{
@@ -266,7 +288,7 @@ exps = {
 					console.log(rows);
 					var id = rows[0].id;
 					contact_availability[id] = true;
-					var duration = 3600000;
+					var duration = one_hour;
 					setTimeout(function(){contact_availability[id] = undefined;}, duration);
 				})
 			}
@@ -399,18 +421,51 @@ exps = {
 
 		for(let field of ["contact_first_name", "contact_last_name", "contact_email", "contact_relationship", "contact_phone"]){
 			if(req.body[field].length < 1){
-				validation_errors.push(`${field.replace("_", " ")} cannot be empty.`)
+				validation_errors.push(`${field.replace("_", " ")} cannot be empty.`);
 				valid = false;
 			}
 		}
         console.log(req.body);
+
+        if(msg_cooldowns.contact_requests[req.session.data.id] > 4){
+        	validation_errors.push("You are sending contact requests too rapidly. You can send up to 5 requests per 10 minutes.");
+        	valid = false;
+        }
+        else{
+        	if(typeof msg_cooldowns.contact_requests[req.session.data.id] !== "number"){
+        		msg_cooldowns.contact_requests[req.session.data.id] = 1;
+        	}
+        	else{
+				msg_cooldowns.contact_requests[req.session.data.id]++;
+        	}
+
+        	setTimeout(function(){
+        		msg_cooldowns.contact_requests[req.session.data.id]--;
+        	}, ten_minutes);
+        }
+
+        //initial validations passed
         if(valid){
-		var crypto_code = crypto.randomBytes(3).toString("hex");
+        	//this one was not unique, so using shortid now.
+		// var crypto_code = crypto.randomBytes(3).toString("hex");
+		var crypto_code = shortid.generate();
 		console.log(crypto_code, "crypto code");
-            models.model_template.add_new_contact(req, res, crypto_code, function(err, rows, fields){
-            	exps.add_contact_sms(req, crypto_code);
-            	res.json({success: true, validation_errors:[]});
-            });
+
+		models.model_template.find_contact_by_phone(req.body.contact_phone, req.session.data.id, function(){
+
+			if(rows.length < 1){
+				models.model_template.add_new_contact(req, res, crypto_code, function(err, rows, fields){
+					exps.add_contact_sms(req, crypto_code);
+					res.json({success: true, validation_errors:[]});
+				});
+        	}
+        	else{
+        		if(rows[0].)
+        		res.json({success: false, validation_errors: ["You have already have a pending contact request to that person."]});
+        	}
+
+		})
+
         }
 		else
         {

@@ -88,9 +88,9 @@ module.exports = {
 		console.log(doq, "doq from change_contact_status model");
 		doQuery(doq, callback);
 	},
-	find_contact_by_phone: function(phone, callback){
+	find_contact_by_phone: function(phone, user_id, callback){
 		console.log("model function for find_contact_by_phone");
-		doQuery(`SELECT id, contact_status FROM contacts WHERE contact_phone=${phone}`, callback);
+		doQuery(`SELECT id, contact_status FROM contacts WHERE contact_phone=${phone} AND contacts.users_id = ${user_id}`, callback);
 	},
 	find_user_by_crypto: function(crypto, callback){
 		console.log("model function for find_contact_by_crypto");
