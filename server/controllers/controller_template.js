@@ -478,7 +478,7 @@ exps = {
 		var crypto_code = shortid.generate();
 		console.log(crypto_code, "crypto code");
 
-		models.model_template.find_contact_by_phone(req.body.contact_phone, req.session.data.id, function(){
+		models.model_template.find_contact_by_phone(req.body.contact_phone, req.session.data.id, function(err, rows, fields){
 
 			if(rows.length < 1){
 				models.model_template.add_new_contact(req, res, crypto_code, function(err, rows, fields){
