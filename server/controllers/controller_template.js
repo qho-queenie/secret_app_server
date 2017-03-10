@@ -53,7 +53,7 @@ exps = {
 		if(!avail && !cooldown)
 		{
 			msg_cooldowns.availability[req.query.id] = true;
-			setTimeout(function(){msg_cooldowns.availability[req.query.id] = false;}, five_minutes);
+			setTimeout(function(){msg_cooldowns.availability[req.query.id] = false;}, ten_minutes);
 
 			console.log(req.query.id);
 			models.model_template.get_contact_avail_info(req.query.id, function(err, rows, fields){
@@ -112,7 +112,7 @@ exps = {
 
 			if(!cooldown){
 				msg_cooldowns.tasks[req.session.data.id] = true;
-				setTimeout(function(){msg_cooldowns.tasks[req.session.data.id] = false;}, ten_minutes);
+				setTimeout(function(){msg_cooldowns.tasks[req.session.data.id] = false;}, five_minutes);
 
 				console.log("task:", req.body);
 				console.log(req.body.minutes);
@@ -124,6 +124,7 @@ exps = {
 				user_timers[req.session.data.id] = {timeLimitSeconds: ~~(ms/1000), startTime: process.hrtime()};
 				setTimeout(function(){
 					console.log("Countdown done");
+					user_timers[req.session.data.id] = undefined;
 					if(sessionPendingMsgs[req.session.data.id]){
 						exps.alert_contact_sms(req.body);
 					}
