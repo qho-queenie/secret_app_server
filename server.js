@@ -23,6 +23,12 @@ app.use(session({
   cookie: { secure: false, httpOnly: true}
 }));
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 require('./server/config/db.js');
 require('./server/config/routes.js')(app);
 var hourlyLoop = require("./server/config/hourlyLoop.js");
