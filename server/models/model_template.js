@@ -127,7 +127,9 @@ module.exports = {
 		var phone = (req.body.phone)?`phone="${req.body.phone}", `:"";
 		var password = (req.body.password)?`password="${req.body.password}", `:"";
 		if(req.session.data){
-			doQuery(`UPDATE users SET ${first_name}${last_name}${email}${phone}${password}updated_at=NOW() WHERE id=${req.session.data.id}`, callback);
+			var doq = `UPDATE users SET ${first_name}${last_name}${email}${phone}${password}updated_at=NOW() WHERE id=${req.session.data.id}`;
+			console.log(doq);
+			doQuery(doq, callback);
 		}else{
 			console.log("Session is missing for query that requires session. Aborting.");
 			callback();
