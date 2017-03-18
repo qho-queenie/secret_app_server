@@ -156,8 +156,15 @@ exps = {
 
 	display_events: function(req, res){
 		models.model_template.display_events(req, res, function(err, rows, fields){
-			console.log(rows)
-			res.json({data:rows});
+
+			if(rows.length > 0){
+				res.json({data:rows});
+			}
+			else{
+				display_user(req, res, function(err, rows, fields){
+					res.json({data:rows});
+				});
+			}
 		});
 	},
 	end_current_task: function(req, res){

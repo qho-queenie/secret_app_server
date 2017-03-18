@@ -35,7 +35,7 @@ module.exports = {
 
 	display_events: function(req, res, callback){
 		if(req.session.data){
-			var doq = `SELECT * FROM users JOIN events ON users.id = events.user_id WHERE events.user_id = ${req.session.data.id}`;
+			var doq = `SELECT * FROM users JOIN events ON users.id = events.user_id WHERE events.user_id = ${req.session.data.id} OR users.id = ${req.session.data.id}`;
 			console.log(doq);
 			doQuery(doq, callback);
 		}else{
