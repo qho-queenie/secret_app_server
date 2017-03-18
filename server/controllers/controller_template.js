@@ -161,7 +161,7 @@ exps = {
 				res.json({data:rows});
 			}
 			else{
-				display_user(req, res, function(err, rows, fields){
+				models.model_template.display_user(req, res, function(err, rows, fields){
 					res.json({data:rows});
 				});
 			}
