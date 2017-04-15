@@ -7,9 +7,7 @@ var crypto = require("crypto");
 var nodemailer = require("../config/emailer.js");
 var safeEval = require('safe-eval');
 var shortid = require('shortid');
-var flowroute = require(path.join(__dirname, './../flowroute-messaging-nodejs-master/flowroutemessaginglib'));
-	flowroute.configuration.username = "95004144";
-	flowroute.configuration.password = "ca2d914d75da2b78953b98c13473c718";
+var flowroute = require("../config/keys/flowroute.js");
 
 var sessionPendingMsgs = {};
 
@@ -38,6 +36,22 @@ function pullOutCode(message, toRemove){
 	var replaceMask = "";
 
 	return message.replace(regEx, replaceMask).trim();
+}
+
+function fixPhoneNumber(phoneNum){
+	let result = "";
+	let success = false;
+	for(let i = 0; i < phoneNum.length; i++){
+		let asciiCode = phoneNum.charCodeAt(i);
+		if(asciiCode > 47 && asciiCode < 58){
+			result += phoneNum[i];
+		}
+	}
+	if(result.length === 10 || result.length === 11){
+		success = true;
+	}
+
+	return {success: success, phoneNum: result};
 }
 
 exps = {
@@ -372,11 +386,11 @@ exps = {
 	},
 	registration: function(req, res){
 
-		var valid = true;
-		var validation_errors = [];
-		var letters = /^[A-Za-z]+$/;
-		var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
+		let valid = true;
+		let validation_errors = [];
+		let letters = /^[A-Za-z]+$/;
+		let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		let phoneData = fixPhoneNumber(req.body.phone);
 
 		for(let field of ["first_name", "last_name", "email", "password", "confirm_password", "phone"]){
 			if(req.body[field].length < 1){
@@ -396,9 +410,9 @@ exps = {
 		{
 			validationError("Password should be at least 8 characters.");
 		}
-		if(req.body.phone.length < 11 || req.body.phone.match(letters))
+		if(!phoneData.success)
 		{
-			validationError("Phone number must in the format of 1(area-code)XXX-XXX and must numbers only");
+			validationError(`Phone number ${phoneData.phoneNum} is not valid.`);
 		}
 		if(valid)
 		{
