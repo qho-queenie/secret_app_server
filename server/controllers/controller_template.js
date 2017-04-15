@@ -47,7 +47,10 @@ function fixPhoneNumber(phoneNum){
 			result += phoneNum[i];
 		}
 	}
-	if(result.length === 10 || result.length === 11){
+	if(result.length === 10){
+		result = `1${result}`;
+	}
+	if(result.length === 11){
 		success = true;
 	}
 
