@@ -81,7 +81,7 @@ function validateUserData(req, allowEmpty = false){
 	if(!checkField(req.body.password, req.body.password.length > 7) ){
 		validationError("Password should be at least 8 characters.");
 	}
-	if(!checkField(phoneData, phoneData.success)){
+	if(!checkField(req.body.phone, phoneData.success)){
 		validationError(`Phone number ${phoneData.phoneNum} is not valid.`);
 	}
 	return {success: valid, validation_errors: validation_errors};
