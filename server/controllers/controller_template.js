@@ -57,6 +57,46 @@ function fixPhoneNumber(phoneNum){
 	return {success: success, phoneNum: result};
 }
 
+function validateUserData(req, allowEmpty = false){
+	let valid = true;
+	let validation_errors = [];
+	let letters = /^[A-Za-z]+$/;
+	let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	let phoneData = fixPhoneNumber(req.body.phone);
+
+	if(!allowEmpty){
+		for(let field of ["first_name", "last_name", "email", "password", "confirm_password", "phone"]){
+			if(req.body[field].length < 1){
+				validationError(`${field.replace("_", " ")} should not be empty.`);
+			}
+		}
+	}
+
+	if(checkField(req.body.password !== req.body.confirm_password)){
+		validationError("Password and confirm password must match.");
+	}
+	if(checkField(re.test(req.body.email) == false)){
+		validationError("Invalid email");
+	}
+	if(checkField(req.body.password.length < 8)){
+		validationError("Password should be at least 8 characters.");
+	}
+	if(checkField(!phoneData.success)){
+		validationError(`Phone number ${phoneData.phoneNum} is not valid.`);
+	}
+	return {success: valid, validation_errors: validation_errors};
+
+	function checkField(condition){
+		return (allowEmpty && field.length < 1) || condition;
+	}
+
+	function validationError(errMsg){
+		console.log(`validation error: ${errMsg}`);
+		valid = false;
+		validation_errors.push(errMsg);
+	}
+}
+
 exps = {
 	test: function(req, res){
 		console.log(req.sessionID, "controller function called successfully");
@@ -389,41 +429,42 @@ exps = {
 	},
 	registration: function(req, res){
 
-		let valid = true;
-		let validation_errors = [];
-		let letters = /^[A-Za-z]+$/;
-		let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-		let phoneData = fixPhoneNumber(req.body.phone);
+		// let valid = true;
+		// let validation_errors = [];
+		// let letters = /^[A-Za-z]+$/;
+		// let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		// let phoneData = fixPhoneNumber(req.body.phone);
 
-		for(let field of ["first_name", "last_name", "email", "password", "confirm_password", "phone"]){
-			if(req.body[field].length < 1){
-				validationError(`${field.replace("_", " ")} should not be empty.`);
-			}
-		}
+		// for(let field of ["first_name", "last_name", "email", "password", "confirm_password", "phone"]){
+		// 	if(req.body[field].length < 1){
+		// 		validationError(`${field.replace("_", " ")} should not be empty.`);
+		// 	}
+		// }
 
-		if(req.body.password !== req.body.confirm_password)
-		{
-			validationError("Password and confirm password must match.");
-		}
-		if(re.test(req.body.email) == false)
-		{
-			validationError("Invalid email");
-		}
-		if(req.body.password.length < 8)
-		{
-			validationError("Password should be at least 8 characters.");
-		}
-		if(!phoneData.success)
-		{
-			validationError(`Phone number ${phoneData.phoneNum} is not valid.`);
-		}
-		if(valid)
+		// if(req.body.password !== req.body.confirm_password)
+		// {
+		// 	validationError("Password and confirm password must match.");
+		// }
+		// if(re.test(req.body.email) == false)
+		// {
+		// 	validationError("Invalid email");
+		// }
+		// if(req.body.password.length < 8)
+		// {
+		// 	validationError("Password should be at least 8 characters.");
+		// }
+		// if(!phoneData.success)
+		// {
+		// 	validationError(`Phone number ${phoneData.phoneNum} is not valid.`);
+		// }
+		const validation = validateUserData(req);
+
+		if(validation.success)
 		{
 			models.model_template.registration(req, res, function(err, rows, fields){
 				// console.log(req.body, "res.data from registration");
 				if (rows === undefined || rows.insertId === undefined){
 					res.json({success: false, validation_errors: ["Email has been taken already. Nice try."]});
-					console.log("email has been taken");
 				}
 				else if (rows.insertId){
 					req.session.data = {};
@@ -431,20 +472,20 @@ exps = {
 					res.json({success: true, data: rows.insertId});
 				}
 				else{
-					res.json({success: false, validation_errors: ["registration failed."]});
+					res.json({success: false, validation_errors: ["registration failed for an unknown reason. Please try again."]});
 				}
 
 			});
 		}
 		else{
-			res.json({success: false, validation_errors: validation_errors});
+			res.json(validation);
 		}
 
-		function validationError(errMsg){
-			console.log(`validation error: ${errMsg}`);
-			valid = false;
-			validation_errors.push(errMsg);
-		}
+		// function validationError(errMsg){
+		// 	console.log(`validation error: ${errMsg}`);
+		// 	valid = false;
+		// 	validation_errors.push(errMsg);
+		// }
 	},
 
 	login: function(req, res){
@@ -585,9 +626,19 @@ exps = {
 		})
 	},
 	edit_profile: function(req, res){
-		models.model_template.edit_profile(req, res, function(err, rows, fields){
-			res.json(rows);
-		})
+
+		const validation = validateUserData(req, true);
+
+		if(validation.success)
+		{
+			models.model_template.edit_profile(req, res, function(err, rows, fields){
+				res.json(rows);
+			});
+		}
+		else{
+			//res.json(validation);
+			res.json([]);
+		}
 	},
 	retrieve_password: function(req, res){
 		console.log(req.body, "retrieve_password in the controller");
