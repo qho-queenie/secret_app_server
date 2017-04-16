@@ -87,7 +87,8 @@ function validateUserData(req, allowEmpty = false){
 	return {success: valid, validation_errors: validation_errors};
 
 	function checkField(field, condition){
-		return (allowEmpty && field.length < 1) || condition;
+		console.log((allowEmpty && field.length < 1) || condition)
+		return ((allowEmpty && field.length < 1) || condition);
 	}
 
 	function validationError(errMsg){
