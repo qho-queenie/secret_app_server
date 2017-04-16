@@ -72,22 +72,21 @@ function validateUserData(req, allowEmpty = false){
 		}
 	}
 
-	if(checkField(req.body.password, req.body.password !== req.body.confirm_password)){
+	if(!checkField(req.body.password, req.body.password !== req.body.confirm_password)){
 		validationError("Password and confirm password must match.");
 	}
-	if(checkField(req.body.email, re.test(req.body.email) == false)){
+	if(!checkField(req.body.email, re.test(req.body.email) == false)){
 		validationError("Invalid email");
 	}
-	if(checkField(req.body.password, req.body.password.length < 8)){
+	if(!checkField(req.body.password, req.body.password.length < 8)){
 		validationError("Password should be at least 8 characters.");
 	}
-	if(checkField(phoneData, !phoneData.success)){
+	if(!checkField(phoneData, !phoneData.success)){
 		validationError(`Phone number ${phoneData.phoneNum} is not valid.`);
 	}
 	return {success: valid, validation_errors: validation_errors};
 
 	function checkField(field, condition){
-		console.log((allowEmpty && field.length < 1) || condition)
 		return ((allowEmpty && field.length < 1) || condition);
 	}
 
